@@ -22,3 +22,7 @@ C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\TabControls\XLConfigTab2.g
 C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\TabControls\MainTab1.baml
 C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\TabControls\OtherConfigTab3.baml
 C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\TabControls\XLConfigTab2.baml
+C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\UserControls\WrapPanel_DragAndDrop.g.cs
+C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\UserControls\WrapPanel_DragAndDrop.baml
+C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\UserControls\PilotButtonMovable.g.cs
+C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\UserControls\PilotButtonMovable.baml

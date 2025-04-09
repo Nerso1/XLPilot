@@ -59,7 +59,7 @@
 
                                 <!-- Text animation -->
                                 <!--<Setter TargetName="ButtonTextBlock" Property="FontSize" Value="14" />-->
-                                <Setter TargetName="ButtonTextBlock" Property="FontWeight" Value="SemiBold" />
+                                <Setter TargetName="ButtonTextBlock" Property="FontWeight" Value="Bold" />
                                 <!--<Setter TargetName="ButtonTextBlock" Property="Effect">
                                     <Setter.Value>
                                         <DropShadowEffect BlurRadius="2" ShadowDepth="1" Opacity="0.3" />

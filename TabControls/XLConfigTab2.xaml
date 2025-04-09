@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:XLPilot.TabControls"
+             xmlns:user="clr-namespace:XLPilot.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="620">
     <Grid>
@@ -37,24 +38,10 @@
             <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtXLLicenseKey" FontSize="16"/>
         </Grid>
 
-        <ListView Grid.Row="1" x:Name="lstXLList"/>
+        <!--<ListView Grid.Row="1" x:Name="lstXLList"/>-->
 
-        <Grid Grid.Row="2">
-            <!--<Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Image Grid.Row="0" 
-                   Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                   Stretch="Uniform"
-                   Margin="10"/>
-
-            <TextBlock Grid.Row="1" 
-                       Text="{Binding ButtonText, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                       HorizontalAlignment="Center"
-                       Margin="5"
-                       FontWeight="Bold"/>-->
+        <Grid Grid.Row="1">
+            <user:WrapPanel_DragAndDrop VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </Grid>
 
 

@@ -10,9 +10,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition  Height="32"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <!--<RowDefinition Height="*"/>-->
+            <!--<RowDefinition Height="30"/>-->
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -20,10 +21,11 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="26"/>
+                <RowDefinition Height="26"/>
+                <RowDefinition Height="26"/>
+                <RowDefinition Height="26"/>
+                <RowDefinition Height="26"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Name="tbXLName" Text="Nazwa" FontSize="16"/>
@@ -36,11 +38,36 @@
             <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtXLDatabase" FontSize="16"/>
             <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtXLLicenseServer" FontSize="16"/>
             <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtXLLicenseKey" FontSize="16"/>
+            <ListView Grid.Row="5" Grid.ColumnSpan="2" x:Name="DirectoriesListView" Margin="0,10,0,0" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Nazwa" Width="150" />
+                        <GridViewColumn Header="Baza danych" Width="80" />
+                        <GridViewColumn Header="Klucz" Width="130" />
+                        <GridViewColumn Header="Ścieżka" Width="210" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
 
-        <!--<ListView Grid.Row="1" x:Name="lstXLList"/>-->
+        <Grid Grid.Row="1" >
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5"/>
+                <RowDefinition  Height="26"/>
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1">
+            <Separator Grid.ColumnSpan="2"/>
+            <TextBlock Grid.Row="2" Name="tbXLIconLayouts" Text="Układ ikon" FontSize="16"/>
+            <ComboBox Grid.Row="2" Grid.Column="1"/>
+
+        </Grid>
+
+        <Grid Grid.Row="3">
             <user:WrapPanel_DragAndDrop VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </Grid>
 

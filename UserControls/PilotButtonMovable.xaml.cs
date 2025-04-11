@@ -43,6 +43,7 @@ namespace XLPilot.UserControls
             set => SetValue(ButtonTextProperty, value);
         }
 
+
         public static readonly DependencyProperty ButtonTextProperty =
             DependencyProperty.Register(
                 nameof(ButtonText),

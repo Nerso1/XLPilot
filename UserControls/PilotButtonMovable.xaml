@@ -7,21 +7,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100">
     <Border x:Name="MainBorder" 
-            Background="#FFF0F0F0" 
-            BorderBrush="#FFD0D0D0" 
-            BorderThickness="1" 
+            Background="White" 
+            BorderBrush="Transparent" 
+            BorderThickness="0" 
             CornerRadius="5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-
             <Image Grid.Row="0" 
                    Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}"
                    Stretch="Uniform" 
                    Margin="10"/>
-
             <TextBlock Grid.Row="1" 
                        Text="{Binding ButtonText, RelativeSource={RelativeSource AncestorType=UserControl}}"
                        HorizontalAlignment="Center" 

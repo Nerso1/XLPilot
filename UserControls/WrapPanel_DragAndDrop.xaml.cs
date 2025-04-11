@@ -470,6 +470,13 @@ namespace XLPilot.UserControls
 
             return default(T);
         }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
     }
 
     // Adorner class for insertion indicator
@@ -534,5 +541,6 @@ namespace XLPilot.UserControls
             drawingContext.DrawGeometry(Brushes.Red, null, triangle);
             drawingContext.Pop();
         }
+
     }
 }

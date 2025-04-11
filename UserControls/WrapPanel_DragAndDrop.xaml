@@ -5,25 +5,90 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:XLPilot.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+             Width="600" Height="Auto"
+             d:DesignWidth="600">
+    <!-- Enabling Mouse Wheel Scrolling -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                  HorizontalScrollBarVisibility="Disabled" 
+                  PanningMode="VerticalOnly"
+                  PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Left side: Toolbox -->
-        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <!-- Project Section -->
+            <TextBlock Grid.Row="0" Text="Project" FontWeight="Bold" Margin="5"/>
 
-                <TextBlock Grid.Row="0" Text="Toolbox" FontWeight="Bold" Margin="5"/>
+            <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                <Grid>
+                    <ListView x:Name="projectListView" 
+                              MinHeight="120" 
+                              ItemsSource="{Binding ProjectItems}"
+                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                              MouseMove="ListView_MouseMove"
+                              DragEnter="ListView_DragEnter"
+                              DragOver="ListView_DragOver"
+                              Drop="ListView_Drop"
+                              DragLeave="ListView_DragLeave"
+                              AllowDrop="True"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemWidth="100" HorizontalAlignment="Center" />
+                                <!-- Center the WrapPanel -->
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <local:PilotButtonMovable Width="100" Height="100" 
+                                                         ImageSource="{Binding ImageSource}" 
+                                                         ButtonText="{Binding ButtonText}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
 
+                    <!-- Empty state message -->
+                    <TextBlock Text="Put some items from ToolBox" 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" 
+                               Foreground="Gray"
+                               FontStyle="Italic">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProjectItems.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </Border>
+
+            <!-- Toolbox Section -->
+            <TextBlock Grid.Row="2" Text="Toolbox" FontWeight="Bold" Margin="5"/>
+
+            <Border Grid.Row="3" BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <ListView x:Name="toolboxListView" 
-                          Grid.Row="1" 
                           ItemsSource="{Binding ToolboxItems}"
                           PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
                           MouseMove="ListView_MouseMove"
@@ -37,8 +102,8 @@
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
                             <Setter Property="Margin" Value="2"/>
                             <Setter Property="Padding" Value="0"/>
                             <Setter Property="Background" Value="Transparent"/>
@@ -48,7 +113,8 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel />
+                            <WrapPanel ItemWidth="100" HorizontalAlignment="Center" />
+                            <!-- Center the WrapPanel -->
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
@@ -59,57 +125,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </Grid>
-        </Border>
-
-        <!-- Right side: Project -->
-        <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" Text="Project" FontWeight="Bold" Margin="5"/>
-
-                <ListView x:Name="projectListView" 
-                          Grid.Row="1" 
-                          ItemsSource="{Binding ProjectItems}"
-                          PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                          MouseMove="ListView_MouseMove"
-                          DragEnter="ListView_DragEnter"
-                          DragOver="ListView_DragOver"
-                          Drop="ListView_Drop"
-                          DragLeave="ListView_DragLeave"
-                          AllowDrop="True"
-                          Background="Transparent"
-                          BorderThickness="0"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Margin" Value="2"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <local:PilotButtonMovable Width="100" Height="100" 
-                                                     ImageSource="{Binding ImageSource}" 
-                                                     ButtonText="{Binding ButtonText}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </Border>
-    </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

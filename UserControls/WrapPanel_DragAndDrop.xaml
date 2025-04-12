@@ -21,7 +21,7 @@
             </Grid.RowDefinitions>
 
             <!-- Project Section -->
-            <TextBlock Grid.Row="0" Text="Project" FontWeight="Bold" Margin="5"/>
+            <TextBlock Grid.Row="0" Text="Twoje ikony XL" Margin="5" FontSize="16"/>
 
             <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <Grid>
@@ -65,10 +65,11 @@
                     </ListView>
 
                     <!-- Empty state message -->
-                    <TextBlock Text="Put some items from ToolBox" 
+                    <TextBlock Text="Przeciągnij wybrane ikony do tego obszaru" 
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                Foreground="Gray"
+                               FontSize="16"
                                FontStyle="Italic">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
@@ -85,7 +86,7 @@
             </Border>
 
             <!-- Toolbox Section -->
-            <TextBlock Grid.Row="2" Text="Toolbox" FontWeight="Bold" Margin="5"/>
+            <TextBlock Grid.Row="2" Text="Ikony do wyboru" Margin="5" FontSize="16"/>
 
             <Border Grid.Row="3" BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <ListView x:Name="toolboxListView" 

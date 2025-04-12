@@ -18,6 +18,28 @@ namespace XLPilot.UserControls
     /// </summary>
     public partial class WrapPanel_DragAndDrop : UserControl
     {
+        public static readonly DependencyProperty ToolboxItemsProperty =
+        DependencyProperty.Register("ToolboxItems", typeof(ObservableCollection<PilotButtonData>),
+        typeof(WrapPanel_DragAndDrop), new PropertyMetadata(new ObservableCollection<PilotButtonData>()));
+
+        public static readonly DependencyProperty ProjectItemsProperty =
+    DependencyProperty.Register("ProjectItems", typeof(ObservableCollection<PilotButtonData>),
+    typeof(WrapPanel_DragAndDrop), new PropertyMetadata(new ObservableCollection<PilotButtonData>()));
+
+        // Property wrappers
+        public ObservableCollection<PilotButtonData> ToolboxItems
+        {
+            get { return (ObservableCollection<PilotButtonData>)GetValue(ToolboxItemsProperty); }
+            set { SetValue(ToolboxItemsProperty, value); }
+        }
+
+        public ObservableCollection<PilotButtonData> ProjectItems
+        {
+            get { return (ObservableCollection<PilotButtonData>)GetValue(ProjectItemsProperty); }
+            set { SetValue(ProjectItemsProperty, value); }
+        }
+
+
         // Custom class to hold button data
         public class PilotButtonData
         {
@@ -31,8 +53,8 @@ namespace XLPilot.UserControls
             }
         }
 
-        public ObservableCollection<PilotButtonData> ToolboxItems { get; set; }
-        public ObservableCollection<PilotButtonData> ProjectItems { get; set; }
+        //public ObservableCollection<PilotButtonData> ToolboxItems { get; set; }
+        //public ObservableCollection<PilotButtonData> ProjectItems { get; set; }
 
         private Point startPoint;
         private bool isDragging = false;
@@ -47,16 +69,16 @@ namespace XLPilot.UserControls
             InitializeComponent();
 
             // Initialize the collections with sample data
-            ToolboxItems = new ObservableCollection<PilotButtonData>
-            {
-                new PilotButtonData("/XLPilot;component/Resources/Images/Google chrome icon.png", "Goblin"),
-                new PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "Ship")
-            };
+            //ToolboxItems = new ObservableCollection<PilotButtonData>
+            //{
+            //    new PilotButtonData("/XLPilot;component/Resources/Images/Google chrome icon.png", "Goblin"),
+            //    new PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "Ship")
+            //};
 
-            ProjectItems = new ObservableCollection<PilotButtonData>
-            {
-                new PilotButtonData("/XLPilot;component/Resources/Images/Google chrome icon.png", "Project Ship"),
-            };
+            //ProjectItems = new ObservableCollection<PilotButtonData>
+            //{
+            //    new PilotButtonData("/XLPilot;component/Resources/Images/Google chrome icon.png", "Project Ship"),
+            //};
 
             // Set DataContext to this instance so bindings work properly
             this.DataContext = this;

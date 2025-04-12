@@ -3,10 +3,73 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:XLPilot.TabControls"
+             xmlns:local="clr-namespace:XLPilot.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="620">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/> <!--Chekcboxy konfiguracyjne-->
+                <RowDefinition Height="Auto"/> <!--Granica-->
+                <RowDefinition Height="30"/> <!--Eksport/import-->
+                <RowDefinition Height="30"/> <!--Eksportuj-->
+                <RowDefinition Height="30"/> <!--checki ekspotu-->
+                <RowDefinition Height="30"/> <!--checki ekspotu-->
+                <RowDefinition Height="30"/> <!--checki ekspotu-->
+                <RowDefinition Height="30"/> <!--checki ekspotu-->
+                <RowDefinition Height="30"/> <!--checki ekspotu-->
+                <RowDefinition Height="30"/> <!--Przyciski eksport/import-->
+                <RowDefinition Height="*"/> <!--Drag&Drop-->
+            </Grid.RowDefinitions>
+
+            <CheckBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="1" FontSize="16" Text="Czy 'inne' mają być widoczne na zakładce [XL-e]?" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="16" Text="Czy program ma pamiętać rozmiary okna?" VerticalAlignment="Center"/>
+
+            <Separator Grid.Row="2" Grid.ColumnSpan="2"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Text="Eksport / import" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Text="Eksportuj:" VerticalAlignment="Center"/>
+
+            <CheckBox Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox Grid.Row="7" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox Grid.Row="8" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox Grid.Row="9" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="1" FontSize="16" Text="XL-e (nazy, ścieżki, bazy, klucze)" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="6" Grid.Column="1" FontSize="16" Text="Układ ikon XL-i" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="7" Grid.Column="1" FontSize="16" Text="Układ ikon innych" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="8" Grid.Column="1" FontSize="16" Text="Konfiguracja (checkboxy)" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="9" Grid.Column="1" FontSize="16" Text="Rozmiar okna" VerticalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="2">
+                <Button x:Name="BtnExportSelected" Content="⤴️ Eksportuj zaznaczone" Margin="10,0,10,0"/>
+                <Button x:Name="BtnImport" Content="⤵️ Importuj..."/>
+            </StackPanel>
+
+        </Grid>
+
+        <DockPanel Grid.Row="1" Margin="5,0">
+            <Separator DockPanel.Dock="Top"/>
+            <TextBlock Name="tbXLIconLayouts" Text="Układ ikon" FontSize="16" Width="120" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+            <ComboBox VerticalAlignment="Center" Margin="0,5,0,5"/>
+        </DockPanel>
+
+        <local:WrapPanel_DragAndDrop Grid.Row="2" x:Name="OtherDragDropControl" />
+
     </Grid>
 </UserControl>

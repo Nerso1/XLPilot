@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,32 +25,21 @@ namespace XLPilot.TabControls
         public XLConfigTab2()
         {
             InitializeComponent();
+
+            XLDragDropControl.ToolboxItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
+            {
+                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "XL Item 1"),
+                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/Google chrome icon.png", "XL Item 2")
+            };
+
+            XLDragDropControl.ProjectItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
+            {
+                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "XL Project 1")
+            };
+
         }
 
-        // If you need these properties in this class, register them with XLConfigTab2 as the owner
-    //    public string ImageSource
-    //    {
-    //        get => (string)GetValue(ImageSourceProperty);
-    //        set => SetValue(ImageSourceProperty, value);
-    //    }
-    //    public static readonly DependencyProperty ImageSourceProperty =
-    //        DependencyProperty.Register(
-    //            nameof(ImageSource),
-    //            typeof(string),
-    //            typeof(XLConfigTab2), // Use XLConfigTab2 as the owner, not PilotButton
-    //            new PropertyMetadata("/XLPilot;component/Resources/Images/default-profile-picture.png"));
 
-    //    public string ButtonText
-    //    {
-    //        get => (string)GetValue(ButtonTextProperty);
-    //        set => SetValue(ButtonTextProperty, value);
-    //    }
-    //    public static readonly DependencyProperty ButtonTextProperty =
-    //        DependencyProperty.Register(
-    //            nameof(ButtonText),
-    //            typeof(string),
-    //            typeof(XLConfigTab2), // Use XLConfigTab2 as the owner, not PilotButton
-    //            new PropertyMetadata(string.Empty));
     }
 
 

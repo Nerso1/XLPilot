@@ -3,42 +3,58 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:XLPilot.TabControls"
+             xmlns:local="clr-namespace:XLPilot.UserControls"
              xmlns:user="clr-namespace:XLPilot.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="620">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
-            <RowDefinition  Height="32"/>
-            <RowDefinition Height="*"/>
-            <!--<RowDefinition Height="*"/>-->
-            <!--<RowDefinition Height="30"/>-->
         </Grid.RowDefinitions>
-        <Grid>
+
+        <!-- Top Configuration Section -->
+        <Grid Grid.Row="0" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120" />
-                <ColumnDefinition/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="26"/>
-                <RowDefinition Height="26"/>
-                <RowDefinition Height="26"/>
-                <RowDefinition Height="26"/>
-                <RowDefinition Height="26"/>
-                <RowDefinition/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Name="tbXLName" Text="Nazwa" FontSize="16"/>
-            <TextBlock Grid.Row="1" Name="tbXLPath" Text="Ścieżka" FontSize="16"/>
-            <TextBlock Grid.Row="2" Name="tbXLDatabase" Text="Baza danych" FontSize="16"/>
-            <TextBlock Grid.Row="3" Name="tbXLLicenseServer" Text="Serwer klucza" FontSize="16"/>
-            <TextBlock Grid.Row="4" Name="tbXLLicenseKey" Text="Klucz" FontSize="16"/>
-            <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtXLName" FontSize="16"/>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtXLPath" FontSize="16"/>
-            <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtXLDatabase" FontSize="16"/>
-            <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtXLLicenseServer" FontSize="16"/>
-            <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtXLLicenseKey" FontSize="16"/>
-            <ListView Grid.Row="5" Grid.ColumnSpan="2" x:Name="DirectoriesListView" Margin="0,10,0,0" >
+
+            <!-- Labels -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Name="tbXLName" Text="Nazwa" FontSize="16"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Name="tbXLPath" Text="Ścieżka" FontSize="16"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Name="tbXLDatabase" Text="Baza danych" FontSize="16"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Name="tbXLLicenseServer" Text="Serwer klucza" FontSize="16"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Name="tbXLLicenseKey" Text="Klucz" FontSize="16"/>
+
+            <!-- TextBoxes -->
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtXLName" FontSize="16" Margin="0,0,0,5"/>
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtXLPath" FontSize="16" Margin="0,0,0,5"/>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtXLDatabase" FontSize="16" Margin="0,0,0,5"/>
+            <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtXLLicenseServer" FontSize="16" Margin="0,0,0,5"/>
+            <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtXLLicenseKey" FontSize="16" Margin="0,0,0,5"/>
+
+            <!-- Buttons Row -->
+            <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <TextBlock Width="120"/>
+                <Button x:Name="BtnAdd" Content="➕ Dodaj" Margin="0,0,5,0" Width="80"/>
+                <Button x:Name="BtnEdit" Content="🖊️ Edytuj" Margin="0,0,5,0" Width="80"/>
+                <Button x:Name="BtnDelete" Content="🗑️ Usuń" Margin="0,0,5,0" Width="80"/>
+                <Button x:Name="BtnImport" Content="⤵️ Importuj ścieżki" HorizontalAlignment="Right" Width="100"/>
+            </StackPanel>
+
+            <!-- ListView -->
+            <ListView Grid.Row="6" Grid.ColumnSpan="2" x:Name="DirectoriesListView" Margin="0,5,0,0">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Nazwa" Width="150" />
@@ -50,29 +66,14 @@
             </ListView>
         </Grid>
 
-        <Grid Grid.Row="1" >
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120" />
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="5"/>
-                <RowDefinition  Height="26"/>
-            </Grid.RowDefinitions>
+        <!-- Separator and Icon Layout Section -->
+        <DockPanel Grid.Row="1" Margin="5,0">
+            <Separator DockPanel.Dock="Top"/>
+            <TextBlock Name="tbXLIconLayouts" Text="Układ ikon" FontSize="16" Width="120" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+            <ComboBox VerticalAlignment="Center" Margin="0,5,0,5"/>
+        </DockPanel>
 
-            <Separator Grid.ColumnSpan="2"/>
-            <TextBlock Grid.Row="2" Name="tbXLIconLayouts" Text="Układ ikon" FontSize="16"/>
-            <ComboBox Grid.Row="2" Grid.Column="1"/>
-
-        </Grid>
-
-        <Grid Grid.Row="3">
-            <user:WrapPanel_DragAndDrop VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-        </Grid>
-
-
-
+        <!-- Custom Control Section -->
+        <local:WrapPanel_DragAndDrop Grid.Row="2" x:Name="XLDragDropControl" />
     </Grid>
-
 </UserControl>

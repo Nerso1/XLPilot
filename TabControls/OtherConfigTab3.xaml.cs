@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using XLPilot.UserControls;
 
 namespace XLPilot.TabControls
@@ -25,6 +26,8 @@ namespace XLPilot.TabControls
         public OtherConfigTab3()
         {
             InitializeComponent();
+
+
             OtherDragDropControl.ToolboxItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
             {
                 new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "Other Item 1"),

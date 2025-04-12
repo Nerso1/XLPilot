@@ -7,6 +7,10 @@
              xmlns:user="clr-namespace:XLPilot.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="620">
+    <UserControl.Resources>
+        <local:IsDefaultEmptyEntryConverter x:Key="IsDefaultEmptyEntryConverter" />
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,27 +44,29 @@
             <!-- TextBoxes -->
             <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtXLName" FontSize="16" Margin="0,0,0,5"/>
             <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtXLPath" FontSize="16" Margin="0,0,0,5"/>
-            <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtXLDatabase" FontSize="16" Margin="0,0,0,5"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" x:Name="cmbXLDatabase" FontSize="16" Margin="0,0,0,5"/>
             <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtXLLicenseServer" FontSize="16" Margin="0,0,0,5"/>
             <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtXLLicenseKey" FontSize="16" Margin="0,0,0,5"/>
 
             <!-- Buttons Row -->
             <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <TextBlock Width="120"/>
-                <Button x:Name="BtnAdd" Content="➕ Dodaj" Margin="0,0,5,0" Width="80"/>
-                <Button x:Name="BtnEdit" Content="🖊️ Edytuj" Margin="0,0,5,0" Width="80"/>
-                <Button x:Name="BtnDelete" Content="🗑️ Usuń" Margin="0,0,5,0" Width="80"/>
+                <Button x:Name="BtnAdd" Content="➕ Dodaj" Margin="0,0,5,0" Width="80" Click="BtnAdd_Click" />
+                <Button x:Name="BtnEdit" Content="🖊️ Edytuj" Margin="0,0,5,0" Width="80" Click="BtnEdit_Click"
+                        IsEnabled="{Binding ElementName=DirectoriesListView, Path=SelectedItem, Converter={StaticResource IsDefaultEmptyEntryConverter}}" />
+                <Button x:Name="BtnDelete" Content="🗑️ Usuń" Margin="0,0,5,0" Width="80" Click="BtnDelete_Click"
+                        IsEnabled="{Binding ElementName=DirectoriesListView, Path=SelectedItem, Converter={StaticResource IsDefaultEmptyEntryConverter}}" />
                 <Button x:Name="BtnImport" Content="⤵️ Importuj ścieżki" HorizontalAlignment="Right" Width="100"/>
             </StackPanel>
 
             <!-- ListView -->
-            <ListView Grid.Row="6" Grid.ColumnSpan="2" x:Name="DirectoriesListView" Margin="0,5,0,0">
+            <ListView Grid.Row="6" Grid.ColumnSpan="2" x:Name="DirectoriesListView" Margin="0,5,0,0" SelectionChanged="DirectoriesListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Nazwa" Width="150" />
-                        <GridViewColumn Header="Baza danych" Width="80" />
-                        <GridViewColumn Header="Klucz" Width="130" />
-                        <GridViewColumn Header="Ścieżka" Width="210" />
+                        <GridViewColumn Header="Nazwa" Width="150" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Baza danych" Width="80" DisplayMemberBinding="{Binding Database}" />
+                        <GridViewColumn Header="Klucz" Width="130" DisplayMemberBinding="{Binding FormattedLicenseInfo}" />
+                        <GridViewColumn Header="Ścieżka" Width="215" DisplayMemberBinding="{Binding Path}" />
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -70,7 +76,7 @@
         <DockPanel Grid.Row="1" Margin="5,0">
             <Separator DockPanel.Dock="Top"/>
             <TextBlock Name="tbXLIconLayouts" Text="Układ ikon" FontSize="16" Width="120" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-            <ComboBox VerticalAlignment="Center" Margin="0,5,0,5"/>
+            <ComboBox VerticalAlignment="Center" Margin="0,0,0,5"/>
         </DockPanel>
 
         <!-- Custom Control Section -->

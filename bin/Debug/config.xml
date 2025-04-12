@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SerializationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <XLPathsList>
+    <XLPaths>
+      <Name>Maćki</Name>
+      <Path>C:\Users\domin\source\repos\XmlTest\XmlTest\bin\Debug</Path>
+      <Database />
+      <LicenseServer />
+      <LicenseKey />
+    </XLPaths>
+    <XLPaths>
+      <Name>Maćki</Name>
+      <Path>C:\Users\domin\source\repos\XmlTest\XmlTest\bin\Debug</Path>
+      <Database />
+      <LicenseServer>aaa</LicenseServer>
+      <LicenseKey>bbb</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Maćki 2</Name>
+      <Path>C:\Users\domin\source\repos\XmlTest\XmlTest\bin\Debug</Path>
+      <Database />
+      <LicenseServer>aaa</LicenseServer>
+      <LicenseKey>bbb</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Debug</Name>
+      <Path>C:\Users\domin\source\repos\XmlTest\XmlTest\bin\Debug</Path>
+      <Database />
+      <LicenseServer>aaa</LicenseServer>
+      <LicenseKey>bbb</LicenseKey>
+    </XLPaths>
+  </XLPathsList>
+  <XLIcons />
+  <OtherIcons />
+  <Flags>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+  </Flags>
+  <Dimensions>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+  </Dimensions>
+</SerializationData>

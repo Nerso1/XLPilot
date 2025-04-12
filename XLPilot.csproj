@@ -55,12 +55,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Containers\DimensionsContainer.cs" />
+    <Compile Include="Models\Containers\FlagsContainer.cs" />
+    <Compile Include="Models\Containers\OtherIconsContainer.cs" />
+    <Compile Include="Models\Containers\XLIconsContainer.cs" />
+    <Compile Include="Models\Containers\XLPathsContainer.cs" />
+    <Compile Include="Models\SerializationData.cs" />
+    <Compile Include="Models\XLPaths.cs" />
     <Compile Include="UserControls\PilotButtonMovable.xaml.cs">
       <DependentUpon>PilotButtonMovable.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Resources\IsDefaultEmptyEntryConverter.cs" />
     <Compile Include="UserControls\WrapPanel_DragAndDrop.xaml.cs">
       <DependentUpon>WrapPanel_DragAndDrop.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XmlUtilities\SerializationManager.cs" />
+    <Compile Include="XmlUtilities\XmlSerializer.cs" />
+    <Compile Include="XmlUtilities\XmlValidator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

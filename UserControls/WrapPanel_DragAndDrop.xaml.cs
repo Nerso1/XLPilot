@@ -48,15 +48,17 @@ namespace XLPilot.UserControls
             public string ImageSource { get; set; } = "";
             public bool RunAsAdmin { get; set; } = false;
             public string Arguments { get; set; } = "";
+            public string ToolTipText { get; set; } = "";
             public string Directory { get; set; } = "";
 
-            public PilotButtonData(string buttonText, string fileName = "", string imageSource = "", bool runAsAdmin = false, string arguments = "", string directory = "")
+            public PilotButtonData(string buttonText, string fileName = "", string imageSource = "", bool runAsAdmin = false, string arguments = "", string toolTipText = "", string directory = "")
             {
                 ButtonText = buttonText;
                 FileName = fileName;
                 ImageSource = imageSource;
                 RunAsAdmin = runAsAdmin;
                 Arguments = arguments;
+                ToolTipText = toolTipText;
                 Directory = directory;
             }
         }
@@ -359,6 +361,7 @@ namespace XLPilot.UserControls
                             item.ImageSource == droppedItem.ImageSource &&
                             item.RunAsAdmin == droppedItem.RunAsAdmin &&
                             item.Arguments == droppedItem.Arguments &&
+                            item.ToolTipText == droppedItem.ToolTipText &&
                             item.Directory == droppedItem.Directory
                             )
                         {
@@ -393,10 +396,11 @@ namespace XLPilot.UserControls
                         //droppedItem.ImageSource,
                         //droppedItem.ButtonText
                         droppedItem.ButtonText,
-                        droppedItem.ButtonText,
+                        droppedItem.FileName,
                         droppedItem.ImageSource,
                         droppedItem.RunAsAdmin,
                         droppedItem.Arguments,
+                        droppedItem.ToolTipText,
                         droppedItem.Directory
                     );
 
@@ -424,6 +428,7 @@ namespace XLPilot.UserControls
                             ProjectItems[i].ImageSource == droppedItem.ImageSource &&
                             ProjectItems[i].RunAsAdmin == droppedItem.RunAsAdmin &&
                             ProjectItems[i].Arguments == droppedItem.Arguments &&
+                            ProjectItems[i].ToolTipText == droppedItem.ToolTipText &&
                             ProjectItems[i].Directory == droppedItem.Directory
                             )
                         {

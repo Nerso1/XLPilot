@@ -10,7 +10,8 @@
             Background="White" 
             BorderBrush="Transparent" 
             BorderThickness="0" 
-            CornerRadius="5">
+            CornerRadius="5"
+            ToolTip="{Binding ToolTipText, RelativeSource={RelativeSource AncestorType=UserControl}}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>

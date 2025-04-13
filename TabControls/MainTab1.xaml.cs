@@ -25,5 +25,10 @@ namespace XLPilot.TabControls
         {
             InitializeComponent();
         }
+
+        private void RunExecutable(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

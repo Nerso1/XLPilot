@@ -23,8 +23,8 @@ namespace XLPilot.UserControls
         typeof(WrapPanel_DragAndDrop), new PropertyMetadata(new ObservableCollection<PilotButtonData>()));
 
         public static readonly DependencyProperty ProjectItemsProperty =
-    DependencyProperty.Register("ProjectItems", typeof(ObservableCollection<PilotButtonData>),
-    typeof(WrapPanel_DragAndDrop), new PropertyMetadata(new ObservableCollection<PilotButtonData>()));
+        DependencyProperty.Register("ProjectItems", typeof(ObservableCollection<PilotButtonData>),
+        typeof(WrapPanel_DragAndDrop), new PropertyMetadata(new ObservableCollection<PilotButtonData>()));
 
         // Property wrappers
         public ObservableCollection<PilotButtonData> ToolboxItems

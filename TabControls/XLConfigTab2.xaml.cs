@@ -40,13 +40,16 @@ namespace XLPilot.TabControls
 
             XLDragDropControl.ToolboxItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
             {
-                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "XL Item 1"),
-                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/Google chrome icon.png", "XL Item 2")
+                //new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "XL Item 1", "aaa"),
+                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/detault-profile-picture.png"),
+                //new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/Google chrome icon.png", "XL Item 2")
+                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/Google chrome icon.png")
             };
 
             XLDragDropControl.ProjectItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
             {
-                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "XL Project 1")
+                //new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "XL Project 1")
+                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/detault-profile-picture.png"),
             };
 
         }

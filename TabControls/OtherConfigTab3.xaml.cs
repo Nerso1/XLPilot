@@ -30,14 +30,15 @@ namespace XLPilot.TabControls
 
             OtherDragDropControl.ToolboxItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
             {
-                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "Other Item 1"),
-                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/Google chrome icon.png", "Other Item 2")
+                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/detault-profile-picture.png", true, "", "Przycisk typu fajny"),
+                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/Google chrome icon.png")
             };
 
             OtherDragDropControl.ProjectItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
             {
-                new WrapPanel_DragAndDrop.PilotButtonData("/XLPilot;component/Resources/Images/detault-profile-picture.png", "Other Project 1")
+                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/detault-profile-picture.png")
             };
+
         }
     }
 }

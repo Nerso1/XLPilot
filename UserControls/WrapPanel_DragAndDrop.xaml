@@ -59,7 +59,8 @@
                             <DataTemplate>
                                 <local:PilotButtonMovable Width="100" Height="100" 
                                                          ImageSource="{Binding ImageSource}" 
-                                                         ButtonText="{Binding ButtonText}"/>
+                                                         ButtonText="{Binding ButtonText}"
+                                                         ToolTipText="{Binding ToolTipText}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -122,7 +123,8 @@
                         <DataTemplate>
                             <local:PilotButtonMovable Width="100" Height="100" 
                                                      ImageSource="{Binding ImageSource}" 
-                                                     ButtonText="{Binding ButtonText}"/>
+                                                     ButtonText="{Binding ButtonText}"
+                                                     ToolTipText="{Binding ToolTipText}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

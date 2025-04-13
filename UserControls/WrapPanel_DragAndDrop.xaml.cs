@@ -43,13 +43,23 @@ namespace XLPilot.UserControls
         // Custom class to hold button data
         public class PilotButtonData
         {
-            public string ImageSource { get; set; }
             public string ButtonText { get; set; }
+            public string FileName { get; set; } = "";
+            public string ImageSource { get; set; } = "";
+            public bool RunAsAdmin { get; set; } = false;
+            public string Arguments { get; set; } = "";
+            public string ToolTipText { get; set; } = "";
+            public string Directory { get; set; } = "";
 
-            public PilotButtonData(string imageSource, string buttonText)
+            public PilotButtonData(string buttonText, string fileName = "", string imageSource = "", bool runAsAdmin = false, string arguments = "", string toolTipText = "", string directory = "")
             {
-                ImageSource = imageSource;
                 ButtonText = buttonText;
+                FileName = fileName;
+                ImageSource = imageSource;
+                RunAsAdmin = runAsAdmin;
+                Arguments = arguments;
+                ToolTipText = toolTipText;
+                Directory = directory;
             }
         }
 
@@ -343,8 +353,17 @@ namespace XLPilot.UserControls
                     PilotButtonData itemToRemove = null;
                     foreach (var item in ProjectItems)
                     {
-                        if (item.ImageSource == droppedItem.ImageSource &&
-                            item.ButtonText == droppedItem.ButtonText)
+                        //if (item.ImageSource == droppedItem.ImageSource &&
+                        //    item.ButtonText == droppedItem.ButtonText)
+                        if (
+                            item.ButtonText == droppedItem.ButtonText &&
+                            item.FileName == droppedItem.FileName &&
+                            item.ImageSource == droppedItem.ImageSource &&
+                            item.RunAsAdmin == droppedItem.RunAsAdmin &&
+                            item.Arguments == droppedItem.Arguments &&
+                            item.ToolTipText == droppedItem.ToolTipText &&
+                            item.Directory == droppedItem.Directory
+                            )
                         {
                             itemToRemove = item;
                             break;
@@ -374,8 +393,15 @@ namespace XLPilot.UserControls
                     // From toolbox to project - copy to project (no removal from toolbox)
                     // Create a new instance with the same properties
                     PilotButtonData newItem = new PilotButtonData(
+                        //droppedItem.ImageSource,
+                        //droppedItem.ButtonText
+                        droppedItem.ButtonText,
+                        droppedItem.FileName,
                         droppedItem.ImageSource,
-                        droppedItem.ButtonText
+                        droppedItem.RunAsAdmin,
+                        droppedItem.Arguments,
+                        droppedItem.ToolTipText,
+                        droppedItem.Directory
                     );
 
                     if (insertIndex >= 0 && insertIndex <= ProjectItems.Count)
@@ -394,8 +420,17 @@ namespace XLPilot.UserControls
                     int sourceIndex = -1;
                     for (int i = 0; i < ProjectItems.Count; i++)
                     {
-                        if (ProjectItems[i].ImageSource == droppedItem.ImageSource &&
-                            ProjectItems[i].ButtonText == droppedItem.ButtonText)
+                        //if (ProjectItems[i].ImageSource == droppedItem.ImageSource &&
+                        //    ProjectItems[i].ButtonText == droppedItem.ButtonText)
+                        if (
+                            ProjectItems[i].ButtonText == droppedItem.ButtonText &&
+                            ProjectItems[i].FileName == droppedItem.FileName &&
+                            ProjectItems[i].ImageSource == droppedItem.ImageSource &&
+                            ProjectItems[i].RunAsAdmin == droppedItem.RunAsAdmin &&
+                            ProjectItems[i].Arguments == droppedItem.Arguments &&
+                            ProjectItems[i].ToolTipText == droppedItem.ToolTipText &&
+                            ProjectItems[i].Directory == droppedItem.Directory
+                            )
                         {
                             sourceIndex = i;
                             break;

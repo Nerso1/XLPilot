@@ -87,6 +87,6 @@
     </UserControl.Resources>
     <Grid>
         <!-- Button with Image and Text -->
-        <Button Style="{StaticResource PilotButtonStyle}" />
+        <Button x:Name="InternalButton" Style="{StaticResource PilotButtonStyle}" />
     </Grid>
 </UserControl>

@@ -29,6 +29,7 @@ namespace XLPilot.TabControls
     {
         private ObservableCollection<XLPaths> directories;
 
+
         public XLConfigTab2()
         {
             InitializeComponent();

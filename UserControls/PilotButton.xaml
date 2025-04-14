@@ -3,15 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:userControls="clr-namespace:XLPilot.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="100">
     <UserControl.Resources>
+        <!-- Add the converter as a resource -->
+        <userControls:StringEmptyConverter x:Key="StringEmptyConverter"/>
+
         <Style TargetType="Button" x:Key="PilotButtonStyle">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Padding" Value="10" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Margin" Value="2,2,2,2" />
+            <!-- ToolTip is now set conditionally via trigger -->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -58,13 +63,7 @@
                                 <Setter TargetName="ButtonImage" Property="RenderTransformOrigin" Value="0.5,0.5" />
 
                                 <!-- Text animation -->
-                                <!--<Setter TargetName="ButtonTextBlock" Property="FontSize" Value="14" />-->
                                 <Setter TargetName="ButtonTextBlock" Property="FontWeight" Value="Bold" />
-                                <!--<Setter TargetName="ButtonTextBlock" Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect BlurRadius="2" ShadowDepth="1" Opacity="0.3" />
-                                    </Setter.Value>
-                                </Setter>-->
                             </Trigger>
 
                             <!-- Click effect: Remove effects and return elements to original size -->
@@ -83,6 +82,12 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <!-- Only set the ToolTip when ToolTipText is not empty -->
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ToolTipText, Converter={StaticResource StringEmptyConverter}}" Value="False">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ToolTipText}" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
     <Grid>

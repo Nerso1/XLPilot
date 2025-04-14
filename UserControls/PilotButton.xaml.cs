@@ -130,6 +130,21 @@ namespace XLPilot.UserControls
                 typeof(PilotButton),
                 new PropertyMetadata(null));
 
+        // ToolTipText Dependency Property
+        public string ToolTipText
+        {
+            get => (string)GetValue(ToolTipTextProperty);
+            set => SetValue(ToolTipTextProperty, value);
+        }
+
+        public static readonly DependencyProperty ToolTipTextProperty =
+            DependencyProperty.Register(
+                nameof(ToolTipText),
+                typeof(string),
+                typeof(PilotButton),
+                new PropertyMetadata(string.Empty));
+
+
         // Directory Dependency Property
         public string Directory
         {

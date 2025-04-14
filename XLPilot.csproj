@@ -66,6 +66,7 @@
       <DependentUpon>PilotButtonMovable.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Resources\IsDefaultEmptyEntryConverter.cs" />
+    <Compile Include="UserControls\StringEmptyConverter.cs" />
     <Compile Include="UserControls\WrapPanel_DragAndDrop.xaml.cs">
       <DependentUpon>WrapPanel_DragAndDrop.xaml</DependentUpon>
     </Compile>

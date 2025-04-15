@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace XLPilot.XmlUtilities
@@ -25,11 +26,11 @@ namespace XLPilot.XmlUtilities
                 {
                     serializer.Serialize(writer, obj);
                 }
-                //Console.WriteLine($"Successfully serialized data to {filePath}");
+                //Console.WriteLine($"Serializacja zakończona powodzeniem {filePath}");
             }
             catch (Exception ex)
             {
-                //Console.WriteLine($"Error serializing data: {ex.Message}");
+                MessageBox.Show($"Błąd podczas serializacji: {ex.Message}");
                 throw;
             }
         }
@@ -49,7 +50,7 @@ namespace XLPilot.XmlUtilities
             }
             catch (Exception ex)
             {
-                //Console.WriteLine($"Error deserializing data: {ex.Message}");
+                MessageBox.Show($"Błąd podczas deserializacji: {ex.Message}");
                 throw;
             }
         }

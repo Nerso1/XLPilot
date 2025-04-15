@@ -163,7 +163,7 @@ namespace XLPilot.TabControls
                 if (!string.IsNullOrEmpty(newPath) && Directory.Exists(newPath))
                 {
                     if (XmlValidator.ValidateInput(newPath) && XmlValidator.ValidateInput(newFolderName) && XmlValidator.ValidateInput(newDatabaseName)
-    && XmlValidator.ValidateInput(newLicenseServer) && XmlValidator.ValidateInput(newLicenseKey))
+                        && XmlValidator.ValidateInput(newLicenseServer) && XmlValidator.ValidateInput(newLicenseKey))
                     {
 
                         // Update the selected entry
@@ -278,7 +278,7 @@ namespace XLPilot.TabControls
                     }
                 }
             }
-            catch (Exception ex)
+            catch /*(Exception ex)*/
             {
                 //Console.WriteLine($"Błąd przy wczytywaniu klucza rejestru {baseKey.Name}\\{subKeyPath}: {ex.Message}");
             }

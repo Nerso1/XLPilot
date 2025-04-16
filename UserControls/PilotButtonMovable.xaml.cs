@@ -4,23 +4,30 @@ using System.Windows.Input;
 
 namespace XLPilot.UserControls
 {
+    /// <summary>
+    /// User control for a movable button that can be dragged and dropped
+    /// </summary>
     public partial class PilotButtonMovable : UserControl
     {
         public PilotButtonMovable()
         {
             InitializeComponent();
-            // We need to prevent the PilotButton from handling mouse events that should
-            // be used for drag and drop in the parent ListView
+
+            // This event handler is important for drag-and-drop to work
             this.PreviewMouseLeftButtonDown += PilotButtonMovable_PreviewMouseLeftButtonDown;
         }
 
+        /// <summary>
+        /// When the mouse button is pressed, we need to make sure the event
+        /// bubbles up to the parent ListView for drag operations to work
+        /// </summary>
         private void PilotButtonMovable_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Mark this event as unhandled so it bubbles up to the ListView
-            // This is crucial for drag operations to work
+            // Mark the event as unhandled so it continues to bubble up
             e.Handled = false;
         }
 
+        #region Dependency Properties
         // ButtonText Dependency Property
         public string ButtonText
         {
@@ -118,7 +125,6 @@ namespace XLPilot.UserControls
                 typeof(string),
                 typeof(PilotButtonMovable),
                 new PropertyMetadata(string.Empty));
-
-
+        #endregion
     }
 }

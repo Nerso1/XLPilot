@@ -1,101 +1,102 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XLPilot.Models
 {
     /// <summary>
-    /// XLPaths class as provided
+    /// Represents the path to an XL installation along with its configuration
+    /// Implements INotifyPropertyChanged to support data binding
     /// </summary>
     [Serializable]
+    public class XLPaths : INotifyPropertyChanged
+    {
+        // Private fields to store the property values
+        private string name;
+        private string path;
+        private string database;
+        private string licenseServer;
+        private string licenseKey;
 
-        public class XLPaths : INotifyPropertyChanged
+        // Public properties with property change notification
+        public string Name
         {
-            private string name;
-            private string path;
-            private string database;
-            private string licenseServer;
-            private string licenseKey;
-
-            public string Name
+            get => name;
+            set
             {
-                get => name;
-                set
+                if (name != value)
                 {
-                    if (name != value)
-                    {
-                        name = value;
-                        OnPropertyChanged(nameof(Name));
-                    }
+                    name = value;
+                    // Notify UI that the property has changed
+                    OnPropertyChanged(nameof(Name));
                 }
             }
+        }
 
-            public string Path
+        public string Path
+        {
+            get => path;
+            set
             {
-                get => path;
-                set
+                if (path != value)
                 {
-                    if (path != value)
-                    {
-                        path = value;
-                        OnPropertyChanged(nameof(Path));
-                    }
+                    path = value;
+                    OnPropertyChanged(nameof(Path));
                 }
             }
+        }
 
-            public string Database
+        public string Database
+        {
+            get => database;
+            set
             {
-                get => database;
-                set
+                if (database != value)
                 {
-                    if (database != value)
-                    {
-                        database = value;
-                        OnPropertyChanged(nameof(Database));
-                    }
+                    database = value;
+                    OnPropertyChanged(nameof(Database));
                 }
             }
+        }
 
-            public string LicenseServer
+        public string LicenseServer
+        {
+            get => licenseServer;
+            set
             {
-                get => licenseServer;
-                set
+                if (licenseServer != value)
                 {
-                    if (licenseServer != value)
-                    {
-                        licenseServer = value;
-                        OnPropertyChanged(nameof(LicenseServer));
-                    }
+                    licenseServer = value;
+                    OnPropertyChanged(nameof(LicenseServer));
                 }
             }
+        }
 
-            public string LicenseKey
+        public string LicenseKey
+        {
+            get => licenseKey;
+            set
             {
-                get => licenseKey;
-                set
+                if (licenseKey != value)
                 {
-                    if (licenseKey != value)
-                    {
-                        licenseKey = value;
-                        OnPropertyChanged(nameof(LicenseKey));
-                    }
+                    licenseKey = value;
+                    OnPropertyChanged(nameof(LicenseKey));
                 }
             }
+        }
 
-            public event PropertyChangedEventHandler PropertyChanged;
+        // Event that's raised when a property changes
+        public event PropertyChangedEventHandler PropertyChanged;
 
-            protected void OnPropertyChanged(string propertyName)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
+        // Method to raise the PropertyChanged event
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
+        // Empty constructor needed for XML serialization
+        public XLPaths() { }
 
-            // Parameterless constructor needed for XML serialization
-            public XLPaths() { }
-
+        // Constructor with parameters
         public XLPaths(string name, string path, string database = null, string licenseServer = null, string licenseKey = null)
         {
             Name = name;
@@ -104,11 +105,13 @@ namespace XLPilot.Models
             LicenseServer = licenseServer;
             LicenseKey = licenseKey;
         }
-        // Read-only property to format LicenseServer and LicenseKey
+
+        // Read-only property that formats license information for display
         public string FormattedLicenseInfo
         {
             get
             {
+                // Format the license information based on what's available
                 if (!string.IsNullOrEmpty(LicenseServer) && !string.IsNullOrEmpty(LicenseKey))
                 {
                     return $"{LicenseServer}::{LicenseKey}";
@@ -128,5 +131,4 @@ namespace XLPilot.Models
             }
         }
     }
-
 }

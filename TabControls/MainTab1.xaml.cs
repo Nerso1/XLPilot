@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using XLPilot.UserControls;
 
 namespace XLPilot.TabControls
 {
     /// <summary>
-    /// Interaction logic for MainTab1.xaml
+    /// Main tab control that displays all the buttons
     /// </summary>
     public partial class MainTab1 : UserControl
     {
@@ -26,9 +13,13 @@ namespace XLPilot.TabControls
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Event handler for running executables (not implemented)
+        /// </summary>
         private void RunExecutable(object sender, MouseButtonEventArgs e)
         {
-
+            // This method is not implemented yet
+            // It would handle mouse clicks on buttons
         }
     }
 }

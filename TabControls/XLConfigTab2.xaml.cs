@@ -2,128 +2,308 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 using XLPilot.UserControls;
 using XLPilot.XmlUtilities;
 using XLPilot.Models;
-using System.Globalization;
+using XLPilot.Models.Containers;
+using XLPilot.Services;
 
 namespace XLPilot.TabControls
 {
     /// <summary>
-    /// Interaction logic for XLConfigTab2.xaml
+    /// Tab for configuring XL paths and buttons
     /// </summary>
     public partial class XLConfigTab2 : UserControl
     {
+        // The list of XL directories/paths
         private ObservableCollection<XLPaths> directories;
 
+        // The list of XL buttons
+        private ObservableCollection<PilotButtonData> xlPilotButtons;
 
+        // Reference to the serialization manager
+        private SerializationManager serializationManager => SerializationService.Manager;
+
+        /// <summary>
+        /// Constructor - initializes the tab
+        /// </summary>
         public XLConfigTab2()
         {
             InitializeComponent();
+
+            // Initialize collections
             directories = new ObservableCollection<XLPaths>();
-            LoadDirectories();
-            LoadRegistryEntries(); // Load registry entries into the ComboBox
+            xlPilotButtons = new ObservableCollection<PilotButtonData>();
 
+            // Load configuration from files
+            LoadXLPaths();
+            LoadRegistryEntries();
+            LoadXLPilotButtons();
 
-            XLDragDropControl.ToolboxItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
-            {
-                //droppedItem.ButtonText,
-                //droppedItem.FileName,
-                //droppedItem.ImageSource,
-                //droppedItem.RunAsAdmin,
-                //droppedItem.Arguments,
-                //droppedItem.ToolTip,
-                //droppedItem.Directory
-                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/detault-profile-picture.png", true, "", "Przycisk typu fajny", "aaa"),
-                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/Google chrome icon.png")
-            };
-
-            XLDragDropControl.ProjectItems = new ObservableCollection<WrapPanel_DragAndDrop.PilotButtonData>
-            {
-                new WrapPanel_DragAndDrop.PilotButtonData("XL Item 1", "", "/XLPilot;component/Resources/Images/detault-profile-picture.png"),
-            };
-
+            // Set up drag and drop event handlers
+            SetupDragDropEvents();
         }
 
-        private void LoadDirectories()
+        /// <summary>
+        /// Sets up event handlers for drag and drop operations
+        /// </summary>
+        private void SetupDragDropEvents()
         {
-            string mainDataFile = "config.xml";
+            // This event is raised when items are dropped
+            XLDragDropControl.ItemsDropped += XLDragDropControl_ItemsDropped;
+        }
 
-            // Clear the current directories collection
+        /// <summary>
+        /// Event handler for when items are dropped
+        /// </summary>
+        private void XLDragDropControl_ItemsDropped(object sender, DragEventArgs e)
+        {
+            // Save changes when items are dropped
+            SaveAllChanges();
+        }
+
+        /// <summary>
+        /// Saves all changes in this tab
+        /// </summary>
+        public void SaveAllChanges()
+        {
+            // Reload data from file first
+            ReloadData();
+
+            // Then save our changes
+            SaveXLPilotButtons();
+            UpdateXLPaths();
+        }
+
+        /// <summary>
+        /// Reloads data from the file
+        /// </summary>
+        private void ReloadData()
+        {
+            // Force the SerializationManager to reload data from file
+            serializationManager.ReloadFromFile();
+        }
+
+        /// <summary>
+        /// Loads XL Paths from the configuration
+        /// </summary>
+        private void LoadXLPaths()
+        {
+            // Clear the current collection
             directories.Clear();
 
-            // Add an empty row at the top of the ObservableCollection
+            // Add an empty row at the top
             directories.Add(new XLPaths(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty));
 
             try
             {
-                // Check if the configuration file exists
-                if (File.Exists(mainDataFile))
+                // Get the XL paths from the configuration
+                var xlPathsList = serializationManager.GetData().XLPathsList;
+
+                // Add each path to the collection
+                foreach (var xlPath in xlPathsList)
                 {
-                    // Create a serialization manager to load the data
-                    var manager = new SerializationManager(mainDataFile);
-
-                    // Get the deserialized data
-                    var loadedData = manager.GetData();
-
-                    // Add all the XLPaths from the deserialized data to the directories collection
-                    foreach (var xlPath in loadedData.XLPathsList)
-                    {
-                        directories.Add(xlPath);
-                    }
+                    directories.Add(xlPath);
                 }
             }
             catch (Exception ex)
             {
-                // Handle any errors that might occur during deserialization
-                MessageBox.Show($"Błąd podczas wczytywania ścieżek do XL-i: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                // Show error message if something went wrong
+                MessageBox.Show($"Błąd podczas wczytywania ścieżek do XL-i: {ex.Message}",
+                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            // Bind the ObservableCollection to the ListView
+            // Bind the collection to the ListView
             DirectoriesListView.ItemsSource = directories;
-
-
         }
 
+        /// <summary>
+        /// Loads XL buttons from the configuration
+        /// </summary>
+        private void LoadXLPilotButtons()
+        {
+            try
+            {
+                // Clear the current collection
+                xlPilotButtons.Clear();
+
+                // Collection for the drag and drop control
+                var projectItems = new ObservableCollection<PilotButtonData>();
+
+                // Get the buttons from the configuration
+                var pilotButtons = serializationManager.GetData().XLPilotButtons;
+
+                // Add default button if no buttons exist
+                if (pilotButtons == null)
+                {
+                    // Add default sample button if no data exists at all
+                    projectItems.Add(new PilotButtonData(
+                        "XL Item 1",
+                        "",
+                        "/XLPilot;component/Resources/Images/detault-profile-picture.png"));
+                }
+                else
+                {
+                    // Convert and add each button to the collection
+                    foreach (var button in pilotButtons)
+                    {
+                        projectItems.Add(button);
+                    }
+                }
+
+                // Set up template buttons for the toolbox
+                var toolboxItems = new ObservableCollection<PilotButtonData>
+        {
+            new PilotButtonData(
+                "XL Client",
+                "XLCLIENT.exe",
+                "/XLPilot;component/Resources/Images/detault-profile-picture.png",
+                false,
+                "",
+                "Uruchom klienta XL"),
+
+            new PilotButtonData(
+                "XL Server",
+                "XLSERVR.exe",
+                "/XLPilot;component/Resources/Images/Google chrome icon.png",
+                true,
+                "",
+                "Uruchom serwer jako administrator")
+        };
+
+                // Assign the collections to the control
+                XLDragDropControl.ProjectItems = projectItems;
+                XLDragDropControl.ToolboxItems = toolboxItems;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas wczytywania przycisków XL: {ex.Message}",
+                              "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// Saves XL buttons to the configuration
+        /// </summary>
+        private void SaveXLPilotButtons()
+        {
+            try
+            {
+                // Create a list for the buttons
+                var buttons = new List<PilotButtonData>();
+
+                // Convert each button to PilotButtonData
+                foreach (var item in XLDragDropControl.ProjectItems)
+                {
+                    buttons.Add(new PilotButtonData(
+                        item.ButtonText,
+                        item.FileName,
+                        item.ImageSource,
+                        item.RunAsAdmin,
+                        item.Arguments,
+                        item.ToolTipText,
+                        item.Directory
+                    ));
+                }
+
+                // Update the buttons in the configuration
+                serializationManager.GetData().XLPilotButtons = buttons;
+
+                // Save all data
+                serializationManager.SaveAllData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas zapisywania przycisków XL: {ex.Message}",
+                               "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// Saves XL paths to the configuration
+        /// </summary>
+        private void UpdateXLPaths()
+        {
+            try
+            {
+                // Create a list for the paths
+                var paths = new List<XLPaths>();
+
+                // Add each non-empty path to the list
+                foreach (var dir in directories)
+                {
+                    // Skip the empty row
+                    if (string.IsNullOrEmpty(dir.Name) &&
+                        string.IsNullOrEmpty(dir.Path) &&
+                        string.IsNullOrEmpty(dir.Database) &&
+                        string.IsNullOrEmpty(dir.LicenseServer) &&
+                        string.IsNullOrEmpty(dir.LicenseKey))
+                    {
+                        continue;
+                    }
+
+                    // Add the path to the list
+                    paths.Add(dir);
+                }
+
+                // Update the paths in the configuration
+                serializationManager.GetData().XLPathsList = paths;
+
+                // Save all data
+                serializationManager.SaveAllData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas zapisywania konfiguracji: {ex.Message}",
+                               "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for Add button
+        /// </summary>
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            // Get the path from the text box
             string path = txtXLPath.Text.Trim();
+
+            // Check if the path is valid
             if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
             {
-
+                // Get the name from the text box or use the folder name
                 string folderName = txtXLName.Text.Trim();
                 if (string.IsNullOrEmpty(folderName))
                 {
                     folderName = System.IO.Path.GetFileName(path);
                 }
 
+                // Get the other values
                 string databaseName = cmbXLDatabase.SelectedItem as string ?? string.Empty;
                 string licenseServer = txtXLLicenseServer.Text.Trim();
                 string licenseKey = txtXLLicenseKey.Text.Trim();
 
-                if (XmlValidator.ValidateInput(path) && XmlValidator.ValidateInput(folderName) && XmlValidator.ValidateInput(databaseName) 
-                    && XmlValidator.ValidateInput(licenseServer) && XmlValidator.ValidateInput(licenseKey))
+                // Validate the values
+                if (XmlValidator.ValidateInput(path) &&
+                    XmlValidator.ValidateInput(folderName) &&
+                    XmlValidator.ValidateInput(databaseName) &&
+                    XmlValidator.ValidateInput(licenseServer) &&
+                    XmlValidator.ValidateInput(licenseKey))
                 {
+                    // Create a new XL path
                     var newPath = new XLPaths(folderName, path, databaseName, licenseServer, licenseKey);
 
-                    // Add the new path to the ObservableCollection
+                    // Add it to the collection
                     directories.Add(newPath);
 
-                    // Provide feedback to the user
-                    MessageBox.Show("Ścieżka dodana prawidłowo.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Save changes
+                    UpdateXLPaths();
+
+                    // Show success message
+                    MessageBox.Show("Ścieżka dodana prawidłowo.", "Sukces",
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Clear the input fields
                     txtXLPath.Clear();
@@ -131,21 +311,24 @@ namespace XLPilot.TabControls
                     cmbXLDatabase.SelectedIndex = -1;
                     txtXLLicenseServer.Clear();
                     txtXLLicenseKey.Clear();
-
-                    SaveDirectories();
                 }
-
             }
             else
             {
-                MessageBox.Show("Niewłaściwa ścieżka. Proszę, upewnij się że ścieżka jest prawidłowa.", "Niewłaściwa ścieżka", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Niewłaściwa ścieżka. Proszę, upewnij się że ścieżka jest prawidłowa.",
+                                "Niewłaściwa ścieżka", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
+        /// <summary>
+        /// Event handler for Edit button
+        /// </summary>
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
+            // Check if an item is selected
             if (DirectoriesListView.SelectedItem != null)
             {
+                // Get the selected item
                 var selectedEntry = (XLPaths)DirectoriesListView.SelectedItem;
 
                 // Skip the empty row
@@ -154,18 +337,23 @@ namespace XLPilot.TabControls
                     return;
                 }
 
+                // Get the values from the UI
                 string newFolderName = txtXLName.Text.Trim();
                 string newPath = txtXLPath.Text.Trim();
                 string newDatabaseName = cmbXLDatabase.SelectedItem as string;
                 string newLicenseServer = txtXLLicenseServer.Text.Trim();
                 string newLicenseKey = txtXLLicenseKey.Text.Trim();
 
+                // Check if the path is valid
                 if (!string.IsNullOrEmpty(newPath) && Directory.Exists(newPath))
                 {
-                    if (XmlValidator.ValidateInput(newPath) && XmlValidator.ValidateInput(newFolderName) && XmlValidator.ValidateInput(newDatabaseName)
-    && XmlValidator.ValidateInput(newLicenseServer) && XmlValidator.ValidateInput(newLicenseKey))
+                    // Validate the values
+                    if (XmlValidator.ValidateInput(newPath) &&
+                        XmlValidator.ValidateInput(newFolderName) &&
+                        XmlValidator.ValidateInput(newDatabaseName) &&
+                        XmlValidator.ValidateInput(newLicenseServer) &&
+                        XmlValidator.ValidateInput(newLicenseKey))
                     {
-
                         // Update the selected entry
                         selectedEntry.Name = newFolderName;
                         selectedEntry.Path = newPath;
@@ -173,60 +361,74 @@ namespace XLPilot.TabControls
                         selectedEntry.LicenseServer = newLicenseServer;
                         selectedEntry.LicenseKey = newLicenseKey;
 
-                        MessageBox.Show("Wybrana ścieżka została prawidłowo zaktualizowana.", "Edycja zakończona powdzeniem", MessageBoxButton.OK, MessageBoxImage.Information);
+                        // Save changes
+                        UpdateXLPaths();
 
-                        // Clear the input fields
-                        //txtXLName.Clear();
-                        //txtXLPath.Clear();
-                        //cmbXLDatabase.SelectedIndex = -1;
-                        //txtXLLicenseServer.Clear();
-                        //txtXLLicenseKey.Clear();
+                        // Show success message
+                        MessageBox.Show("Wybrana ścieżka została prawidłowo zaktualizowana.",
+                                       "Edycja zakończona powdzeniem",
+                                       MessageBoxButton.OK, MessageBoxImage.Information);
                     }
-
                 }
                 else
                 {
-                    MessageBox.Show("Niewłaściwa ścieżka: jest pusta, lub nie istnieje. Proszę podać prawidłową ścieżkę.", "Niewłaściwa ścieżka", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Niewłaściwa ścieżka: jest pusta, lub nie istnieje. Proszę podać prawidłową ścieżkę.",
+                                   "Niewłaściwa ścieżka", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             else
             {
-                MessageBox.Show("Nie wybrano ścieżki do edycji. Zaznacz śceiżkę którą chcesz edytować.", "Nie wybrano ścieżki", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Nie wybrano ścieżki do edycji. Zaznacz śceiżkę którą chcesz edytować.",
+                               "Nie wybrano ścieżki", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
+        /// <summary>
+        /// Event handler for Delete button
+        /// </summary>
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
+            // Check if an item is selected
             if (DirectoriesListView.SelectedItem != null)
             {
+                // Get the selected item
                 var selectedEntry = (XLPaths)DirectoriesListView.SelectedItem;
 
-                if (directories.Contains(selectedEntry))
+                // Skip the empty row
+                if (string.IsNullOrEmpty(selectedEntry.Name) && string.IsNullOrEmpty(selectedEntry.Path))
                 {
-                    directories.Remove(selectedEntry);
+                    return;
+                }
 
-                    MessageBox.Show("Zaznaczona ścieżką została usunięta prawidłowo.", "Usuwanie zakończone powodzeniem", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Zaznaczona ścieżka nie mogłą być znaleziona na liście.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                // Remove the selected item
+                directories.Remove(selectedEntry);
+
+                // Save changes
+                UpdateXLPaths();
+
+                // Show success message
+                MessageBox.Show("Zaznaczona ścieżką została usunięta prawidłowo.",
+                               "Usuwanie zakończone powodzeniem",
+                               MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("Brak zaznaczonej ścieżki do usunięcia. Zaznacz śceiżkę którą chcesz usunąć.", "Nie wybrano ścieżki", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Brak zaznaczonej ścieżki do usunięcia. Zaznacz śceiżkę którą chcesz usunąć.",
+                               "Nie wybrano ścieżki", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-
         #region Load registry entries to combo box cmbXLDatabase
+        /// <summary>
+        /// Loads database entries from the registry to the combobox
+        /// </summary>
         private void LoadRegistryEntries()
         {
-            // Define the registry paths
+            // Registry paths where database entries might be found
             string userRegistryPath = @"SOFTWARE\CDN\CDNXL\MSSQL\Bazy";
             string machineRegistryPath = @"SOFTWARE\WOW6432Node\CDN\CDNXL\MSSQL\Bazy";
 
-            // Create a dictionary to store the entries
+            // Dictionary to store the registry entries
             Dictionary<string, string> registryEntries = new Dictionary<string, string>();
 
             // Read from HKEY_CURRENT_USER
@@ -235,13 +437,25 @@ namespace XLPilot.TabControls
             // Read from HKEY_LOCAL_MACHINE
             ReadRegistryEntries(Registry.LocalMachine, machineRegistryPath, registryEntries);
 
-            // Add an empty value at the top of the ComboBox
-            var comboBoxItems = new List<string> { string.Empty }; // Add empty value
-            comboBoxItems.AddRange(registryEntries.Keys); // Add registry keys
+            // List for the ComboBox items
+            var comboBoxItems = new List<string>();
 
-            // Populate the ComboBox
+            // Add an empty value at the top
+            comboBoxItems.Add(string.Empty);
+
+            // Add the registry keys
+            foreach (string key in registryEntries.Keys)
+            {
+                comboBoxItems.Add(key);
+            }
+
+            // Set the ComboBox items
             cmbXLDatabase.ItemsSource = comboBoxItems;
         }
+
+        /// <summary>
+        /// Reads registry entries from a specific key
+        /// </summary>
         private void ReadRegistryEntries(RegistryKey baseKey, string subKeyPath, Dictionary<string, string> entries)
         {
             try
@@ -249,40 +463,45 @@ namespace XLPilot.TabControls
                 // Open the registry key
                 using (RegistryKey subKey = baseKey.OpenSubKey(subKeyPath))
                 {
+                    // Check if the key exists
                     if (subKey != null)
                     {
-                        // Get all value names (entries) under the key
+                        // Get all the value names
                         string[] valueNames = subKey.GetValueNames();
 
                         // Process each value
                         foreach (string valueName in valueNames)
                         {
+                            // Skip empty names
                             if (!string.IsNullOrEmpty(valueName))
                             {
                                 // Get the value data
                                 object valueData = subKey.GetValue(valueName);
+
+                                // If data exists, add it to the dictionary
                                 if (valueData != null)
                                 {
-                                    // Format the value data
+                                    // Format the value data for display
                                     string formattedValueData = FormatValueData(valueData.ToString());
 
-                                    // Add the entry to the dictionary
+                                    // Add to the dictionary
                                     entries[valueName] = formattedValueData;
                                 }
                             }
                         }
                     }
-                    else
-                    {
-                        //Console.WriteLine($"Nie znaleziono klucza rejestru: {baseKey.Name}\\{subKeyPath}");
-                    }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                //Console.WriteLine($"Błąd przy wczytywaniu klucza rejestru {baseKey.Name}\\{subKeyPath}: {ex.Message}");
+                // Ignore registry access errors
+                // This can happen if the registry key doesn't exist or we don't have permission
             }
         }
+
+        /// <summary>
+        /// Formats the registry value data for display
+        /// </summary>
         private string FormatValueData(string valueData)
         {
             // Replace "NET:" with "baza: "
@@ -292,7 +511,9 @@ namespace XLPilot.TabControls
             int firstCommaIndex = valueData.IndexOf(',');
             if (firstCommaIndex != -1)
             {
-                valueData = valueData.Substring(0, firstCommaIndex) + ", serwer: " + valueData.Substring(firstCommaIndex + 1);
+                string firstPart = valueData.Substring(0, firstCommaIndex);
+                string secondPart = valueData.Substring(firstCommaIndex + 1);
+                valueData = firstPart + ", serwer: " + secondPart;
             }
 
             // Remove everything after the second comma
@@ -306,12 +527,15 @@ namespace XLPilot.TabControls
         }
         #endregion
 
-        // Pre-fill the text boxes when a directory is selected
+        /// <summary>
+        /// Event handler for ListView selection changed
+        /// </summary>
         private void DirectoriesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            // Check if an item is selected
             if (DirectoriesListView.SelectedItem != null)
             {
+                // Get the selected item
                 var selectedEntry = (XLPaths)DirectoriesListView.SelectedItem;
 
                 // If the empty row is selected, clear the fields
@@ -325,39 +549,25 @@ namespace XLPilot.TabControls
                 }
                 else
                 {
-                    // Populate the fields with the selected entry's data
+                    // Fill the fields with the selected entry's data
                     txtXLName.Text = selectedEntry.Name;
                     txtXLPath.Text = selectedEntry.Path;
-                    cmbXLDatabase.SelectedItem = selectedEntry.Database ?? string.Empty; // Set to empty if null
+
+                    // Find the database in the combobox
+                    if (string.IsNullOrEmpty(selectedEntry.Database))
+                    {
+                        cmbXLDatabase.SelectedIndex = -1;
+                    }
+                    else
+                    {
+                        cmbXLDatabase.SelectedItem = selectedEntry.Database;
+                    }
+
+                    // Set the license server and key
                     txtXLLicenseServer.Text = selectedEntry.LicenseServer ?? string.Empty;
                     txtXLLicenseKey.Text = selectedEntry.LicenseKey ?? string.Empty;
                 }
             }
-
         }
-        private void SaveDirectories()
-        {
-            string mainDataFile = "config.xml";
-
-            // Create a serialization manager
-            var manager = new SerializationManager(mainDataFile);
-
-            // Get a filtered copy of directories without the empty row
-            var filteredDirectories = directories
-                .Where(d => !(string.IsNullOrEmpty(d.Name) &&
-                             string.IsNullOrEmpty(d.Path) &&
-                             string.IsNullOrEmpty(d.Database) &&
-                             string.IsNullOrEmpty(d.LicenseServer) &&
-                             string.IsNullOrEmpty(d.LicenseKey)))
-                .ToList();
-
-            // Update the manager's data with the filtered directories
-            manager.GetData().XLPathsList = filteredDirectories;
-
-            // Save all data
-            manager.SaveAllData();
-        }
-
     }
-
 }

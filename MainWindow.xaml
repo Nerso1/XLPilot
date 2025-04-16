@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="XL Pilot" Height="800" Width="620">
     <Grid>
-        <TabControl>
+        <TabControl x:Name="mainTabControl">
             <TabItem Header="XL-e">
                 <tabs:MainTab1 />
             </TabItem>
@@ -21,4 +21,5 @@
             </TabItem>
         </TabControl>
     </Grid>
+
 </Window>

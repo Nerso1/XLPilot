@@ -7,24 +7,31 @@ using System.Windows.Media;
 
 namespace XLPilot.UserControls
 {
+    /// <summary>
+    /// User control for a clickable button that can launch an application
+    /// </summary>
     public partial class PilotButton : UserControl
     {
+        // The internal button control
         private Button internalButton;
 
         public PilotButton()
         {
             InitializeComponent();
 
-            // Find the internal Button control after initialization
+            // Wait until the control is loaded before finding the button
             this.Loaded += (s, e) =>
             {
+                // Try to find the button by name
                 internalButton = this.FindName("InternalButton") as Button;
+
+                // If not found by name, try to find it in the visual tree
                 if (internalButton == null)
                 {
-                    // If you don't have a named button, try to find it in the template
-                    internalButton = FindChild<Button>(this);
+                    internalButton = FindChildControl<Button>(this);
                 }
 
+                // Set up the click event handler
                 if (internalButton != null)
                 {
                     internalButton.Click += InternalButton_Click;
@@ -32,34 +39,47 @@ namespace XLPilot.UserControls
             };
         }
 
+        // This is called when the button is clicked
         private void InternalButton_Click(object sender, RoutedEventArgs e)
         {
+            // Show a message (for debugging)
             MessageBox.Show("Clicked");
+
+            // Run the specified executable
             RunExecutable(Directory, FileName, RunAsAdmin, Arguments);
         }
 
         // Helper method to find a child control of a specific type
-        private static T FindChild<T>(DependencyObject parent) where T : DependencyObject
+        private static T FindChildControl<T>(DependencyObject parent) where T : DependencyObject
         {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            // Get the number of child elements
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+
+            // Check each child
+            for (int i = 0; i < childCount; i++)
             {
+                // Get the current child
                 var child = VisualTreeHelper.GetChild(parent, i);
 
+                // If this child is the type we're looking for, return it
                 if (child is T result)
                 {
                     return result;
                 }
 
-                var foundChild = FindChild<T>(child);
+                // Otherwise, search this child's children
+                var foundChild = FindChildControl<T>(child);
                 if (foundChild != null)
                 {
                     return foundChild;
                 }
             }
 
+            // If we get here, we didn't find anything
             return null;
         }
 
+        #region Dependency Properties
         // ButtonText Dependency Property
         public string ButtonText
         {
@@ -144,7 +164,6 @@ namespace XLPilot.UserControls
                 typeof(PilotButton),
                 new PropertyMetadata(string.Empty));
 
-
         // Directory Dependency Property
         public string Directory
         {
@@ -158,37 +177,53 @@ namespace XLPilot.UserControls
                 typeof(string),
                 typeof(PilotButton),
                 new PropertyMetadata(string.Empty));
+        #endregion
 
-        // Method to run the executable when clicked
+        /// <summary>
+        /// Runs the specified executable with optional arguments
+        /// </summary>
+        /// <param name="directory">The directory containing the executable</param>
+        /// <param name="fileName">The name of the executable file</param>
+        /// <param name="runAsAdmin">Whether to run as administrator</param>
+        /// <param name="arguments">Command line arguments to pass to the executable</param>
         private void RunExecutable(string directory, string fileName, bool runAsAdmin, string arguments = null)
         {
+            // Build the full path to the executable
             string filePath = Path.Combine(directory, fileName);
+
+            // Check if the file exists
             if (File.Exists(filePath))
             {
                 try
                 {
+                    // Set up the process information
                     ProcessStartInfo processInfo = new ProcessStartInfo
                     {
                         FileName = filePath,
                         WorkingDirectory = directory,
                         UseShellExecute = true,
-                        Arguments = arguments // Pass the arguments here
+                        Arguments = arguments
                     };
-                    // Only set the "runas" verb if runAsAdmin is true
+
+                    // Set the "runas" verb if we need to run as administrator
                     if (runAsAdmin)
                     {
-                        processInfo.Verb = "runas"; // Run as admin
+                        processInfo.Verb = "runas";
                     }
+
+                    // Start the process
                     Process.Start(processInfo);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Nie udało się uruchomić {fileName}: {ex.Message}");
+                    // Show an error message if the process couldn't be started
+                    MessageBox.Show($"Failed to run {fileName}: {ex.Message}");
                 }
             }
             else
             {
-                MessageBox.Show($"Nie odnaleziono pliku w ścieżce {fileName}: {directory}");
+                // Show an error message if the file doesn't exist
+                MessageBox.Show($"File not found at {fileName}: {directory}");
             }
         }
     }

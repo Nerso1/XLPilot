@@ -1,51 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 
 namespace XLPilot.XmlUtilities
 {
+    /// <summary>
+    /// Helper class to validate strings before saving them to XML
+    /// </summary>
     public static class XmlValidator
     {
-        private static readonly char[] ForbiddenCharacters = new char[] { '<', '>', '&', '\'', '\"', '\u00A0' }; // Includes non-breaking space (&nbsp;)
+        // These characters are not allowed in XML
+        private static readonly char[] ForbiddenCharacters = new char[] {
+            '<', '>', '&', '\'', '\"', '\u00A0' // \u00A0 is a non-breaking space
+        };
 
         /// <summary>
-        /// Validates the input for forbidden XML characters.
+        /// Checks if a string contains any characters that are not allowed in XML
         /// </summary>
-        /// <param name="input">User-provided text to validate.</param>
-        /// <returns>True if the input is valid, otherwise false.</returns>
+        /// <param name="input">The string to check</param>
+        /// <returns>True if the string is valid (has no forbidden characters)</returns>
         public static bool ValidateInput(string input)
         {
-            var invalidCharacters = input.Where(c => ForbiddenCharacters.Contains(c)).Distinct().ToArray();
+            // If input is null or empty, it's valid
+            if (string.IsNullOrEmpty(input))
+                return true;
 
-            if (invalidCharacters.Any())
+            // Find any forbidden characters in the input
+            char[] badCharsFound = input.Where(c => ForbiddenCharacters.Contains(c))
+                                        .Distinct() // Remove duplicates
+                                        .ToArray();
+
+            // If we found any forbidden characters
+            if (badCharsFound.Length > 0)
             {
-                string message = "W treści: '" + input + "' wykryto znaki niedozwolone w plikach XML: \n" +
-                                 string.Join(", ", invalidCharacters.Select(c => c == '\u00A0' ? "Spacja niełamiąca (\\u00A0)" : c.ToString())) +
-                                 "\nProszę o usunięcie danych znaków.";
-                MessageBox.Show(message, "Niedozwolony znak", MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Build a message listing the forbidden characters
+                string charList = string.Join(", ", badCharsFound.Select(c => {
+                    if (c == '\u00A0')
+                        return "Spacja niełamiąca";
+                    else
+                        return c.ToString();
+                }));
+
+                // Show a warning message
+                string message = $"Treść '{input}' zawiera znaki niedozwolone w XML: \n" +
+                                 $"{charList}\n" +
+                                 "Proszę, usuń te znaki.";
+
+                MessageBox.Show(message, "Niedozwolone znaki", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
+            // No forbidden characters found - the input is valid
             return true;
         }
-    //Example usage:
-    //if (XmlValidator.ValidateInput(userInput))
-    //{
-    //    // Proceed with serialization
-    //    MessageBox.Show("Input is valid. Proceeding with serialization.", "Validation Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-    //    // Your XML serialization logic goes here
-    //}
-    //else
-    //{
-    //    // Validation failed; no further action needed
-    //}
-
     }
-
 }
-

@@ -489,91 +489,91 @@ namespace XLPilot.XmlUtilities
         }
         #endregion
 
-        #region Flags Operations
-        /// <summary>
-        /// Saves flags to a separate XML file
-        /// </summary>
-        public void SaveFlags(string filePath)
-        {
-            var container = new FlagsContainer { Items = _data.Flags };
-            XmlSerializer<FlagsContainer>.Serialize(container, filePath);
-        }
+        //#region Flags Operations
+        ///// <summary>
+        ///// Saves flags to a separate XML file
+        ///// </summary>
+        //public void SaveFlags(string filePath)
+        //{
+        //    var container = new FlagsContainer { Items = _data.Flags };
+        //    XmlSerializer<FlagsContainer>.Serialize(container, filePath);
+        //}
 
-        /// <summary>
-        /// Loads flags from a separate XML file
-        /// </summary>
-        public void LoadFlags(string filePath)
-        {
-            // Load the container from the file
-            var container = XmlSerializer<FlagsContainer>.Deserialize(filePath);
+        ///// <summary>
+        ///// Loads flags from a separate XML file
+        ///// </summary>
+        //public void LoadFlags(string filePath)
+        //{
+        //    // Load the container from the file
+        //    var container = XmlSerializer<FlagsContainer>.Deserialize(filePath);
 
-            // Update our flags
-            _data.Flags = container.Items;
+        //    // Update our flags
+        //    _data.Flags = container.Items;
 
-            // Make sure we always have exactly 3 flags
-            while (_data.Flags.Count < 3)
-                _data.Flags.Add(false);
+        //    // Make sure we always have exactly 3 flags
+        //    while (_data.Flags.Count < 3)
+        //        _data.Flags.Add(false);
 
-            if (_data.Flags.Count > 3)
-                _data.Flags = _data.Flags.Take(3).ToList();
-        }
-        #endregion
+        //    if (_data.Flags.Count > 3)
+        //        _data.Flags = _data.Flags.Take(3).ToList();
+        //}
+        //#endregion
 
-        #region Dimensions Operations
-        /// <summary>
-        /// Saves window dimensions to a separate XML file
-        /// </summary>
-        public void SaveDimensions(string filePath)
-        {
-            var container = new DimensionsContainer { Items = _data.Dimensions };
-            XmlSerializer<DimensionsContainer>.Serialize(container, filePath);
-        }
+        //#region Dimensions Operations
+        ///// <summary>
+        ///// Saves window dimensions to a separate XML file
+        ///// </summary>
+        //public void SaveDimensions(string filePath)
+        //{
+        //    var container = new DimensionsContainer { Items = _data.Dimensions };
+        //    XmlSerializer<DimensionsContainer>.Serialize(container, filePath);
+        //}
 
-        /// <summary>
-        /// Loads window dimensions from a separate XML file
-        /// </summary>
-        public void LoadDimensions(string filePath)
-        {
-            // Load the container from the file
-            var container = XmlSerializer<DimensionsContainer>.Deserialize(filePath);
+        ///// <summary>
+        ///// Loads window dimensions from a separate XML file
+        ///// </summary>
+        //public void LoadDimensions(string filePath)
+        //{
+        //    // Load the container from the file
+        //    var container = XmlSerializer<DimensionsContainer>.Deserialize(filePath);
 
-            // Update our dimensions
-            _data.Dimensions = container.Items;
+        //    // Update our dimensions
+        //    _data.Dimensions = container.Items;
 
-            // Make sure we always have exactly 2 dimensions (width, height)
-            while (_data.Dimensions.Count < 2)
-                _data.Dimensions.Add(0);
+        //    // Make sure we always have exactly 2 dimensions (width, height)
+        //    while (_data.Dimensions.Count < 2)
+        //        _data.Dimensions.Add(0);
 
-            if (_data.Dimensions.Count > 2)
-                _data.Dimensions = _data.Dimensions.Take(2).ToList();
-        }
+        //    if (_data.Dimensions.Count > 2)
+        //        _data.Dimensions = _data.Dimensions.Take(2).ToList();
+        //}
 
-        /// <summary>
-        /// Sets the window dimensions
-        /// </summary>
-        public void SetDimensions(int width, int height)
-        {
-            // Make sure we have space for the dimensions
-            while (_data.Dimensions.Count < 2)
-                _data.Dimensions.Add(0);
+        ///// <summary>
+        ///// Sets the window dimensions
+        ///// </summary>
+        //public void SetDimensions(int width, int height)
+        //{
+        //    // Make sure we have space for the dimensions
+        //    while (_data.Dimensions.Count < 2)
+        //        _data.Dimensions.Add(0);
 
-            // Set the dimensions
-            _data.Dimensions[0] = width;
-            _data.Dimensions[1] = height;
-        }
+        //    // Set the dimensions
+        //    _data.Dimensions[0] = width;
+        //    _data.Dimensions[1] = height;
+        //}
 
-        /// <summary>
-        /// Gets the window dimensions
-        /// </summary>
-        public (int width, int height) GetDimensions()
-        {
-            // Make sure we have space for the dimensions
-            while (_data.Dimensions.Count < 2)
-                _data.Dimensions.Add(0);
+        ///// <summary>
+        ///// Gets the window dimensions
+        ///// </summary>
+        //public (int width, int height) GetDimensions()
+        //{
+        //    // Make sure we have space for the dimensions
+        //    while (_data.Dimensions.Count < 2)
+        //        _data.Dimensions.Add(0);
 
-            // Return the dimensions
-            return (_data.Dimensions[0], _data.Dimensions[1]);
-        }
-        #endregion
+        //    // Return the dimensions
+        //    return (_data.Dimensions[0], _data.Dimensions[1]);
+        //}
+        //#endregion
     }
 }

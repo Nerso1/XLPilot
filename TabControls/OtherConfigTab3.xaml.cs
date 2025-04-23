@@ -31,22 +31,22 @@ namespace XLPilot.TabControls
 
             // Set up event handlers
             SetupDragDropEvents();
-            SetupButtonHandlers();
+            //SetupButtonHandlers();
         }
 
         /// <summary>
         /// Sets up event handlers for buttons
         /// </summary>
-        private void SetupButtonHandlers()
-        {
-            // Set up export button
-            if (BtnExportSelected != null)
-                BtnExportSelected.Click += BtnExportSelected_Click;
+        //private void SetupButtonHandlers()
+        //{
+        //    // Set up export button
+        //    if (BtnExportSelected != null)
+        //        BtnExportSelected.Click += BtnExportSelected_Click;
 
-            // Set up import button
-            if (BtnImport != null)
-                BtnImport.Click += BtnImport_Click;
-        }
+        //    // Set up import button
+        //    if (BtnImport != null)
+        //        BtnImport.Click += BtnImport_Click;
+        //}
 
         /// <summary>
         /// Sets up event handlers for drag and drop operations

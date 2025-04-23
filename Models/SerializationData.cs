@@ -32,12 +32,12 @@ namespace XLPilot.Models
         /// [1] - Whether to remember window size
         /// [2] - Reserved for future use
         /// </summary>
-        public List<bool> Flags { get; set; } = new List<bool>() { false, false, false };
+        //public List<bool> Flags { get; set; } = new List<bool>() { false, false, false };
 
         /// <summary>
         /// Window dimensions - [0] = Width, [1] = Height
         /// </summary>
-        public List<int> Dimensions { get; set; } = new List<int>() { 0, 0 };
+        //public List<int> Dimensions { get; set; } = new List<int>() { 0, 0 };
 
         /// <summary>
         /// Empty constructor needed for XML serialization

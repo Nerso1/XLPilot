@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SerializationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <XLPathsList />
+  <XLIconButtons>
+    <PilotButtonData>
+      <ButtonText>XL Item 1</ButtonText>
+      <FileName />
+      <ImageSource>/XLPilot;component/Resources/Images/detault-profile-picture.png</ImageSource>
+      <RunAsAdmin>false</RunAsAdmin>
+      <Arguments />
+      <ToolTipText />
+      <Directory />
+    </PilotButtonData>
+  </XLIconButtons>
+  <OtherIconButtons />
+  <Flags>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+  </Flags>
+  <Dimensions>
+    <int>0</int>
+    <int>0</int>
+  </Dimensions>
+</SerializationData>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SerializationData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <XLPathsList>
+    <XLPaths>
+      <Name>Test</Name>
+      <Path>C:\Test</Path>
+      <Database>TestDB</Database>
+      <LicenseServer>Server</LicenseServer>
+      <LicenseKey>Key</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Test</Name>
+      <Path>C:\Test</Path>
+      <Database>TestDB</Database>
+      <LicenseServer>Server</LicenseServer>
+      <LicenseKey>Key</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Test</Name>
+      <Path>C:\Test</Path>
+      <Database>TestDB</Database>
+      <LicenseServer>Server</LicenseServer>
+      <LicenseKey>Key</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Test</Name>
+      <Path>C:\Test</Path>
+      <Database>TestDB</Database>
+      <LicenseServer>Server</LicenseServer>
+      <LicenseKey>Key</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Test</Name>
+      <Path>C:\Test</Path>
+      <Database>TestDB</Database>
+      <LicenseServer>Server</LicenseServer>
+      <LicenseKey>Key</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Test</Name>
+      <Path>C:\Test</Path>
+      <Database>TestDB</Database>
+      <LicenseServer>Server</LicenseServer>
+      <LicenseKey>Key</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Test</Name>
+      <Path>C:\Test</Path>
+      <Database>TestDB</Database>
+      <LicenseServer>Server</LicenseServer>
+      <LicenseKey>Key</LicenseKey>
+    </XLPaths>
+  </XLPathsList>
+  <XLPilotButtons />
+  <OtherPilotButtons />
+</SerializationData>

@@ -25,6 +25,27 @@
 
             <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <Grid>
+                    <!-- Empty state message moved BEHIND the ListView -->
+                    <TextBlock x:Name="emptyStateMessage" 
+                               Text="Przeciągnij wybrane ikony do tego obszaru" 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" 
+                               IsHitTestVisible="False"
+                               Foreground="Gray"
+                               FontSize="16"
+                               FontStyle="Italic">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProjectItems.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
                     <ListView x:Name="projectListView" 
                               MinHeight="120" 
                               ItemsSource="{Binding ProjectItems}"
@@ -64,25 +85,6 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
-                    <!-- Empty state message -->
-                    <TextBlock Text="Przeciągnij wybrane ikony do tego obszaru" 
-                               HorizontalAlignment="Center" 
-                               VerticalAlignment="Center" 
-                               Foreground="Gray"
-                               FontSize="16"
-                               FontStyle="Italic">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ProjectItems.Count}" Value="0">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
                 </Grid>
             </Border>
 
@@ -90,44 +92,56 @@
             <TextBlock Grid.Row="2" Text="Ikony do wyboru" Margin="5" FontSize="16"/>
 
             <Border Grid.Row="3" BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <ListView x:Name="toolboxListView" 
-                          ItemsSource="{Binding ToolboxItems}"
-                          PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                          MouseMove="ListView_MouseMove"
-                          DragEnter="ListView_DragEnter"
-                          DragOver="ListView_DragOver"
-                          Drop="ListView_Drop"
-                          DragLeave="ListView_DragLeave"
-                          AllowDrop="True"
-                          Background="Transparent"
-                          BorderThickness="0"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            <Setter Property="VerticalContentAlignment" Value="Center"/>
-                            <Setter Property="Margin" Value="2"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel ItemWidth="100" HorizontalAlignment="Center" />
-                            <!-- Center the WrapPanel -->
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <local:PilotButtonMovable Width="100" Height="100" 
-                                                     ImageSource="{Binding ImageSource}" 
-                                                     ButtonText="{Binding ButtonText}"
-                                                     ToolTipText="{Binding ToolTipText}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <Grid>
+                    <!-- Trash indicator shown during drag operations -->
+                    <Grid x:Name="trashIndicator" Visibility="Collapsed" IsHitTestVisible="False" Panel.ZIndex="100">
+                        <Rectangle Fill="LightGray" Opacity="0.7"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="🗑️" FontSize="48" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Upuść tutaj aby usunąć" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Grid>
+
+
+                    <ListView x:Name="toolboxListView" 
+                              ItemsSource="{Binding ToolboxItems}"
+                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                              MouseMove="ListView_MouseMove"
+                              DragEnter="ListView_DragEnter"
+                              DragOver="ListView_DragOver"
+                              Drop="ListView_Drop"
+                              DragLeave="ListView_DragLeave"
+                              AllowDrop="True"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemWidth="100" HorizontalAlignment="Center" />
+                                <!-- Center the WrapPanel -->
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <local:PilotButtonMovable Width="100" Height="100" 
+                                                         ImageSource="{Binding ImageSource}" 
+                                                         ButtonText="{Binding ButtonText}"
+                                                         ToolTipText="{Binding ToolTipText}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </Border>
         </Grid>
     </ScrollViewer>

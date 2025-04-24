@@ -129,6 +129,12 @@ namespace XLPilot.UserControls
                         draggedItem = item;
                         isDragging = true;
 
+                        // Show the trash indicator if dragging from project panel
+                        if (listView == projectListView)
+                        {
+                            trashIndicator.Visibility = Visibility.Visible;
+                        }
+
                         // Handle the event to prevent other handlers from processing it
                         e.Handled = true;
 
@@ -140,6 +146,9 @@ namespace XLPilot.UserControls
 
                         // Start the drag and drop operation
                         DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Copy | DragDropEffects.Move);
+
+                        // Hide the trash indicator when drag operation completes
+                        trashIndicator.Visibility = Visibility.Collapsed;
                     }
                 }
             }
@@ -387,6 +396,9 @@ namespace XLPilot.UserControls
             isDragging = false;
             draggedItem = null;
             sourceListView = null;
+
+            // Hide the trash indicator when drag operation completes
+            trashIndicator.Visibility = Visibility.Collapsed;
 
             // Notify the parent of the drop event if changes were made
             if (hasChanges)

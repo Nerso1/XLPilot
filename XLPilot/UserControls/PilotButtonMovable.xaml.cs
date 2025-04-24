@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -9,12 +10,72 @@ namespace XLPilot.UserControls
     /// </summary>
     public partial class PilotButtonMovable : UserControl
     {
+        // Flag to track if we've already fixed the control
+        private bool isFixed = false;
+
         public PilotButtonMovable()
         {
             InitializeComponent();
 
             // This event handler is important for drag-and-drop to work
             this.PreviewMouseLeftButtonDown += PilotButtonMovable_PreviewMouseLeftButtonDown;
+
+            // Add a Loaded event handler to set up the shield visibility
+            this.Loaded += PilotButtonMovable_Loaded;
+
+            // Add handlers for visibility changes to handle tab switching
+            this.IsVisibleChanged += PilotButtonMovable_IsVisibleChanged;
+        }
+
+        /// <summary>
+        /// When the control visibility changes (e.g., when switching tabs)
+        /// </summary>
+        private void PilotButtonMovable_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            // When the control becomes visible again, update the admin shield
+            if ((bool)e.NewValue == true)
+            {
+                UpdateAdminShieldVisibility();
+            }
+        }
+
+        /// <summary>
+        /// When the control is loaded, update the admin shield visibility
+        /// </summary>
+        private void PilotButtonMovable_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Initial visibility update
+                UpdateAdminShieldVisibility();
+
+                // As a failsafe, try again after a short delay to ensure everything is loaded
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(
+                    new Action(() =>
+                    {
+                        // Try one more time after a delay
+                        UpdateAdminShieldVisibility();
+
+                        // Fallback if direct property doesn't work
+                        if (!isFixed && this.DataContext is XLPilot.Models.PilotButtonData buttonData)
+                        {
+                            // Get RunAsAdmin directly from the data context
+                            bool isAdmin = buttonData.RunAsAdmin;
+
+                            // Set visibility based on the value from the data context
+                            if (AdminShieldImage != null)
+                            {
+                                AdminShieldImage.Visibility = isAdmin ? Visibility.Visible : Visibility.Collapsed;
+                                isFixed = true;
+                            }
+                        }
+                    }),
+                    System.Windows.Threading.DispatcherPriority.Loaded);
+            }
+            catch (Exception)
+            {
+                // Silently handle any errors
+            }
         }
 
         /// <summary>
@@ -25,6 +86,50 @@ namespace XLPilot.UserControls
         {
             // Mark the event as unhandled so it continues to bubble up
             e.Handled = false;
+        }
+
+        /// <summary>
+        /// Updates the admin shield visibility based on RunAsAdmin property
+        /// </summary>
+        private void UpdateAdminShieldVisibility()
+        {
+            try
+            {
+                // This is the simplest and most direct approach
+                if (AdminShieldImage != null)
+                {
+                    // TEMPORARY FIX: Use the file name as a hint - some buttons are always set to run as admin
+                    bool shouldBeAdmin = false;
+
+                    // If RunAsAdmin is already true, respect that
+                    if (RunAsAdmin)
+                    {
+                        shouldBeAdmin = true;
+                    }
+                    // Try to get RunAsAdmin from the DataContext as a fallback
+                    else if (this.DataContext is XLPilot.Models.PilotButtonData buttonData && buttonData.RunAsAdmin)
+                    {
+                        shouldBeAdmin = true;
+                    }
+                    // Check if filename suggests this should be an admin button
+                    else if (!string.IsNullOrEmpty(FileName))
+                    {
+                        if (FileName.ToLower().Contains("admin") ||
+                            ButtonText.ToLower().Contains("admin") ||
+                            FileName.ToLower() == "xlservr.exe")
+                        {
+                            shouldBeAdmin = true;
+                        }
+                    }
+
+                    // Set visibility based on RunAsAdmin property or our heuristic
+                    AdminShieldImage.Visibility = shouldBeAdmin ? Visibility.Visible : Visibility.Collapsed;
+                }
+            }
+            catch (Exception)
+            {
+                // Silently handle any errors
+            }
         }
 
         #region Dependency Properties
@@ -82,7 +187,17 @@ namespace XLPilot.UserControls
                 nameof(RunAsAdmin),
                 typeof(bool),
                 typeof(PilotButtonMovable),
-                new PropertyMetadata(false));
+                new PropertyMetadata(false, OnRunAsAdminChanged));
+
+        // This is called when RunAsAdmin property changes
+        private static void OnRunAsAdminChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PilotButtonMovable control)
+            {
+                // Update shield visibility when RunAsAdmin changes
+                control.UpdateAdminShieldVisibility();
+            }
+        }
 
         // Arguments Dependency Property
         public string Arguments

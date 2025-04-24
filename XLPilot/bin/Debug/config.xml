@@ -16,6 +16,43 @@
       <LicenseKey />
     </XLPaths>
   </XLPathsList>
-  <XLPilotButtons />
+  <XLPilotButtons>
+    <PilotButtonData>
+      <ButtonText>XL Server</ButtonText>
+      <FileName>XLSERVR.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/Google chrome icon.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>XL Client</ButtonText>
+      <FileName>XLCLIENT.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/detault-profile-picture.png</ImageSource>
+      <RunAsAdmin>false</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom klienta XL</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>XL Server</ButtonText>
+      <FileName>XLSERVR.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/Google chrome icon.png</ImageSource>
+      <RunAsAdmin>false</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>123456789012345678901234567890</ButtonText>
+      <FileName>XLSERVR.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/Google chrome icon.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+  </XLPilotButtons>
   <OtherPilotButtons />
 </SerializationData>

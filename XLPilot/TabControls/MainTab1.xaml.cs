@@ -37,6 +37,7 @@ namespace XLPilot.TabControls
             // Reload the UI when the tab is shown
             LoadXLPathsWithIcons();
             LoadOtherIcons();
+            //CheckXLIcons();
         }
 
         /// <summary>
@@ -422,7 +423,7 @@ namespace XLPilot.TabControls
                 // Loop through each button and add its name to the message
                 foreach (var button in xlButtons)
                 {
-                    message += $"- {button.ButtonText}\n";
+                    message += $"- {button.ButtonText}, run as admin? - {button.RunAsAdmin}\n";
                 }
 
                 // Display the message box with the list of icons

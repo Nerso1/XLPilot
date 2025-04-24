@@ -107,7 +107,8 @@ namespace XLPilot.TabControls
                     projectItems.Add(new PilotButtonData(
                         "Other Item 1",
                         "",
-                        "/XLPilot;component/Resources/Images/detault-profile-picture.png"));
+                        "/XLPilot;component/Resources/Images/detault-profile-picture.png"
+                        ));
                 }
                 else
                 {
@@ -133,7 +134,15 @@ namespace XLPilot.TabControls
                 "Text Editor",
                 "notepad.exe",
                 "/XLPilot;component/Resources/Images/detault-profile-picture.png",
-                false,
+                true,
+                "",
+                "Uruchom notatnik"),
+
+            new PilotButtonData(
+                "Text Editor Admin",
+                "notepad.exe",
+                "/XLPilot;component/Resources/Images/admin_shield.png",
+                true,
                 "",
                 "Uruchom notatnik")
         };

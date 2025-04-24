@@ -169,6 +169,13 @@ namespace XLPilot.TabControls
                 "XL Server",
                 "XLSERVR.exe",
                 "/XLPilot;component/Resources/Images/Google chrome icon.png",
+                false,
+                "",
+                "Uruchom serwer jako administrator"),
+             new PilotButtonData(
+                "123456789012345678901234567890",
+                "XLSERVR.exe",
+                "/XLPilot;component/Resources/Images/Google chrome icon.png",
                 true,
                 "",
                 "Uruchom serwer jako administrator")

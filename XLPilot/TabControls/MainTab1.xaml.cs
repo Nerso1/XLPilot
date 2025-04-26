@@ -63,7 +63,7 @@ namespace XLPilot.TabControls
                     {
                         Text = "Opcje niepowiązane z XL-ami",
                         FontSize = 16,
-                        FontWeight = FontWeights.Bold,
+                        //FontWeight = FontWeights.Bold,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 5, 0, 10)
                     };

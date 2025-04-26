@@ -42,7 +42,7 @@
 
                 <!-- Admin shield icon with transparent background -->
                 <Image x:Name="AdminShieldImage"
-                       Width="40" Height="40" 
+                       Width="30" Height="30" 
                        Source="/XLPilot;component/Resources/Images/admin_shield.png"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Bottom"

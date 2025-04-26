@@ -2,39 +2,27 @@
 <SerializationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <XLPathsList>
     <XLPaths>
-      <Name>aa</Name>
+      <Name>2025.0.2</Name>
       <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
-      <Database />
-      <LicenseServer>aa</LicenseServer>
-      <LicenseKey>cc</LicenseKey>
+      <LicenseServer>NBDCIASTON</LicenseServer>
+      <LicenseKey>500012345</LicenseKey>
     </XLPaths>
     <XLPaths>
-      <Name>Dominik</Name>
-      <Path>D:\Videos\OBS</Path>
+      <Name>2024.0.2 api</Name>
+      <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
       <Database />
-      <LicenseServer />
+      <LicenseServer>XLKLUCZ</LicenseServer>
+      <LicenseKey />
+    </XLPaths>
+    <XLPaths>
+      <Name>2024.0.1 api</Name>
+      <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
+      <Database />
+      <LicenseServer>XLKLUCZ</LicenseServer>
       <LicenseKey />
     </XLPaths>
   </XLPathsList>
   <XLPilotButtons>
-    <PilotButtonData>
-      <ButtonText>XL Server</ButtonText>
-      <FileName>XLSERVR.exe</FileName>
-      <ImageSource>/XLPilot;component/Resources/Images/Google chrome icon.png</ImageSource>
-      <RunAsAdmin>true</RunAsAdmin>
-      <Arguments />
-      <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
-      <Directory />
-    </PilotButtonData>
-    <PilotButtonData>
-      <ButtonText>XL Client</ButtonText>
-      <FileName>XLCLIENT.exe</FileName>
-      <ImageSource>/XLPilot;component/Resources/Images/detault-profile-picture.png</ImageSource>
-      <RunAsAdmin>false</RunAsAdmin>
-      <Arguments />
-      <ToolTipText>Uruchom klienta XL</ToolTipText>
-      <Directory />
-    </PilotButtonData>
     <PilotButtonData>
       <ButtonText>XL Server</ButtonText>
       <FileName>XLSERVR.exe</FileName>
@@ -53,6 +41,88 @@
       <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
       <Directory />
     </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>123456789012345678901234567890</ButtonText>
+      <FileName>XLSERVR.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/Google chrome icon.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>123456789012345678901234567890</ButtonText>
+      <FileName>XLSERVR.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/Google chrome icon.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>123456789012345678901234567890</ButtonText>
+      <FileName>XLSERVR.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/Google chrome icon.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>123456789012345678901234567890</ButtonText>
+      <FileName>XLSERVR.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/Google chrome icon.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom serwer jako administrator</ToolTipText>
+      <Directory />
+    </PilotButtonData>
   </XLPilotButtons>
-  <OtherPilotButtons />
+  <OtherPilotButtons>
+    <PilotButtonData>
+      <ButtonText>Text Editor</ButtonText>
+      <FileName>notepad.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/detault-profile-picture.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom notatnik</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>Text Editor</ButtonText>
+      <FileName>notepad.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/detault-profile-picture.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom notatnik</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>Text Editor Admin</ButtonText>
+      <FileName>notepad.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/admin_shield.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom notatnik</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>Text Editor Admin</ButtonText>
+      <FileName>notepad.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/admin_shield.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom notatnik</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>Text Editor Admin</ButtonText>
+      <FileName>notepad.exe</FileName>
+      <ImageSource>/XLPilot;component/Resources/Images/admin_shield.png</ImageSource>
+      <RunAsAdmin>true</RunAsAdmin>
+      <Arguments />
+      <ToolTipText>Uruchom notatnik</ToolTipText>
+      <Directory />
+    </PilotButtonData>
+  </OtherPilotButtons>
 </SerializationData>

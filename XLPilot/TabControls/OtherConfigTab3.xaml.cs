@@ -120,32 +120,7 @@ namespace XLPilot.TabControls
                 }
 
                 // Set up template buttons for the toolbox
-                var toolboxItems = new ObservableCollection<PilotButtonData>
-        {
-            new PilotButtonData(
-                "Web Browser",
-                "chrome.exe",
-                "/XLPilot;component/Resources/Images/Google chrome icon.png",
-                false,
-                "",
-                "Uruchom przeglądarkę"),
-
-            new PilotButtonData(
-                "Text Editor",
-                "notepad.exe",
-                "/XLPilot;component/Resources/Images/detault-profile-picture.png",
-                true,
-                "",
-                "Uruchom notatnik"),
-
-            new PilotButtonData(
-                "Text Editor Admin",
-                "notepad.exe",
-                "/XLPilot;component/Resources/Images/admin_shield.png",
-                true,
-                "",
-                "Uruchom notatnik")
-        };
+                var toolboxItems = CreateXLTemplateButtons();
 
                 // Assign the collections to the control
                 OtherDragDropControl.ProjectItems = projectItems;
@@ -156,6 +131,57 @@ namespace XLPilot.TabControls
                 MessageBox.Show($"Błąd podczas wczytywania przycisków 'inne': {ex.Message}",
                               "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        /// <summary>
+        /// Creates template buttons for the XL toolbox
+        /// </summary>
+        private ObservableCollection<PilotButtonData> CreateXLTemplateButtons()
+        {
+            var buttons = new ObservableCollection<PilotButtonData>();
+
+            // Add existing buttons
+            buttons.Add(new PilotButtonData(
+                "Konfig. komp.",
+                "test.exe",
+                "/XLPilot;component/Resources/Images/regedit.png",
+                true,
+                "",
+                "Pokaż rejestr zawierający konfigurację komputera ze shella XL-a"));
+
+            buttons.Add(new PilotButtonData(
+                "Bazy użytkownika",
+                "test.exe",
+                "/XLPilot;component/Resources/Images/regedit.png",
+                true,
+                "",
+                "Pokaż rejestr zawierający bazy HKCU"));
+
+            buttons.Add(new PilotButtonData(
+                "Bazy komputera",
+                "test.exe",
+                "/XLPilot;component/Resources/Images/regedit.png",
+                true,
+                "",
+                "Pokaż rejestr zawierający bazy HKLM"));
+
+            buttons.Add(new PilotButtonData(
+                "Usługi DS",
+                "test.exe",
+                "/XLPilot;component/Resources/Images/regedit.png",
+                true,
+                "",
+                "Pokaż rejestr zawierający usługi Data Service"));
+
+            buttons.Add(new PilotButtonData(
+                "Folder temp",
+                "test.exe",
+                "/XLPilot;component/Resources/Images/folder.png",
+                false,
+                "",
+                "Pokaż folder %temp% danego użytkownika"));
+
+            return buttons;
         }
 
         /// <summary>

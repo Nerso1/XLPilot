@@ -120,7 +120,7 @@ namespace XLPilot.UserControls
         private void InternalButton_Click(object sender, RoutedEventArgs e)
         {
             // Show a message (for debugging purposes - may be removed in production)
-            MessageBox.Show("Clicked");
+            //MessageBox.Show("Clicked");
 
             // Launch the application using the configured properties
             RunExecutable(Directory, FileName, RunAsAdmin, Arguments);

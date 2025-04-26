@@ -155,31 +155,8 @@ namespace XLPilot.TabControls
                 }
 
                 // Set up template buttons for the toolbox
-                var toolboxItems = new ObservableCollection<PilotButtonData>
-        {
-            new PilotButtonData(
-                "XL Client",
-                "XLCLIENT.exe",
-                "/XLPilot;component/Resources/Images/detault-profile-picture.png",
-                false,
-                "",
-                "Uruchom klienta XL"),
+                var toolboxItems = CreateXLTemplateButtons();
 
-            new PilotButtonData(
-                "XL Server",
-                "XLSERVR.exe",
-                "/XLPilot;component/Resources/Images/Google chrome icon.png",
-                false,
-                "",
-                "Uruchom serwer jako administrator"),
-             new PilotButtonData(
-                "123456789012345678901234567890",
-                "XLSERVR.exe",
-                "/XLPilot;component/Resources/Images/Google chrome icon.png",
-                true,
-                "",
-                "Uruchom serwer jako administrator")
-        };
 
                 // Assign the collections to the control
                 XLDragDropControl.ProjectItems = projectItems;
@@ -190,6 +167,57 @@ namespace XLPilot.TabControls
                 MessageBox.Show($"Błąd podczas wczytywania przycisków XL: {ex.Message}",
                               "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        /// <summary>
+        /// Creates template buttons for the XL toolbox
+        /// </summary>
+        private ObservableCollection<PilotButtonData> CreateXLTemplateButtons()
+        {
+            var buttons = new ObservableCollection<PilotButtonData>();
+
+            // Add existing buttons
+            buttons.Add(new PilotButtonData(
+                "XL",
+                "cdnxl.exe",
+                "/XLPilot;component/Resources/Images/cdnxl.png",
+                false,
+                "",
+                "Uruchom Comarch ERP XL"));
+
+            buttons.Add(new PilotButtonData(
+                "XL admin",
+                "cdnxl.exe",
+                "/XLPilot;component/Resources/Images/cdnxl.png",
+                true,
+                "",
+                "Uruchom Comarch ERP XL jako administrator"));
+
+            buttons.Add(new PilotButtonData(
+                "Rejestr.bat",
+                "rejestr.bat",
+                "/XLPilot;component/Resources/Images/cmd.png",
+                true,
+                "",
+                "Uruchom rejestr.bat"));
+
+            buttons.Add(new PilotButtonData(
+                "Zmienna Path",
+                "test.exe",
+                "/XLPilot;component/Resources/Images/env_var.png",
+                true,
+                "",
+                "Ustaw zmienną środowiskową Path do danego XL-a górze"));
+
+            buttons.Add(new PilotButtonData(
+                "Folder XL",
+                "test.exe",
+                "/XLPilot;component/Resources/Images/folder.png",
+                false,
+                "",
+                "Otwórz folder z Comarch ERP XL"));
+
+            return buttons;
         }
 
         /// <summary>

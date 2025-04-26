@@ -15,9 +15,8 @@
       <LicenseKey />
     </XLPaths>
     <XLPaths>
-      <Name>2024.0.1 api</Name>
+      <Name>2024.1 kompilacja 27.04</Name>
       <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
-      <Database />
       <LicenseServer>XLKLUCZ</LicenseServer>
       <LicenseKey />
     </XLPaths>
@@ -71,7 +70,7 @@
   </XLPilotButtons>
   <OtherPilotButtons>
     <PilotButtonData>
-      <ButtonText>Konfiguracja komputera</ButtonText>
+      <ButtonText>Konfig. komp.</ButtonText>
       <FileName>test.exe</FileName>
       <ImageSource>/XLPilot;component/Resources/Images/regedit.png</ImageSource>
       <RunAsAdmin>true</RunAsAdmin>
@@ -98,7 +97,7 @@
       <Directory />
     </PilotButtonData>
     <PilotButtonData>
-      <ButtonText>Usługi DataService</ButtonText>
+      <ButtonText>Usługi DS</ButtonText>
       <FileName>test.exe</FileName>
       <ImageSource>/XLPilot;component/Resources/Images/regedit.png</ImageSource>
       <RunAsAdmin>true</RunAsAdmin>

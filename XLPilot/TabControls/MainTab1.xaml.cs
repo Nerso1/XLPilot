@@ -207,7 +207,7 @@ namespace XLPilot.TabControls
             // Create a container for this XL path section
             var sectionPanel = new StackPanel
             {
-                Margin = new Thickness(5, 15, 5, 10),
+                Margin = new Thickness(5, 5, 5, 5),
                 HorizontalAlignment = HorizontalAlignment.Center // Center the whole section
             };
 
@@ -272,12 +272,12 @@ namespace XLPilot.TabControls
             sectionPanel.Children.Add(buttonsStackPanel);
 
             // Add a separator for visual separation between XL path sections
-            var separator = new Separator
-            {
-                Margin = new Thickness(0, 0, 0, 10),
-                Width = 550 // Set a fixed width for the separator
-            };
-            sectionPanel.Children.Add(separator);
+            //var separator = new Separator
+            //{
+            //    Margin = new Thickness(0, 0, 0, 10),
+            //    Width = 550 // Set a fixed width for the separator
+            //};
+            //sectionPanel.Children.Add(separator);
 
             // Add the complete section to the parent panel
             parentPanel.Children.Add(sectionPanel);
@@ -316,7 +316,7 @@ namespace XLPilot.TabControls
                     {
                         Orientation = Orientation.Horizontal,
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        Margin = new Thickness(0, 0, 0, 10) // Add margin between rows
+                        Margin = new Thickness(0, 0, 0, 5) // Add margin between rows
                     };
 
                     // Calculate the range of icons for this row

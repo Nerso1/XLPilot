@@ -42,6 +42,21 @@
                                                TextAlignment="Center"
                                                Margin="0,5,0,0" />
                                 </StackPanel>
+
+                                <!-- Admin shield icon with transparent background -->
+                                <Image x:Name="AdminShieldImage"
+                                       Width="30" Height="30" 
+                                       Source="/XLPilot;component/Resources/Images/admin_shield.png"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Margin="0,0,10,30"
+                                       Stretch="Uniform"
+                                       RenderTransformOrigin="0.5,0.5"
+                                       Visibility="Collapsed">
+                                    <Image.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </Image.RenderTransform>
+                                </Image>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -54,13 +69,20 @@
                                     </Setter.Value>
                                 </Setter>
 
-                                <!-- Image animation -->
+                                <!-- Main image animation -->
                                 <Setter TargetName="ButtonImage" Property="RenderTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
                                     </Setter.Value>
                                 </Setter>
                                 <Setter TargetName="ButtonImage" Property="RenderTransformOrigin" Value="0.5,0.5" />
+
+                                <!-- Admin shield image animation -->
+                                <Setter TargetName="AdminShieldImage" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
+                                    </Setter.Value>
+                                </Setter>
 
                                 <!-- Text animation -->
                                 <Setter TargetName="ButtonTextBlock" Property="FontWeight" Value="Bold" />
@@ -69,11 +91,19 @@
                             <!-- Click effect: Remove effects and return elements to original size -->
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="MainBorder" Property="Effect" Value="{x:Null}" />
+                                <!-- Reset main image -->
                                 <Setter TargetName="ButtonImage" Property="RenderTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="1" ScaleY="1" />
                                     </Setter.Value>
                                 </Setter>
+                                <!-- Reset admin shield image -->
+                                <Setter TargetName="AdminShieldImage" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </Setter.Value>
+                                </Setter>
+                                <!-- Reset text -->
                                 <Setter TargetName="ButtonTextBlock" Property="FontSize" Value="12" />
                                 <Setter TargetName="ButtonTextBlock" Property="FontWeight" Value="Normal" />
                                 <Setter TargetName="ButtonTextBlock" Property="Effect" Value="{x:Null}" />

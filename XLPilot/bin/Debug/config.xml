@@ -2,24 +2,16 @@
 <SerializationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <XLPathsList>
     <XLPaths>
-      <Name>2025.0.2</Name>
-      <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
-      <LicenseServer>NBDCIASTON</LicenseServer>
-      <LicenseKey>500012345</LicenseKey>
-    </XLPaths>
-    <XLPaths>
-      <Name>2024.0.2 api</Name>
-      <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
-      <Database />
-      <LicenseServer>XLKLUCZ</LicenseServer>
-      <LicenseKey />
+      <Name>Comarch ERP XL 2024.1</Name>
+      <Path>C:\Program Files (x86)\Comarch ERP XL 2024.1</Path>
     </XLPaths>
     <XLPaths>
       <Name>Comarch ERP XL 2024.1.3 api</Name>
-      <Path>C:\Users\domin\Downloads\XL-e\Comarch ERP XL 2024.1.3 api</Path>
-      <Database />
-      <LicenseServer>XLKLUCZ</LicenseServer>
-      <LicenseKey />
+      <Path>C:\Program Files (x86)\Comarch ERP XL 2024.1.3 api</Path>
+    </XLPaths>
+    <XLPaths>
+      <Name>Comarch ERP XL 2025.0</Name>
+      <Path>C:\Program Files (x86)\Comarch ERP XL 2025.0</Path>
     </XLPaths>
   </XLPathsList>
   <XLPilotButtons>

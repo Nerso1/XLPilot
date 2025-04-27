@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -40,7 +41,7 @@ namespace XLPilot.Services
                 {
                     case PilotButtonType.UserStandard:
                     case PilotButtonType.SystemStandard:
-                        ExecuteStandardAction(button, executionDirectory);
+                        ExecuteStandardAction(button, executionDirectory, xlPath);
                         break;
 
                     case PilotButtonType.SystemSpecial:
@@ -61,8 +62,13 @@ namespace XLPilot.Services
         /// <summary>
         /// Execute a standard button action (run application or open folder)
         /// </summary>
-        private static void ExecuteStandardAction(PilotButtonData button, string directory)
+        private static void ExecuteStandardAction(PilotButtonData button, string directory, XLPaths xlPath)
         {
+            //MessageBox.Show($"ExecuteStandardAction called with button: {button.ButtonText}",
+            //   "DEBUG - Method Entry",
+            //   MessageBoxButton.OK,
+            //   MessageBoxImage.Information);
+
             // If no directory is specified, show an error
             if (string.IsNullOrEmpty(directory))
             {
@@ -87,12 +93,21 @@ namespace XLPilot.Services
             // Check if the path exists
             if (File.Exists(filePath))
             {
+                //MessageBox.Show("FilePath exists");
+                // Determine arguments based on button context
+                string arguments = DetermineArguments(button, xlPath);
+
                 // If path exists and is a file, run it
                 // Debug message
-                MessageBox.Show($"Uruchamianie aplikacji: {filePath} {(button.RunAsAdmin ? "(jako administrator)" : "")}",
-                    "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                string debugMessage = $"Uruchamianie aplikacji: {filePath} {(button.RunAsAdmin ? "(jako administrator)" : "")}";
+                if (!string.IsNullOrEmpty(arguments))
+                {
+                    debugMessage += $" z argumentami: {arguments}";
+                }
 
-                RunExecutable(filePath, directory, button.RunAsAdmin, button.Arguments);
+                MessageBox.Show(debugMessage, "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                RunExecutable(filePath, directory, button.RunAsAdmin, arguments);
             }
             else if (Directory.Exists(filePath))
             {
@@ -107,6 +122,79 @@ namespace XLPilot.Services
                 // If path doesn't exist, show error
                 MessageBox.Show($"Plik nie istnieje: {filePath}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        /// <summary>
+        /// Determines the arguments to use for a button based on its context
+        /// </summary>
+        private static string DetermineArguments(PilotButtonData button, XLPaths xlPath)
+        {
+            MessageBox.Show($"DetermineArguments called with button: {button.ButtonText}\nDirectory: {button.Directory}\nArguments: {button.Arguments} \nxlPath: {xlPath}",
+                   "DEBUG - Method Entry",
+                   MessageBoxButton.OK,
+                   MessageBoxImage.Information);
+
+            // For XL button (no specific directory set)
+            if (xlPath != null)
+            {
+                // If arguments is empty or "include", generate arguments from XL path
+                if (string.IsNullOrEmpty(button.Arguments) || button.Arguments.Trim().ToLower() == "include")
+                {
+                    MessageBox.Show("If arguments is empty or \"include\", generate arguments from XL path");
+                    return GenerateArguments(xlPath);
+                }
+                // If arguments is "skip", return empty string
+                else if (button.Arguments.Trim().ToLower() == "skip")
+                {
+                    MessageBox.Show("If arguments is \"skip\", return empty string");
+                    return string.Empty;
+                }
+                // Otherwise use the provided arguments
+                else
+                {
+                    MessageBox.Show("Otherwise use the provided arguments");
+                    return button.Arguments;
+                }
+            }
+            // For Other button (directory is set)
+            else
+            {
+                // If no arguments, return empty string
+                if (string.IsNullOrEmpty(button.Arguments))
+                {
+                    MessageBox.Show("If no arguments, return empty string");
+                    return string.Empty;
+                }
+                // Otherwise use the provided arguments
+                else
+                {
+                    MessageBox.Show("Otherwise use the provided arguments");
+                    return button.Arguments;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates arguments from XL path properties
+        /// </summary>
+        private static string GenerateArguments(XLPaths xlPath)
+        {
+            var arguments = new List<string>();
+
+            // Add Database if it's not empty
+            if (!string.IsNullOrEmpty(xlPath.Database))
+            {
+                arguments.Add($"baza={xlPath.Database}");
+            }
+
+            // Add FormattedLicenseInfo if it's not empty
+            if (!string.IsNullOrEmpty(xlPath.FormattedLicenseInfo))
+            {
+                arguments.Add($"klucz={xlPath.FormattedLicenseInfo}");
+            }
+
+            // Join the arguments with a space
+            return string.Join(" ", arguments);
         }
 
         /// <summary>

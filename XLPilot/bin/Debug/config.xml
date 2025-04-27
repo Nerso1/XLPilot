@@ -15,8 +15,9 @@
       <LicenseKey />
     </XLPaths>
     <XLPaths>
-      <Name>2024.1 kompilacja 27.04</Name>
-      <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
+      <Name>Comarch ERP XL 2024.1.3 api</Name>
+      <Path>C:\Users\domin\Downloads\XL-e\Comarch ERP XL 2024.1.3 api</Path>
+      <Database />
       <LicenseServer>XLKLUCZ</LicenseServer>
       <LicenseKey />
     </XLPaths>
@@ -86,7 +87,7 @@
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż rejestr zawierający konfigurację komputera ze shella XL-a</ToolTipText>
-      <Directory />
+      <Directory>C:\</Directory>
       <ButtonType>SystemSpecial</ButtonType>
       <ActionIdentifier>ComputerConfigRegistry</ActionIdentifier>
     </PilotButtonData>
@@ -97,7 +98,7 @@
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż rejestr zawierający bazy HKCU</ToolTipText>
-      <Directory />
+      <Directory>C:\</Directory>
       <ButtonType>SystemSpecial</ButtonType>
       <ActionIdentifier>UserDatabasesRegistry</ActionIdentifier>
     </PilotButtonData>
@@ -108,7 +109,7 @@
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż rejestr zawierający bazy HKLM</ToolTipText>
-      <Directory />
+      <Directory>C:\</Directory>
       <ButtonType>SystemSpecial</ButtonType>
       <ActionIdentifier>ComputerDatabasesRegistry</ActionIdentifier>
     </PilotButtonData>
@@ -119,7 +120,7 @@
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż rejestr zawierający usługi Data Service</ToolTipText>
-      <Directory />
+      <Directory>C:\</Directory>
       <ButtonType>SystemSpecial</ButtonType>
       <ActionIdentifier>DSServicesRegistry</ActionIdentifier>
     </PilotButtonData>
@@ -130,7 +131,7 @@
       <RunAsAdmin>false</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż folder %temp% danego użytkownika</ToolTipText>
-      <Directory />
+      <Directory>C:\Users\domin\Downloads\XL-e\Comarch ERP XL 2024.1.3 api</Directory>
       <ButtonType>SystemStandard</ButtonType>
       <ActionIdentifier />
     </PilotButtonData>

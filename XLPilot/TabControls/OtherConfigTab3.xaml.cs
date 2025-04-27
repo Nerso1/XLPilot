@@ -149,7 +149,7 @@ namespace XLPilot.TabControls
                 true,
                 "",
                 "Pokaż rejestr zawierający konfigurację komputera ze shella XL-a",
-                "",
+                "C:\\",
                 PilotButtonType.SystemSpecial,
                 "ComputerConfigRegistry"));
 
@@ -160,7 +160,7 @@ namespace XLPilot.TabControls
                 true,
                 "",
                 "Pokaż rejestr zawierający bazy HKCU",
-                "",
+                "C:\\",
                 PilotButtonType.SystemSpecial,
                 "UserDatabasesRegistry"));
 
@@ -171,7 +171,7 @@ namespace XLPilot.TabControls
                 true,
                 "",
                 "Pokaż rejestr zawierający bazy HKLM",
-                "",
+                "C:\\",
                 PilotButtonType.SystemSpecial,
                 "ComputerDatabasesRegistry"));
 
@@ -182,7 +182,7 @@ namespace XLPilot.TabControls
                 true,
                 "",
                 "Pokaż rejestr zawierający usługi Data Service",
-                "",
+                "C:\\",
                 PilotButtonType.SystemSpecial,
                 "DSServicesRegistry"));
 
@@ -193,7 +193,7 @@ namespace XLPilot.TabControls
                 false,
                 "",
                 "Pokaż folder %temp% danego użytkownika",
-                "",
+                "C:\\Users\\domin\\Downloads\\XL-e\\Comarch ERP XL 2024.1.3 api",
                 PilotButtonType.SystemStandard));
 
             return buttons;

@@ -1,4 +1,5 @@
 ﻿using System;
+using XLPilot.Models.Enums;
 
 namespace XLPilot.Models
 {
@@ -17,13 +18,18 @@ namespace XLPilot.Models
         public string ToolTipText { get; set; } = "";
         public string Directory { get; set; } = "";
 
+        // New properties for button functionality
+        public PilotButtonType ButtonType { get; set; } = PilotButtonType.UserStandard;
+        public string ActionIdentifier { get; set; } = "";
+
         // Empty constructor needed for XML serialization
         public PilotButtonData() { }
 
         // Constructor with parameters to easily create a button
         public PilotButtonData(string buttonText, string fileName = "", string imageSource = "",
                               bool runAsAdmin = false, string arguments = "", string toolTipText = "",
-                              string directory = "")
+                              string directory = "", PilotButtonType buttonType = PilotButtonType.UserStandard,
+                              string actionIdentifier = "")
         {
             ButtonText = buttonText;
             FileName = fileName;
@@ -32,6 +38,8 @@ namespace XLPilot.Models
             Arguments = arguments;
             ToolTipText = toolTipText;
             Directory = directory;
+            ButtonType = buttonType;
+            ActionIdentifier = actionIdentifier;
         }
 
         /// <summary>
@@ -54,10 +62,13 @@ namespace XLPilot.Models
             bool argsEqual = Arguments == other.Arguments;
             bool tooltipEqual = ToolTipText == other.ToolTipText;
             bool dirEqual = Directory == other.Directory;
+            bool typeEqual = ButtonType == other.ButtonType;
+            bool actionEqual = ActionIdentifier == other.ActionIdentifier;
 
             // All properties must be equal for the objects to be equal
             return textEqual && fileNameEqual && imageEqual &&
-                   adminEqual && argsEqual && tooltipEqual && dirEqual;
+                   adminEqual && argsEqual && tooltipEqual && dirEqual &&
+                   typeEqual && actionEqual;
         }
 
         /// <summary>
@@ -78,6 +89,8 @@ namespace XLPilot.Models
             if (Arguments != null) hash += Arguments.GetHashCode();
             if (ToolTipText != null) hash += ToolTipText.GetHashCode();
             if (Directory != null) hash += Directory.GetHashCode();
+            hash += ButtonType.GetHashCode();
+            if (ActionIdentifier != null) hash += ActionIdentifier.GetHashCode();
 
             return hash;
         }

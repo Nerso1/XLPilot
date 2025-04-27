@@ -10,6 +10,7 @@ using XLPilot.XmlUtilities;
 using XLPilot.Models;
 using XLPilot.Models.Containers;
 using XLPilot.Services;
+using XLPilot.Models.Enums;
 
 namespace XLPilot.TabControls
 {
@@ -30,6 +31,8 @@ namespace XLPilot.TabControls
         /// <summary>
         /// Constructor - initializes the tab
         /// </summary>
+        // First, let's add the event handler in the constructor
+        // Add this code to your XLConfigTab2 constructor
         public XLConfigTab2()
         {
             InitializeComponent();
@@ -45,7 +48,289 @@ namespace XLPilot.TabControls
 
             // Set up drag and drop event handlers
             SetupDragDropEvents();
+
+            BtnImport.Click += BtnImport_Click;
+            BtnClearOldXLPaths.Click += BtnClearOldXLPaths_Click; 
         }
+
+        #region ClearOldXLPaths
+        private void BtnClearOldXLPaths_Click(object sender, RoutedEventArgs e)
+        {
+            // Show a confirmation dialog
+            MessageBoxResult result = MessageBox.Show(
+                "Program sprawdzi wszystkie ścieżki XL i usunie te, które nie istnieją lub nie zawierają plików cdnxl.exe i rejestr.bat. Czy chcesz kontynuować?",
+                "Czyszczenie nieważnych ścieżek",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // Get the XL paths from the configuration
+                    var xlPaths = serializationManager.GetData().XLPathsList;
+
+                    // Count how many paths we had initially
+                    int initialCount = xlPaths.Count;
+
+                    // Create a list to store paths to remove
+                    List<XLPaths> pathsToRemove = new List<XLPaths>();
+
+                    // Check each path
+                    foreach (var path in xlPaths)
+                    {
+                        // Skip paths with empty directory
+                        if (string.IsNullOrEmpty(path.Path))
+                            continue;
+
+                        // First check if the directory exists
+                        if (!Directory.Exists(path.Path))
+                        {
+                            // If directory doesn't exist, add to removal list
+                            pathsToRemove.Add(path);
+                            continue; // Skip checking files since directory doesn't exist
+                        }
+
+                        // Check if the required files exist
+                        bool hasXlExe = File.Exists(Path.Combine(path.Path, "cdnxl.exe"));
+                        bool hasRejestrBat = File.Exists(Path.Combine(path.Path, "rejestr.bat"));
+
+                        // If either file is missing, add this path to the removal list
+                        if (!hasXlExe || !hasRejestrBat)
+                        {
+                            pathsToRemove.Add(path);
+                        }
+                    }
+
+                    // Remove the invalid paths
+                    foreach (var pathToRemove in pathsToRemove)
+                    {
+                        serializationManager.RemoveXLPath(pathToRemove);
+                    }
+
+                    // Update the UI
+                    LoadXLPaths();
+
+                    // Calculate how many paths were removed
+                    int removedCount = pathsToRemove.Count;
+
+                    // Show result message
+                    if (removedCount > 0)
+                    {
+                        MessageBox.Show(
+                            $"Usunięto {removedCount} nieprawidłowych ścieżek.",
+                            "Czyszczenie zakończone",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "Wszystkie ścieżki są prawidłowe. Nie usunięto żadnej ścieżki.",
+                            "Czyszczenie zakończone",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Show error message if something went wrong
+                    MessageBox.Show(
+                        $"Wystąpił błąd podczas czyszczenia ścieżek: {ex.Message}",
+                        "Błąd",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+        }
+        #endregion
+
+        #region ImportXLPaths
+        private void BtnImport_Click(object sender, RoutedEventArgs e)
+        {
+            // Show a confirmation dialog
+            MessageBoxResult result = MessageBox.Show(
+                "Program przeszuka komputer w poszukiwaniu instalacji Comarch ERP XL. Czy chcesz kontynuować?",
+                "Szukanie ścieżek XL",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // Search for XL installations
+                    List<XLPaths> foundPaths = FindXLInstallations();
+
+                    // If we found some installations
+                    if (foundPaths.Count > 0)
+                    {
+                        // Filter out duplicates
+                        int addedCount = AddNonDuplicatePaths(foundPaths);
+
+                        // Update the UI
+                        LoadXLPaths();
+
+                        // Show success message
+                        MessageBox.Show(
+                            $"Znaleziono {foundPaths.Count} ścieżek instalacji, dodano {addedCount} nowych ścieżek.",
+                            "Szukanie zakończone",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        // Show message if no installations were found
+                        MessageBox.Show(
+                            "Nie znaleziono instalacji Comarch ERP XL.",
+                            "Szukanie zakończone",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Show error message if something went wrong
+                    MessageBox.Show(
+                        $"Wystąpił błąd podczas szukania instalacji: {ex.Message}",
+                        "Błąd",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+        }
+
+        // This method finds all XL installations based on the specified criteria
+        private List<XLPaths> FindXLInstallations()
+        {
+            List<XLPaths> foundPaths = new List<XLPaths>();
+
+            // Search in Program Files (x86) for folders containing "Comarch ERP XL"
+            SearchInDirectory(@"C:\Program Files (x86)", "Comarch ERP XL", foundPaths, false);
+
+            // Search in C:\ and Program Files (x86) for specific folder names
+            string[] searchTerms = { "XL", "instalacje", "kompilacje", "Comarch", "Naprawiona", "Debug" };
+
+            foreach (string term in searchTerms)
+            {
+                // Search in C:\ 
+                SearchInDirectory(@"C:\", term, foundPaths, true);
+
+                // Search in Program Files (x86)
+                SearchInDirectory(@"C:\Program Files (x86)", term, foundPaths, true);
+            }
+
+            return foundPaths;
+        }
+
+        // This method searches for XL installations in a specific directory
+        private void SearchInDirectory(string rootPath, string searchTerm, List<XLPaths> foundPaths, bool searchInSubfolders)
+        {
+            try
+            {
+                // Check if the root path exists
+                if (!Directory.Exists(rootPath))
+                    return;
+
+                // Get all folders in the root path
+                string[] directories = Directory.GetDirectories(rootPath);
+
+                foreach (string directory in directories)
+                {
+                    // Get the folder name without path
+                    string folderName = Path.GetFileName(directory);
+
+                    // Check if the folder name contains the search term
+                    if (folderName.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        // Check if this folder contains cdnxl.exe and rejestr.bat
+                        if (File.Exists(Path.Combine(directory, "cdnxl.exe")) &&
+                            File.Exists(Path.Combine(directory, "rejestr.bat")))
+                        {
+                            // Add this path to the found paths
+                            foundPaths.Add(new XLPaths(folderName, directory));
+                        }
+
+                        // If required, search in subfolders as well
+                        if (searchInSubfolders)
+                        {
+                            SearchInSubdirectories(directory, foundPaths);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error or handle it as appropriate
+                System.Diagnostics.Debug.WriteLine($"Error searching in {rootPath}: {ex.Message}");
+            }
+        }
+
+        // This method searches for XL installations in all subdirectories of a directory
+        private void SearchInSubdirectories(string parentDirectory, List<XLPaths> foundPaths)
+        {
+            try
+            {
+                // Get all subfolders
+                string[] subdirectories = Directory.GetDirectories(parentDirectory);
+
+                foreach (string subdirectory in subdirectories)
+                {
+                    // Get the folder name without path
+                    string folderName = Path.GetFileName(subdirectory);
+
+                    // Check if this subfolder contains cdnxl.exe and rejestr.bat
+                    if (File.Exists(Path.Combine(subdirectory, "cdnxl.exe")) &&
+                        File.Exists(Path.Combine(subdirectory, "rejestr.bat")))
+                    {
+                        // Add this path to the found paths
+                        foundPaths.Add(new XLPaths(folderName, subdirectory));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error or handle it as appropriate
+                System.Diagnostics.Debug.WriteLine($"Error searching in subdirectories of {parentDirectory}: {ex.Message}");
+            }
+        }
+
+        // This method adds non-duplicate paths to the configuration
+        private int AddNonDuplicatePaths(List<XLPaths> newPaths)
+        {
+            int addedCount = 0;
+
+            // Get existing paths from the configuration
+            var existingPaths = serializationManager.GetData().XLPathsList;
+
+            // Check each new path
+            foreach (var newPath in newPaths)
+            {
+                // Check if this path is already in the configuration
+                bool isDuplicate = false;
+
+                foreach (var existingPath in existingPaths)
+                {
+                    // Compare paths (case-insensitive)
+                    if (string.Equals(existingPath.Path, newPath.Path, StringComparison.OrdinalIgnoreCase))
+                    {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                // If this is not a duplicate, add it
+                if (!isDuplicate)
+                {
+                    // Add the path to the configuration
+                    serializationManager.AddXLPath(newPath);
+                    addedCount++;
+                }
+            }
+
+            return addedCount;
+        }
+        #endregion
 
         /// <summary>
         /// Sets up event handlers for drag and drop operations
@@ -176,14 +461,16 @@ namespace XLPilot.TabControls
         {
             var buttons = new ObservableCollection<PilotButtonData>();
 
-            // Add existing buttons
+            // Add existing buttons with new button types and action identifiers
             buttons.Add(new PilotButtonData(
                 "XL",
                 "cdnxl.exe",
                 "/XLPilot;component/Resources/Images/cdnxl.png",
                 false,
                 "",
-                "Uruchom Comarch ERP XL"));
+                "Uruchom Comarch ERP XL",
+                "",
+                PilotButtonType.SystemStandard));
 
             buttons.Add(new PilotButtonData(
                 "XL admin",
@@ -191,7 +478,9 @@ namespace XLPilot.TabControls
                 "/XLPilot;component/Resources/Images/cdnxl.png",
                 true,
                 "",
-                "Uruchom Comarch ERP XL jako administrator"));
+                "Uruchom Comarch ERP XL jako administrator",
+                "",
+                PilotButtonType.SystemStandard));
 
             buttons.Add(new PilotButtonData(
                 "Rejestr.bat",
@@ -199,26 +488,34 @@ namespace XLPilot.TabControls
                 "/XLPilot;component/Resources/Images/cmd.png",
                 true,
                 "",
-                "Uruchom rejestr.bat"));
+                "Uruchom rejestr.bat",
+                "",
+                PilotButtonType.SystemStandard));
 
             buttons.Add(new PilotButtonData(
                 "Zmienna Path",
-                "test.exe",
+                "",
                 "/XLPilot;component/Resources/Images/env_var.png",
                 true,
                 "",
-                "Ustaw zmienną środowiskową Path do danego XL-a górze"));
+                "Ustaw zmienną środowiskową Path do danego XL-a górze",
+                "",
+                PilotButtonType.SystemSpecial,
+                "ChangeEnvVariable"));
 
             buttons.Add(new PilotButtonData(
                 "Folder XL",
-                "test.exe",
+                "",
                 "/XLPilot;component/Resources/Images/folder.png",
                 false,
                 "",
-                "Otwórz folder z Comarch ERP XL"));
+                "Otwórz folder z Comarch ERP XL",
+                "",
+                PilotButtonType.SystemStandard));
 
             return buttons;
         }
+
 
         /// <summary>
         /// Saves XL buttons to the configuration
@@ -240,7 +537,9 @@ namespace XLPilot.TabControls
                         item.RunAsAdmin,
                         item.Arguments,
                         item.ToolTipText,
-                        item.Directory
+                        item.Directory,
+                        item.ButtonType,
+                        item.ActionIdentifier
                     ));
                 }
 
@@ -604,5 +903,6 @@ namespace XLPilot.TabControls
                 }
             }
         }
+
     }
 }

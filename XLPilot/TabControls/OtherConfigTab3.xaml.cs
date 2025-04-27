@@ -8,6 +8,7 @@ using XLPilot.UserControls;
 using XLPilot.XmlUtilities;
 using XLPilot.Models;
 using XLPilot.Services;
+using XLPilot.Models.Enums;
 
 namespace XLPilot.TabControls
 {
@@ -140,46 +141,60 @@ namespace XLPilot.TabControls
         {
             var buttons = new ObservableCollection<PilotButtonData>();
 
-            // Add existing buttons
+            // Add special registry buttons with appropriate action identifiers
             buttons.Add(new PilotButtonData(
                 "Konfig. komp.",
-                "test.exe",
+                "",
                 "/XLPilot;component/Resources/Images/regedit.png",
                 true,
                 "",
-                "Pokaż rejestr zawierający konfigurację komputera ze shella XL-a"));
+                "Pokaż rejestr zawierający konfigurację komputera ze shella XL-a",
+                "C:\\",
+                PilotButtonType.SystemSpecial,
+                "ComputerConfigRegistry"));
 
             buttons.Add(new PilotButtonData(
                 "Bazy użytkownika",
-                "test.exe",
+                "",
                 "/XLPilot;component/Resources/Images/regedit.png",
                 true,
                 "",
-                "Pokaż rejestr zawierający bazy HKCU"));
+                "Pokaż rejestr zawierający bazy HKCU",
+                "C:\\",
+                PilotButtonType.SystemSpecial,
+                "UserDatabasesRegistry"));
 
             buttons.Add(new PilotButtonData(
                 "Bazy komputera",
-                "test.exe",
+                "",
                 "/XLPilot;component/Resources/Images/regedit.png",
                 true,
                 "",
-                "Pokaż rejestr zawierający bazy HKLM"));
+                "Pokaż rejestr zawierający bazy HKLM",
+                "C:\\",
+                PilotButtonType.SystemSpecial,
+                "ComputerDatabasesRegistry"));
 
             buttons.Add(new PilotButtonData(
                 "Usługi DS",
-                "test.exe",
+                "",
                 "/XLPilot;component/Resources/Images/regedit.png",
                 true,
                 "",
-                "Pokaż rejestr zawierający usługi Data Service"));
+                "Pokaż rejestr zawierający usługi Data Service",
+                "C:\\",
+                PilotButtonType.SystemSpecial,
+                "DSServicesRegistry"));
 
             buttons.Add(new PilotButtonData(
                 "Folder temp",
-                "test.exe",
+                "temp",
                 "/XLPilot;component/Resources/Images/folder.png",
                 false,
                 "",
-                "Pokaż folder %temp% danego użytkownika"));
+                "Pokaż folder %temp% danego użytkownika",
+                "C:\\Users\\domin\\Downloads\\XL-e\\Comarch ERP XL 2024.1.3 api",
+                PilotButtonType.SystemStandard));
 
             return buttons;
         }
@@ -204,7 +219,9 @@ namespace XLPilot.TabControls
                         item.RunAsAdmin,
                         item.Arguments,
                         item.ToolTipText,
-                        item.Directory
+                        item.Directory,
+                        item.ButtonType,
+                        item.ActionIdentifier
                     ));
                 }
 

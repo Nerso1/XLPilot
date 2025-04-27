@@ -425,7 +425,9 @@ namespace XLPilot.UserControls
                     projectItem.RunAsAdmin == item.RunAsAdmin &&
                     projectItem.Arguments == item.Arguments &&
                     projectItem.ToolTipText == item.ToolTipText &&
-                    projectItem.Directory == item.Directory)
+                    projectItem.Directory == item.Directory &&
+                    projectItem.ButtonType == item.ButtonType &&
+                    projectItem.ActionIdentifier == item.ActionIdentifier)
                 {
                     itemToRemove = projectItem;
                     break;
@@ -444,7 +446,7 @@ namespace XLPilot.UserControls
         /// </summary>
         private void AddItemToProjectItems(PilotButtonData item, int insertIndex)
         {
-            // Create a new item with the same properties
+            // Create a new item with the same properties, including ButtonType and ActionIdentifier
             PilotButtonData newItem = new PilotButtonData(
                 item.ButtonText,
                 item.FileName,
@@ -452,7 +454,9 @@ namespace XLPilot.UserControls
                 item.RunAsAdmin,
                 item.Arguments,
                 item.ToolTipText,
-                item.Directory
+                item.Directory,
+                item.ButtonType,
+                item.ActionIdentifier
             );
 
             // Add it at the specified index
@@ -483,7 +487,9 @@ namespace XLPilot.UserControls
                     ProjectItems[i].RunAsAdmin == item.RunAsAdmin &&
                     ProjectItems[i].Arguments == item.Arguments &&
                     ProjectItems[i].ToolTipText == item.ToolTipText &&
-                    ProjectItems[i].Directory == item.Directory)
+                    ProjectItems[i].Directory == item.Directory &&
+                    ProjectItems[i].ButtonType == item.ButtonType &&
+                    ProjectItems[i].ActionIdentifier == item.ActionIdentifier)
                 {
                     sourceIndex = i;
                     break;

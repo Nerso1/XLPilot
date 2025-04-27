@@ -63,12 +63,14 @@
 
         </Grid>-->
 
-        <DockPanel Grid.Row="1" Margin="5,0">
-            <!--<Separator DockPanel.Dock="Top"/>-->
+        <!--<DockPanel Grid.Row="1" Margin="5,0">
+            <Separator DockPanel.Dock="Top"/>
             <TextBlock Name="tbXLIconLayouts" Text="Układ ikon" FontSize="16" Width="120" DockPanel.Dock="Left" VerticalAlignment="Center"/>
             <ComboBox VerticalAlignment="Center" Margin="0,0,0,5"/>
-        </DockPanel>
-
+        </DockPanel>-->
+        <!-- Section Title for XL Options -->
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Edycja dostępnych opcji niepowiązanych z instalacjami XL" 
+           FontSize="16" FontWeight="SemiBold" Margin="5,0,5,5"/>
         <local:WrapPanel_DragAndDrop Grid.Row="2" x:Name="OtherDragDropControl" />
 
     </Grid>

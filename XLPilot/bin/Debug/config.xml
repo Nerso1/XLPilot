@@ -2,23 +2,16 @@
 <SerializationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <XLPathsList>
     <XLPaths>
-      <Name>2025.0.2</Name>
-      <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
-      <LicenseServer>NBDCIASTON</LicenseServer>
-      <LicenseKey>500012345</LicenseKey>
+      <Name>Comarch ERP XL 2024.1</Name>
+      <Path>C:\Program Files (x86)\Comarch ERP XL 2024.1</Path>
     </XLPaths>
     <XLPaths>
-      <Name>2024.0.2 api</Name>
-      <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
-      <Database />
-      <LicenseServer>XLKLUCZ</LicenseServer>
-      <LicenseKey />
+      <Name>Comarch ERP XL 2024.1.3 api</Name>
+      <Path>C:\Program Files (x86)\Comarch ERP XL 2024.1.3 api</Path>
     </XLPaths>
     <XLPaths>
-      <Name>2024.1 kompilacja 27.04</Name>
-      <Path>C:\Users\domin\source\repos\XLPilot\XLPilot\bin\Debug</Path>
-      <LicenseServer>XLKLUCZ</LicenseServer>
-      <LicenseKey />
+      <Name>Comarch ERP XL 2025.0</Name>
+      <Path>C:\Program Files (x86)\Comarch ERP XL 2025.0</Path>
     </XLPaths>
   </XLPathsList>
   <XLPilotButtons>
@@ -30,6 +23,8 @@
       <Arguments />
       <ToolTipText>Uruchom Comarch ERP XL</ToolTipText>
       <Directory />
+      <ButtonType>SystemStandard</ButtonType>
+      <ActionIdentifier />
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>XL admin</ButtonText>
@@ -39,6 +34,8 @@
       <Arguments />
       <ToolTipText>Uruchom Comarch ERP XL jako administrator</ToolTipText>
       <Directory />
+      <ButtonType>SystemStandard</ButtonType>
+      <ActionIdentifier />
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>Rejestr.bat</ButtonText>
@@ -48,71 +45,87 @@
       <Arguments />
       <ToolTipText>Uruchom rejestr.bat</ToolTipText>
       <Directory />
+      <ButtonType>SystemStandard</ButtonType>
+      <ActionIdentifier />
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>Zmienna Path</ButtonText>
-      <FileName>test.exe</FileName>
+      <FileName />
       <ImageSource>/XLPilot;component/Resources/Images/env_var.png</ImageSource>
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Ustaw zmienną środowiskową Path do danego XL-a górze</ToolTipText>
       <Directory />
+      <ButtonType>SystemSpecial</ButtonType>
+      <ActionIdentifier>ChangeEnvVariable</ActionIdentifier>
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>Folder XL</ButtonText>
-      <FileName>test.exe</FileName>
+      <FileName />
       <ImageSource>/XLPilot;component/Resources/Images/folder.png</ImageSource>
       <RunAsAdmin>false</RunAsAdmin>
       <Arguments />
       <ToolTipText>Otwórz folder z Comarch ERP XL</ToolTipText>
       <Directory />
+      <ButtonType>SystemStandard</ButtonType>
+      <ActionIdentifier />
     </PilotButtonData>
   </XLPilotButtons>
   <OtherPilotButtons>
     <PilotButtonData>
       <ButtonText>Konfig. komp.</ButtonText>
-      <FileName>test.exe</FileName>
+      <FileName />
       <ImageSource>/XLPilot;component/Resources/Images/regedit.png</ImageSource>
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż rejestr zawierający konfigurację komputera ze shella XL-a</ToolTipText>
-      <Directory />
+      <Directory>C:\</Directory>
+      <ButtonType>SystemSpecial</ButtonType>
+      <ActionIdentifier>ComputerConfigRegistry</ActionIdentifier>
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>Bazy użytkownika</ButtonText>
-      <FileName>test.exe</FileName>
+      <FileName />
       <ImageSource>/XLPilot;component/Resources/Images/regedit.png</ImageSource>
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż rejestr zawierający bazy HKCU</ToolTipText>
-      <Directory />
+      <Directory>C:\</Directory>
+      <ButtonType>SystemSpecial</ButtonType>
+      <ActionIdentifier>UserDatabasesRegistry</ActionIdentifier>
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>Bazy komputera</ButtonText>
-      <FileName>test.exe</FileName>
+      <FileName />
       <ImageSource>/XLPilot;component/Resources/Images/regedit.png</ImageSource>
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż rejestr zawierający bazy HKLM</ToolTipText>
-      <Directory />
+      <Directory>C:\</Directory>
+      <ButtonType>SystemSpecial</ButtonType>
+      <ActionIdentifier>ComputerDatabasesRegistry</ActionIdentifier>
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>Usługi DS</ButtonText>
-      <FileName>test.exe</FileName>
+      <FileName />
       <ImageSource>/XLPilot;component/Resources/Images/regedit.png</ImageSource>
       <RunAsAdmin>true</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż rejestr zawierający usługi Data Service</ToolTipText>
-      <Directory />
+      <Directory>C:\</Directory>
+      <ButtonType>SystemSpecial</ButtonType>
+      <ActionIdentifier>DSServicesRegistry</ActionIdentifier>
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>Folder temp</ButtonText>
-      <FileName>test.exe</FileName>
+      <FileName>temp</FileName>
       <ImageSource>/XLPilot;component/Resources/Images/folder.png</ImageSource>
       <RunAsAdmin>false</RunAsAdmin>
       <Arguments />
       <ToolTipText>Pokaż folder %temp% danego użytkownika</ToolTipText>
-      <Directory />
+      <Directory>C:\Users\domin\Downloads\XL-e\Comarch ERP XL 2024.1.3 api</Directory>
+      <ButtonType>SystemStandard</ButtonType>
+      <ActionIdentifier />
     </PilotButtonData>
   </OtherPilotButtons>
 </SerializationData>

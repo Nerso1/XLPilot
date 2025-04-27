@@ -64,9 +64,11 @@
     <Compile Include="Models\Containers\PilotButtonsContainer.cs" />
     <Compile Include="Models\Containers\XLIconsContainer.cs" />
     <Compile Include="Models\Containers\XLPathsContainer.cs" />
+    <Compile Include="Models\Enums\PilotButtonType.cs" />
     <Compile Include="Models\PilotButtonData.cs" />
     <Compile Include="Models\SerializationData.cs" />
     <Compile Include="Models\XLPaths.cs" />
+    <Compile Include="Services\ButtonActionManager.cs" />
     <Compile Include="UserControls\PilotButtonMovable.xaml.cs">
       <DependentUpon>PilotButtonMovable.xaml</DependentUpon>
     </Compile>

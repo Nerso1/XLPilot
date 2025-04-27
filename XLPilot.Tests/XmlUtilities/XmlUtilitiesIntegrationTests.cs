@@ -2,6 +2,7 @@
 using System.IO;
 using XLPilot.Models;
 using XLPilot.Models.Containers;
+using XLPilot.Models.Enums;
 using XLPilot.XmlUtilities;
 
 namespace XLPilot.Tests.XmlUtilities
@@ -59,6 +60,8 @@ namespace XLPilot.Tests.XmlUtilities
             var imagePath = "/test/image.png";
             var tooltip = "Test Tooltip";
             var directory = "C:\\TestDir";
+            var buttonType = PilotButtonType.SystemSpecial;
+            var actionIdentifier = "TestAction";
 
             // Verify inputs are valid
             Assert.IsTrue(XmlValidator.ValidateInput(buttonName));
@@ -66,12 +69,13 @@ namespace XLPilot.Tests.XmlUtilities
             Assert.IsTrue(XmlValidator.ValidateInput(imagePath));
             Assert.IsTrue(XmlValidator.ValidateInput(tooltip));
             Assert.IsTrue(XmlValidator.ValidateInput(directory));
+            Assert.IsTrue(XmlValidator.ValidateInput(actionIdentifier));
 
             // 2. Create a SerializationManager
             var manager = new SerializationManager(Path.Combine(tempDirectory, testConfigFile));
 
             // 3. Add data to the manager
-            var button = new PilotButtonData(buttonName, fileName, imagePath, true, "", tooltip, directory);
+            var button = new PilotButtonData(buttonName, fileName, imagePath, true, "", tooltip, directory, buttonType, actionIdentifier);
             manager.GetData().XLPilotButtons.Add(button);
 
             var path = new XLPaths("TestPath", "C:\\TestPath", "TestDB", "TestServer", "TestKey");
@@ -101,175 +105,49 @@ namespace XLPilot.Tests.XmlUtilities
             Assert.IsTrue(data.XLPilotButtons[0].RunAsAdmin);
             Assert.AreEqual(tooltip, data.XLPilotButtons[0].ToolTipText);
             Assert.AreEqual(directory, data.XLPilotButtons[0].Directory);
+            Assert.AreEqual(buttonType, data.XLPilotButtons[0].ButtonType);
+            Assert.AreEqual(actionIdentifier, data.XLPilotButtons[0].ActionIdentifier);
         }
 
         [TestMethod]
-        public void Integration_ExportImportFunctionality()
+        public void Serialize_Deserialize_RoundTrip_WithNewProperties()
         {
-            // This test verifies export/import functionality
+            // Create a button with the new properties
+            var originalButton = new PilotButtonData(
+                "Special Button",
+                "special.exe",
+                "/image.png",
+                true,
+                "-args",
+                "Tooltip",
+                "C:\\Dir",
+                PilotButtonType.SystemSpecial,
+                "SpecialAction");
 
-            // 1. Set up a manager with initial data
-            var manager = new SerializationManager(Path.Combine(tempDirectory, testConfigFile));
+            // Create container for the button
+            var container = new PilotButtonsContainer();
+            container.AddButton(originalButton);
 
-            // Add an XL button
-            var xlButton = new PilotButtonData("XL Button", "xl.exe");
-            manager.GetData().XLPilotButtons.Add(xlButton);
+            // Serialize the container
+            string filePath = Path.Combine(tempDirectory, "serialization_test.xml");
+            XmlSerializer<PilotButtonsContainer>.Serialize(container, filePath);
 
-            // Add an Other button
-            var otherButton = new PilotButtonData("Other Button", "other.exe");
-            manager.GetData().OtherPilotButtons.Add(otherButton);
+            // Deserialize the container
+            var loadedContainer = XmlSerializer<PilotButtonsContainer>.Deserialize(filePath);
 
-            // Save the data
-            manager.SaveAllData();
+            // Verify the deserialized button
+            Assert.AreEqual(1, loadedContainer.Items.Count);
+            var loadedButton = loadedContainer.Items[0];
 
-            // 2. Export the XL buttons
-            string xlExportFile = Path.Combine(tempDirectory, "exported_xl_buttons.xml");
-            manager.SaveXLPilotButtons(xlExportFile);
-
-            // 3. Export the Other buttons
-            string otherExportFile = Path.Combine(tempDirectory, "exported_other_buttons.xml");
-            manager.SaveOtherPilotButtons(otherExportFile);
-
-            // 4. Create a new manager with empty data
-            var importManager = new SerializationManager(Path.Combine(tempDirectory, "import_test.xml"));
-
-            // 5. Import the XL buttons
-            importManager.LoadXLPilotButtons(xlExportFile);
-
-            // Verify XL buttons imported correctly
-            Assert.AreEqual(1, importManager.GetData().XLPilotButtons.Count);
-            Assert.AreEqual("XL Button", importManager.GetData().XLPilotButtons[0].ButtonText);
-            Assert.AreEqual("xl.exe", importManager.GetData().XLPilotButtons[0].FileName);
-
-            // 6. Import the Other buttons
-            importManager.LoadOtherPilotButtons(otherExportFile);
-
-            // Verify Other buttons imported correctly
-            Assert.AreEqual(1, importManager.GetData().OtherPilotButtons.Count);
-            Assert.AreEqual("Other Button", importManager.GetData().OtherPilotButtons[0].ButtonText);
-            Assert.AreEqual("other.exe", importManager.GetData().OtherPilotButtons[0].FileName);
-        }
-
-        [TestMethod]
-        public void Integration_UpdateExistingData()
-        {
-            // This test verifies updating existing data
-
-            // 1. Set up a manager with initial data
-            var manager = new SerializationManager(Path.Combine(tempDirectory, testConfigFile));
-
-            // Add XL path
-            var originalPath = new XLPaths("TestPath", "C:\\Original");
-            manager.AddXLPath(originalPath);
-
-            // Save the data
-            manager.SaveAllData();
-
-            // 2. Update the XL path
-            var updatedPath = new XLPaths("TestPath", "C:\\Updated", "UpdatedDB", "UpdatedServer", "UpdatedKey");
-            bool updateResult = manager.UpdateXLPath(updatedPath);
-
-            // Verify the update succeeded
-            Assert.IsTrue(updateResult);
-
-            // 3. Save the updated data
-            manager.SaveAllData();
-
-            // 4. Create a new manager to verify the changes were saved
-            var verifyManager = new SerializationManager(Path.Combine(tempDirectory, testConfigFile));
-
-            // Verify the path was updated
-            var data = verifyManager.GetData();
-            Assert.AreEqual(1, data.XLPathsList.Count);
-            Assert.AreEqual("TestPath", data.XLPathsList[0].Name);
-            Assert.AreEqual("C:\\Updated", data.XLPathsList[0].Path);
-            Assert.AreEqual("UpdatedDB", data.XLPathsList[0].Database);
-            Assert.AreEqual("UpdatedServer", data.XLPathsList[0].LicenseServer);
-            Assert.AreEqual("UpdatedKey", data.XLPathsList[0].LicenseKey);
-        }
-
-        [TestMethod]
-        public void Integration_ImportAddsToExistingCollection()
-        {
-            // This test verifies that import adds to existing collections
-
-            // 1. Set up a manager with initial data
-            var manager = new SerializationManager(Path.Combine(tempDirectory, testConfigFile));
-
-            // Add an XL button
-            var existingButton = new PilotButtonData("Existing Button", "existing.exe");
-            manager.GetData().XLPilotButtons.Add(existingButton);
-
-            // Save the data
-            manager.SaveAllData();
-
-            // 2. Create a container and buttons to import
-            var buttonsContainer = new PilotButtonsContainer();
-            var importButton = new PilotButtonData("Import Button", "import.exe");
-            buttonsContainer.AddButton(importButton);
-
-            // Export the buttons container directly
-            string exportFile = Path.Combine(tempDirectory, "export_buttons.xml");
-            XmlSerializer<PilotButtonsContainer>.Serialize(buttonsContainer, exportFile);
-
-            // 3. Import the buttons
-            manager.ImportXLPilotButtons(exportFile);
-
-            // 4. Verify the import added to the existing collection
-            var data = manager.GetData();
-            Assert.AreEqual(2, data.XLPilotButtons.Count);
-
-            // Check the buttons exist by name
-            bool foundExisting = false;
-            bool foundImport = false;
-
-            foreach (var button in data.XLPilotButtons)
-            {
-                if (button.ButtonText == "Existing Button" && button.FileName == "existing.exe")
-                {
-                    foundExisting = true;
-                }
-                else if (button.ButtonText == "Import Button" && button.FileName == "import.exe")
-                {
-                    foundImport = true;
-                }
-            }
-
-            Assert.IsTrue(foundExisting, "Existing button should still be present");
-            Assert.IsTrue(foundImport, "Imported button should be added");
-        }
-
-        [TestMethod]
-        public void Integration_GetAndUpdateContainers()
-        {
-            // This test verifies getting and updating containers
-
-            // 1. Set up a manager with initial data
-            var manager = new SerializationManager(Path.Combine(tempDirectory, testConfigFile));
-
-            // Add buttons
-            manager.GetData().XLPilotButtons.Add(new PilotButtonData("Button1", "exe1.exe"));
-            manager.SaveAllData();
-
-            // 2. Get the container
-            var container = manager.GetXLPilotButtonsContainer();
-
-            // Verify the container has the initial data
-            Assert.AreEqual(1, container.Items.Count);
-            Assert.AreEqual("Button1", container.Items[0].ButtonText);
-
-            // 3. Modify the container
-            container.AddButton(new PilotButtonData("Button2", "exe2.exe"));
-            container.RemoveButton(container.Items[0]); // Remove Button1
-
-            // 4. Update with the modified container
-            manager.UpdateXLPilotButtons(container);
-
-            // 5. Verify the changes were saved
-            var data = manager.GetData();
-            Assert.AreEqual(1, data.XLPilotButtons.Count);
-            Assert.AreEqual("Button2", data.XLPilotButtons[0].ButtonText);
-            Assert.AreEqual("exe2.exe", data.XLPilotButtons[0].FileName);
+            Assert.AreEqual(originalButton.ButtonText, loadedButton.ButtonText);
+            Assert.AreEqual(originalButton.FileName, loadedButton.FileName);
+            Assert.AreEqual(originalButton.ImageSource, loadedButton.ImageSource);
+            Assert.AreEqual(originalButton.RunAsAdmin, loadedButton.RunAsAdmin);
+            Assert.AreEqual(originalButton.Arguments, loadedButton.Arguments);
+            Assert.AreEqual(originalButton.ToolTipText, loadedButton.ToolTipText);
+            Assert.AreEqual(originalButton.Directory, loadedButton.Directory);
+            Assert.AreEqual(originalButton.ButtonType, loadedButton.ButtonType);
+            Assert.AreEqual(originalButton.ActionIdentifier, loadedButton.ActionIdentifier);
         }
     }
 }

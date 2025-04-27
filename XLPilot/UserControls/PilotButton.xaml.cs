@@ -4,6 +4,8 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using XLPilot.Models;
+using XLPilot.Services;
 
 namespace XLPilot.UserControls
 {
@@ -30,6 +32,9 @@ namespace XLPilot.UserControls
         /// Reference to the admin shield image that indicates administrator privileges
         /// </summary>
         private Image adminShieldImage;
+
+        // The XL path associated with this button (if any)
+        private XLPaths associatedXLPath;
 
         /// <summary>
         /// Initializes a new instance of the PilotButton class
@@ -67,6 +72,14 @@ namespace XLPilot.UserControls
 
             // Register for visibility changes to ensure the admin shield is updated when the control becomes visible
             this.IsVisibleChanged += PilotButton_IsVisibleChanged;
+        }
+
+        /// <summary>
+        /// Sets the associated XL path for this button
+        /// </summary>
+        public void SetAssociatedXLPath(XLPaths xlPath)
+        {
+            associatedXLPath = xlPath;
         }
 
         /// <summary>
@@ -113,17 +126,28 @@ namespace XLPilot.UserControls
 
         /// <summary>
         /// Event handler for when the internal button is clicked.
-        /// Launches the configured application with the specified parameters.
+        /// Uses the ButtonActionManager to execute the appropriate action.
         /// </summary>
         /// <param name="sender">The source of the event</param>
         /// <param name="e">Event data</param>
         private void InternalButton_Click(object sender, RoutedEventArgs e)
         {
-            // Show a message (for debugging purposes - may be removed in production)
-            //MessageBox.Show("Clicked");
+            // Create a PilotButtonData from the current properties
+            var buttonData = new PilotButtonData
+            {
+                ButtonText = ButtonText,
+                FileName = FileName,
+                ImageSource = ImageSource,
+                RunAsAdmin = RunAsAdmin,
+                Arguments = Arguments,
+                ToolTipText = ToolTipText,
+                Directory = Directory,
+                ButtonType = ButtonType,
+                ActionIdentifier = ActionIdentifier
+            };
 
-            // Launch the application using the configured properties
-            RunExecutable(Directory, FileName, RunAsAdmin, Arguments);
+            // Execute the appropriate action using the ButtonActionManager
+            ButtonActionManager.ExecuteButtonAction(buttonData, associatedXLPath);
         }
 
         /// <summary>
@@ -360,77 +384,44 @@ namespace XLPilot.UserControls
                 typeof(string),
                 typeof(PilotButton),
                 new PropertyMetadata(string.Empty));
-        #endregion
 
         /// <summary>
-        /// Runs the specified executable with optional arguments.
-        /// This method handles the actual process of launching the application
-        /// with the specified parameters, including elevation to administrator 
-        /// privileges if required.
+        /// Gets or sets the type of button (UserStandard, SystemStandard, SystemSpecial)
         /// </summary>
-        /// <param name="directory">The directory containing the executable</param>
-        /// <param name="fileName">The name of the executable file</param>
-        /// <param name="runAsAdmin">Whether to run as administrator</param>
-        /// <param name="arguments">Command line arguments to pass to the executable</param>
-        /// <remarks>
-        /// If runAsAdmin is true, this will trigger a UAC prompt to elevate privileges.
-        /// Error handling is included to provide feedback if the file doesn't exist or
-        /// if the process fails to start for any reason.
-        /// </remarks>
-        private void RunExecutable(string directory, string fileName, bool runAsAdmin, string arguments = null)
+        public Models.Enums.PilotButtonType ButtonType
         {
-            // Exit early if fileName is empty
-            if (string.IsNullOrEmpty(fileName))
-            {
-                MessageBox.Show("No application specified to run.");
-                return;
-            }
-
-            // Build the full path to the executable
-            string filePath = Path.Combine(directory, fileName);
-
-            // Check if the file exists before attempting to run it
-            if (File.Exists(filePath))
-            {
-                try
-                {
-                    // Set up the process information with all required parameters
-                    ProcessStartInfo processInfo = new ProcessStartInfo
-                    {
-                        FileName = filePath,
-                        WorkingDirectory = directory,  // Set working directory to ensure relative paths work
-                        UseShellExecute = true,        // Required for UAC elevation
-                        Arguments = arguments          // Pass any command line arguments
-                    };
-
-                    // Set the "runas" verb if we need to run as administrator
-                    // This will trigger a UAC prompt for elevation
-                    if (runAsAdmin)
-                    {
-                        processInfo.Verb = "runas";
-                    }
-
-                    // Start the process with the configured settings
-                    Process.Start(processInfo);
-                }
-                catch (Exception ex)
-                {
-                    // Show a detailed error message if the process couldn't be started
-                    // This could be due to UAC denial, insufficient permissions, or other issues
-                    MessageBox.Show($"Failed to run {fileName}: {ex.Message}",
-                                   "Application Launch Error",
-                                   MessageBoxButton.OK,
-                                   MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                // Show an error message if the specified file doesn't exist
-                MessageBox.Show($"File not found: {filePath}",
-                               "File Not Found",
-                               MessageBoxButton.OK,
-                               MessageBoxImage.Warning);
-            }
+            get => (Models.Enums.PilotButtonType)GetValue(ButtonTypeProperty);
+            set => SetValue(ButtonTypeProperty, value);
         }
+
+        /// <summary>
+        /// Identifies the ButtonType dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ButtonTypeProperty =
+            DependencyProperty.Register(
+                nameof(ButtonType),
+                typeof(Models.Enums.PilotButtonType),
+                typeof(PilotButton),
+                new PropertyMetadata(Models.Enums.PilotButtonType.UserStandard));
+
+        /// <summary>
+        /// Gets or sets the action identifier for special actions
+        /// </summary>
+        public string ActionIdentifier
+        {
+            get => (string)GetValue(ActionIdentifierProperty);
+            set => SetValue(ActionIdentifierProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the ActionIdentifier dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActionIdentifierProperty =
+            DependencyProperty.Register(
+                nameof(ActionIdentifier),
+                typeof(string),
+                typeof(PilotButton),
+                new PropertyMetadata(string.Empty));
     }
 }
+#endregion

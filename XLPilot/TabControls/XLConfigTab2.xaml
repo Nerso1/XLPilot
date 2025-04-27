@@ -110,7 +110,9 @@
                 <Button x:Name="BtnDelete" Content="🗑️ Usuń" Margin="0,0,5,0" Width="80" Click="BtnDelete_Click"
                         IsEnabled="{Binding ElementName=DirectoriesListView, Path=SelectedItem, Converter={StaticResource IsDefaultEmptyEntryConverter}}" />
                 <Rectangle x:Name="rtgSeparateButtons" Width="1" Height="auto" Fill="DarkGray" Margin="0,0,5,0" />
-                <Button x:Name="BtnImport" Content="⤵️ Importuj ścieżki" HorizontalAlignment="Right" Width="110" />
+                <Button x:Name="BtnImport" Content="⤵️ Importuj ścieżki" HorizontalAlignment="Right" Width="110" Margin="0,0,5,0" />
+                <Button x:Name="BtnClearOldXLPaths" Content="🧹 Wyczyść" HorizontalAlignment="Right" Width="90"  />
+
             </StackPanel>
 
             <!-- ListView -->

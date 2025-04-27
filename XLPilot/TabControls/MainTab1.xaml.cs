@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using XLPilot.Models;
+using XLPilot.Models.Enums;
 using XLPilot.Services;
 using XLPilot.XmlUtilities;
 using System.Collections.Generic;
@@ -37,7 +38,6 @@ namespace XLPilot.TabControls
             // Reload the UI when the tab is shown
             LoadXLPathsWithIcons();
             LoadOtherIcons();
-            //CheckXLIcons();
         }
 
         /// <summary>
@@ -50,10 +50,23 @@ namespace XLPilot.TabControls
                 // Get the Other icons
                 var otherIcons = serializationManager.GetData().OtherPilotButtons;
 
+                // Check if there are any Other icons
+                bool hasOtherIcons = otherIcons != null && otherIcons.Count > 0;
+
+                // Show/hide the separator and Other icons section based on whether there are icons
+                grdMainGrid.RowDefinitions[1].Height = hasOtherIcons ? new GridLength(2) : new GridLength(0);
+                grdMainGrid.RowDefinitions[2].Height = hasOtherIcons ? new GridLength(155) : new GridLength(0);
+
+                // If there are no icons, we can return early
+                if (!hasOtherIcons)
+                {
+                    return;
+                }
+
                 // Get the StackPanel in the second ScrollViewer (Grid.Row="2")
                 var otherIconsStackPanel = ((ScrollViewer)grdMainGrid.Children[2]).Content as StackPanel;
 
-                // Clear any existing content
+                // Rest of your existing code for populating the Other icons
                 if (otherIconsStackPanel != null)
                 {
                     otherIconsStackPanel.Children.Clear();
@@ -63,7 +76,7 @@ namespace XLPilot.TabControls
                     {
                         Text = "Opcje niepowiązane z XL-ami",
                         FontSize = 16,
-                        //FontWeight = FontWeights.Bold,
+                        FontWeight = FontWeights.Bold,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 5, 0, 10)
                     };
@@ -85,8 +98,8 @@ namespace XLPilot.TabControls
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading Other icons: {ex.Message}",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Błąd podczas wczytywania przycisków 'inne': {ex.Message}",
+                              "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -147,6 +160,8 @@ namespace XLPilot.TabControls
                             Arguments = iconData.Arguments,
                             ToolTipText = iconData.ToolTipText,
                             Directory = iconData.Directory,
+                            ButtonType = iconData.ButtonType,
+                            ActionIdentifier = iconData.ActionIdentifier,
                             Margin = new Thickness(5) // Add margin between buttons
                         };
 
@@ -160,10 +175,11 @@ namespace XLPilot.TabControls
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error creating Other icons: {ex.Message}",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Błąd podczas tworzenia przycisków 'inne': {ex.Message}",
+                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         /// <summary>
         /// Loads all XL paths and creates UI elements for each
         /// </summary>
@@ -194,8 +210,8 @@ namespace XLPilot.TabControls
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading XL paths and icons: {ex.Message}",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Błąd podczas wczytywania ścieżek i ikon XL: {ex.Message}",
+                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -271,14 +287,6 @@ namespace XLPilot.TabControls
             // Add the StackPanel to the section
             sectionPanel.Children.Add(buttonsStackPanel);
 
-            // Add a separator for visual separation between XL path sections
-            //var separator = new Separator
-            //{
-            //    Margin = new Thickness(0, 0, 0, 10),
-            //    Width = 550 // Set a fixed width for the separator
-            //};
-            //sectionPanel.Children.Add(separator);
-
             // Add the complete section to the parent panel
             parentPanel.Children.Add(sectionPanel);
         }
@@ -340,8 +348,13 @@ namespace XLPilot.TabControls
                             Arguments = iconData.Arguments,
                             ToolTipText = iconData.ToolTipText,
                             Directory = string.IsNullOrEmpty(iconData.Directory) ? xlPath.Path : iconData.Directory,
+                            ButtonType = iconData.ButtonType,
+                            ActionIdentifier = iconData.ActionIdentifier,
                             Margin = new Thickness(5) // Add margin between buttons
                         };
+
+                        // Set the associated XL path for this button
+                        pilotButton.SetAssociatedXLPath(xlPath);
 
                         // Add the button to the row panel
                         rowPanel.Children.Add(pilotButton);
@@ -353,96 +366,9 @@ namespace XLPilot.TabControls
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error creating icons: {ex.Message}",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Błąd podczas tworzenia ikon: {ex.Message}",
+                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        /// <summary>
-        /// Debug method to check XL paths
-        /// </summary>
-        private void CheckXLPaths()
-        {
-            try
-            {
-                // Get the SerializationManager instance
-                var serializationManager = SerializationService.Manager;
-
-                // Get all XL Paths using the GetXLPathsContainer method
-                var pathsContainer = serializationManager.GetXLPathsContainer();
-
-                // Check if there are any paths
-                if (pathsContainer.Items.Count == 0)
-                {
-                    MessageBox.Show("No XL Paths found.", "XL Paths", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
-
-                // Build a message with all the path names
-                string message = "XL Paths found:\n\n";
-
-                // Loop through each path and add its name to the message
-                foreach (var path in pathsContainer.Items)
-                {
-                    message += $"- {path.Name}\n";
-                }
-
-                // Display the message box with the list of paths
-                MessageBox.Show(message, "XL Paths", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                // Show error message if something went wrong
-                MessageBox.Show($"Error loading XL Paths: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        /// <summary>
-        /// Debug method to check XL icons
-        /// </summary>
-        private void CheckXLIcons()
-        {
-            try
-            {
-                // Get the SerializationManager instance
-                var serializationManager = SerializationService.Manager;
-
-                // Get the XL Pilot Buttons data
-                var xlButtons = serializationManager.GetData().XLPilotButtons;
-
-                // Check if there are any buttons
-                if (xlButtons == null || xlButtons.Count == 0)
-                {
-                    MessageBox.Show("No XL Icons found.", "XL Icons", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
-
-                // Build a message with all the button text/names
-                string message = "XL Icons found:\n\n";
-
-                // Loop through each button and add its name to the message
-                foreach (var button in xlButtons)
-                {
-                    message += $"- {button.ButtonText}, run as admin? - {button.RunAsAdmin}\n";
-                }
-
-                // Display the message box with the list of icons
-                MessageBox.Show(message, "XL Icons", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                // Show error message if something went wrong
-                MessageBox.Show($"Error loading XL Icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        /// <summary>
-        /// Event handler for running executables (not implemented)
-        /// </summary>
-        private void RunExecutable(object sender, MouseButtonEventArgs e)
-        {
-            // This method is not implemented yet
-            // It would handle mouse clicks on buttons
         }
     }
 }

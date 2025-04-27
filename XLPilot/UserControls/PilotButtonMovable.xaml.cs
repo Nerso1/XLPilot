@@ -240,6 +240,34 @@ namespace XLPilot.UserControls
                 typeof(string),
                 typeof(PilotButtonMovable),
                 new PropertyMetadata(string.Empty));
+
+        // ButtonType Dependency Property
+        public Models.Enums.PilotButtonType ButtonType
+        {
+            get => (Models.Enums.PilotButtonType)GetValue(ButtonTypeProperty);
+            set => SetValue(ButtonTypeProperty, value);
+        }
+
+        public static readonly DependencyProperty ButtonTypeProperty =
+            DependencyProperty.Register(
+                nameof(ButtonType),
+                typeof(Models.Enums.PilotButtonType),
+                typeof(PilotButtonMovable),
+                new PropertyMetadata(Models.Enums.PilotButtonType.UserStandard));
+
+        // ActionIdentifier Dependency Property
+        public string ActionIdentifier
+        {
+            get => (string)GetValue(ActionIdentifierProperty);
+            set => SetValue(ActionIdentifierProperty, value);
+        }
+
+        public static readonly DependencyProperty ActionIdentifierProperty =
+            DependencyProperty.Register(
+                nameof(ActionIdentifier),
+                typeof(string),
+                typeof(PilotButtonMovable),
+                new PropertyMetadata(string.Empty));
         #endregion
     }
 }

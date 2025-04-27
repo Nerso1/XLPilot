@@ -10,6 +10,7 @@ using XLPilot.XmlUtilities;
 using XLPilot.Models;
 using XLPilot.Models.Containers;
 using XLPilot.Services;
+using XLPilot.Models.Enums;
 
 namespace XLPilot.TabControls
 {
@@ -176,14 +177,16 @@ namespace XLPilot.TabControls
         {
             var buttons = new ObservableCollection<PilotButtonData>();
 
-            // Add existing buttons
+            // Add existing buttons with new button types and action identifiers
             buttons.Add(new PilotButtonData(
                 "XL",
                 "cdnxl.exe",
                 "/XLPilot;component/Resources/Images/cdnxl.png",
                 false,
                 "",
-                "Uruchom Comarch ERP XL"));
+                "Uruchom Comarch ERP XL",
+                "",
+                PilotButtonType.SystemStandard));
 
             buttons.Add(new PilotButtonData(
                 "XL admin",
@@ -191,7 +194,9 @@ namespace XLPilot.TabControls
                 "/XLPilot;component/Resources/Images/cdnxl.png",
                 true,
                 "",
-                "Uruchom Comarch ERP XL jako administrator"));
+                "Uruchom Comarch ERP XL jako administrator",
+                "",
+                PilotButtonType.SystemStandard));
 
             buttons.Add(new PilotButtonData(
                 "Rejestr.bat",
@@ -199,26 +204,34 @@ namespace XLPilot.TabControls
                 "/XLPilot;component/Resources/Images/cmd.png",
                 true,
                 "",
-                "Uruchom rejestr.bat"));
+                "Uruchom rejestr.bat",
+                "",
+                PilotButtonType.SystemStandard));
 
             buttons.Add(new PilotButtonData(
                 "Zmienna Path",
-                "test.exe",
+                "",
                 "/XLPilot;component/Resources/Images/env_var.png",
                 true,
                 "",
-                "Ustaw zmienną środowiskową Path do danego XL-a górze"));
+                "Ustaw zmienną środowiskową Path do danego XL-a górze",
+                "",
+                PilotButtonType.SystemSpecial,
+                "ChangeEnvVariable"));
 
             buttons.Add(new PilotButtonData(
                 "Folder XL",
-                "test.exe",
+                "",
                 "/XLPilot;component/Resources/Images/folder.png",
                 false,
                 "",
-                "Otwórz folder z Comarch ERP XL"));
+                "Otwórz folder z Comarch ERP XL",
+                "",
+                PilotButtonType.SystemStandard));
 
             return buttons;
         }
+
 
         /// <summary>
         /// Saves XL buttons to the configuration
@@ -240,7 +253,9 @@ namespace XLPilot.TabControls
                         item.RunAsAdmin,
                         item.Arguments,
                         item.ToolTipText,
-                        item.Directory
+                        item.Directory,
+                        item.ButtonType,
+                        item.ActionIdentifier
                     ));
                 }
 

@@ -50,10 +50,23 @@ namespace XLPilot.TabControls
                 // Get the Other icons
                 var otherIcons = serializationManager.GetData().OtherPilotButtons;
 
+                // Check if there are any Other icons
+                bool hasOtherIcons = otherIcons != null && otherIcons.Count > 0;
+
+                // Show/hide the separator and Other icons section based on whether there are icons
+                grdMainGrid.RowDefinitions[1].Height = hasOtherIcons ? new GridLength(2) : new GridLength(0);
+                grdMainGrid.RowDefinitions[2].Height = hasOtherIcons ? new GridLength(160) : new GridLength(0);
+
+                // If there are no icons, we can return early
+                if (!hasOtherIcons)
+                {
+                    return;
+                }
+
                 // Get the StackPanel in the second ScrollViewer (Grid.Row="2")
                 var otherIconsStackPanel = ((ScrollViewer)grdMainGrid.Children[2]).Content as StackPanel;
 
-                // Clear any existing content
+                // Rest of your existing code for populating the Other icons
                 if (otherIconsStackPanel != null)
                 {
                     otherIconsStackPanel.Children.Clear();
@@ -63,7 +76,7 @@ namespace XLPilot.TabControls
                     {
                         Text = "Opcje niepowiązane z XL-ami",
                         FontSize = 16,
-                        //FontWeight = FontWeights.Bold,
+                        FontWeight = FontWeights.Bold,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 5, 0, 10)
                     };

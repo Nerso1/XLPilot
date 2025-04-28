@@ -532,7 +532,8 @@ namespace XLPilot.TabControls
                 "skip",
                 "Uruchom rejestr.bat",
                 "",
-                PilotButtonType.SystemStandard));
+                PilotButtonType.SystemSpecial,
+                "RejestrBat"));
 
             buttons.Add(new PilotButtonData(
                 "Zmienna Path",

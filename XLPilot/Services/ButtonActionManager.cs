@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using XLPilot.Models;
 using XLPilot.Models.Enums;
@@ -249,6 +250,15 @@ namespace XLPilot.Services
                     OpenDSServicesRegistry();
                     break;
 
+                case "RejestrBat":
+                    // Debug message
+                    MessageBox.Show("Uruchamiam rejestr.bat ze wskazaniem ścieżki do XL-a",
+                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Placeholder for actual implementation
+                    RunRejestrBat(xlPath);
+                    break;
+
                 default:
                     MessageBox.Show($"Nieznana akcja specjalna: {button.ActionIdentifier}",
                         "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -330,13 +340,100 @@ namespace XLPilot.Services
         }
 
         /// <summary>
-        /// Opens registry with Data Services configuration
+        /// Opens Registry Editor at the Data Services registry location
         /// </summary>
         private static void OpenDSServicesRegistry()
         {
-            // Placeholder - will be implemented later
-            MessageBox.Show("Funkcja otwierania rejestru usług DS zostanie zaimplementowana w przyszłości.",
-                "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                // Registry key to open
+                string registryPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Google";
+
+                // This technique works by setting a "last key" value that regedit will open to
+                // when it starts. Registry Editor reads this value when it launches.
+                using (Microsoft.Win32.Registry.CurrentUser.CreateSubKey(
+                    @"Software\Microsoft\Windows\CurrentVersion\Applets\Regedit"))
+                {
+                    // Set the last opened key
+                    using (var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
+                        @"Software\Microsoft\Windows\CurrentVersion\Applets\Regedit", true))
+                    {
+                        key.SetValue("LastKey", registryPath);
+                    }
+                }
+
+                // Now launch regedit, which will open to the location we just set
+                Process.Start("regedit.exe");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas otwierania rejestru: {ex.Message}",
+                               "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        /// <summary>
+        /// Runs rejestr.bat in the XL directory with administrator privileges
+        /// </summary>
+        private static void RunRejestrBat(XLPaths xlPath)
+        {
+            try
+            {
+                // Check if XL path is provided
+                if (xlPath == null || string.IsNullOrEmpty(xlPath.Path))
+                {
+                    MessageBox.Show("Brak określonego katalogu XL. Wybierz ścieżkę XL.",
+                        "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Create a temporary batch file to execute commands
+                string tempBatchFile = Path.Combine(Path.GetTempPath(), "run_rejestr_" + Guid.NewGuid().ToString() + ".bat");
+
+                // Prepare batch file content
+                string batchContent = $@"@echo off
+                                        cd /d ""{xlPath.Path}""
+                                        call rejestr.bat
+                                        pause
+                                        ";
+
+                // Write the batch content to the temporary file
+                File.WriteAllText(tempBatchFile, batchContent);
+
+                // Create process info to run the batch file as administrator
+                ProcessStartInfo processInfo = new ProcessStartInfo
+                {
+                    FileName = tempBatchFile,
+                    UseShellExecute = true,
+                    Verb = "runas" // Run as administrator
+                };
+
+                // Start the process
+                Process.Start(processInfo);
+
+                // Schedule deletion of the temporary batch file after a delay
+                // (This gives the process time to start before deleting the file)
+                Task.Delay(5000).ContinueWith(t =>
+                {
+                    try
+                    {
+                        if (File.Exists(tempBatchFile))
+                        {
+                            File.Delete(tempBatchFile);
+                        }
+                    }
+                    catch
+                    {
+                        // Ignore errors when trying to delete the temp file
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas uruchamiania rejestr.bat: {ex.Message}",
+                               "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

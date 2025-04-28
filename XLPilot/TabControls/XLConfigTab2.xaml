@@ -60,8 +60,12 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Name="tbXLPath" Text="Ścieżka" FontSize="16"/>
 
             <!-- TextBoxes -->
-            <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtXLName" FontSize="16" Margin="0,0,0,5"/>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtXLPath" FontSize="16" Margin="0,0,0,5"/>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtXLName" FontSize="16" Margin="0,0,0,5" />
+            <DockPanel Grid.Row="1" Grid.Column="1" LastChildFill="True" Margin="0,0,0,5">
+                <Button x:Name="BtnBrowsePath" DockPanel.Dock="Right" Content="..." Width="30" Height="25" 
+                                    Margin="5,0,0,0" Click="BtnBrowsePath_Click" ToolTip="Wybierz ścieżkę" />
+                <TextBox x:Name="txtXLPath" FontSize="16" />
+            </DockPanel>
 
             <!-- Advanced Options StackPanel - will collapse completely when hidden -->
             <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 

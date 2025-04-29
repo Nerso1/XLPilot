@@ -194,7 +194,8 @@ namespace XLPilot.TabControls
                 "",
                 "Pokaż folder %temp% danego użytkownika",
                 "C:\\Users\\domin\\Downloads\\XL-e\\Comarch ERP XL 2024.1.3 api",
-                PilotButtonType.SystemStandard));
+                PilotButtonType.SystemSpecial,
+                "TempFolder"));
 
             return buttons;
         }

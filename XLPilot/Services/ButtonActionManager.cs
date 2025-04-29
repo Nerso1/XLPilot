@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using XLPilot.Models;
@@ -259,12 +261,24 @@ namespace XLPilot.Services
                     RunRejestrBat(xlPath);
                     break;
 
+                case "TempFolder":
+                    // Debug message
+                    MessageBox.Show("Uruchamiam foldery %temp% użytkownika",
+                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Placeholder for actual implementation
+                    OpenTempFolder();
+                    break;
+
+
                 default:
                     MessageBox.Show($"Nieznana akcja specjalna: {button.ActionIdentifier}",
                         "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
                     break;
             }
         }
+
+
 
         /// <summary>
         /// Runs an executable with specified parameters
@@ -297,16 +311,182 @@ namespace XLPilot.Services
             }
         }
 
-        // Placeholder methods for special actions - to be implemented later
-
         /// <summary>
-        /// Changes the PATH environmental variable to include XL path 
+        /// Changes the PATH environmental variable to include XL path at the beginning
         /// </summary>
         private static void ChangeEnvironmentalVariable(XLPaths xlPath)
         {
-            // Placeholder - will be implemented later
-            MessageBox.Show("Funkcja zmiany zmiennej PATH zostanie zaimplementowana w przyszłości.",
-                "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                // Check if xlPath is valid
+                if (xlPath == null || string.IsNullOrEmpty(xlPath.Path))
+                {
+                    MessageBox.Show("Brak ścieżki XL do dodania do zmiennej PATH.",
+                        "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                string directory = xlPath.Path;
+
+                // Ensure the directory ends with a backslash
+                string directoryWithBackslash = directory.EndsWith(@"\") ? directory : directory + @"\";
+                string directoryWithoutBackslash = directory.TrimEnd('\\');
+
+                // Get the current SYSTEM PATH environment variable
+                string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Machine);
+                if (currentPath == null)
+                {
+                    MessageBox.Show("Błąd w odczycie zmiennej PATH.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Split the PATH into individual directories
+                string[] paths = currentPath.Split(';');
+                bool pathFound = false;
+
+                // Check if the directory is already in the PATH
+                if (paths.Contains(directoryWithBackslash, StringComparer.OrdinalIgnoreCase))
+                {
+                    // Remove the directoryWithBackslash from the list
+                    paths = paths.Where(p => !string.Equals(p, directoryWithBackslash, StringComparison.OrdinalIgnoreCase)).ToArray();
+                    pathFound = true;
+                }
+                else if (paths.Contains(directoryWithoutBackslash, StringComparer.OrdinalIgnoreCase))
+                {
+                    // Remove the directoryWithoutBackslash from the list
+                    paths = paths.Where(p => !string.Equals(p, directoryWithoutBackslash, StringComparison.OrdinalIgnoreCase)).ToArray();
+                    pathFound = true;
+                }
+
+                // Create a backup of the current PATH
+                CreateEnvironmentalVariableBackup(currentPath);
+
+                // Insert the directoryWithBackslash at the top of the list
+                paths = new[] { directoryWithBackslash }.Concat(paths).ToArray();
+                string newPath = string.Join(";", paths);
+
+                // Create a message based on whether the path was moved or added
+                string message = pathFound ?
+                    $"Czy chcesz przenieść '{xlPath.Name}' na pierwsze miejsce zmiennej PATH systemu?" :
+                    $"Czy chcesz dodać '{xlPath.Name}' jako pierwsze miejsce zmiennej PATH systemu?";
+
+                // Ask for confirmation
+                MessageBoxResult result = MessageBox.Show(message, "Zmiana zmiennej PATH systemu",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Create a temporary batch file for the registry update
+                    string batchFile = Path.Combine(Path.GetTempPath(), "SetSystemPath_" + Guid.NewGuid().ToString() + ".bat");
+
+                    // Create batch file content that uses REG command to modify the registry directly
+                    // and then exits automatically without requiring user input
+                    string batchContent =
+                        "@echo off\r\n" +
+                        "REG ADD \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\" /v Path /t REG_EXPAND_SZ /d \"" + newPath + "\" /f\r\n" +
+                        "exit %ERRORLEVEL%\r\n";
+
+                    // Write batch file
+                    File.WriteAllText(batchFile, batchContent, System.Text.Encoding.Default);
+
+                    // Execute batch file with administrator privileges and wait for it to complete
+                    ProcessStartInfo processInfo = new ProcessStartInfo
+                    {
+                        FileName = batchFile,
+                        Verb = "runas", // Run as administrator
+                        UseShellExecute = true,
+                        CreateNoWindow = false, // Show the command window briefly
+                        WindowStyle = ProcessWindowStyle.Minimized // Minimize the window so it's less intrusive
+                    };
+
+                    try
+                    {
+                        using (Process process = Process.Start(processInfo))
+                        {
+                            // Wait for the process to finish
+                            process.WaitForExit();
+
+                            if (process.ExitCode == 0)
+                            {
+                                // Success message when done
+                                MessageBox.Show(
+                                    "Zakończono proces aktualizacji zmiennej PATH systemu.\n" +
+                                    "Należy teraz ponownie uruchomić Comarch ERP XL, lub usługę,\n" +
+                                    "aby zmiany zostały uwzględnione.",
+                                    "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            else
+                            {
+                                // Show error message
+                                MessageBox.Show(
+                                    "Wystąpił błąd podczas aktualizacji zmiennej PATH systemu.\n" +
+                                    "Upewnij się, że masz uprawnienia administratora.",
+                                    "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Wystąpił błąd: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        // Clean up - delete the temporary batch file
+                        try
+                        {
+                            if (File.Exists(batchFile))
+                            {
+                                File.Delete(batchFile);
+                            }
+                        }
+                        catch
+                        {
+                            // Ignore errors during cleanup
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Aktualizacja zmiennej PATH nie powiodła się: {ex.Message}",
+                    "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// Creates a backup of the PATH environment variable
+        /// </summary>
+        private static void CreateEnvironmentalVariableBackup(string currentPath)
+        {
+            try
+            {
+                string backupDir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "XLPilot");
+
+                // Create directory if it doesn't exist
+                if (!Directory.Exists(backupDir))
+                {
+                    Directory.CreateDirectory(backupDir);
+                }
+
+                string backupFilePath = Path.Combine(backupDir, "PATH_Backup_System.txt");
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+
+                // If backup already exists, create a new one with timestamp
+                if (File.Exists(backupFilePath))
+                {
+                    backupFilePath = Path.Combine(backupDir, $"PATH_Backup_System_{timestamp}.txt");
+                }
+
+                // Write the backup
+                File.WriteAllText(backupFilePath, currentPath);
+            }
+            catch (Exception ex)
+            {
+                // Just log the error without showing message to user
+                System.Diagnostics.Debug.WriteLine($"Error creating PATH backup: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -314,29 +494,77 @@ namespace XLPilot.Services
         /// </summary>
         private static void OpenComputerConfigRegistry()
         {
-            // Placeholder - will be implemented later
-            MessageBox.Show("Funkcja otwierania rejestru konfiguracji komputera zostanie zaimplementowana w przyszłości.",
-                "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+            try
+            {
+                // Path for Registry Editor in the system directory (64-bit version)
+                string regeditPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "regedit.exe");
 
+                // For the LastKey, use the direct path without WOW6432Node
+                var registryLocation = @"HKCU\SOFTWARE\CDN\HASPXL";
+                var registryLastKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit";
+
+                // Set LastKey value
+                Registry.SetValue(registryLastKey, "LastKey", registryLocation);
+
+                // Start the 64-bit Registry Editor
+                Process.Start(regeditPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+        
         /// <summary>
         /// Opens registry with user databases configuration
         /// </summary>
         private static void OpenUserDatabasesRegistry()
         {
-            // Placeholder - will be implemented later
-            MessageBox.Show("Funkcja otwierania rejestru baz użytkownika zostanie zaimplementowana w przyszłości.",
-                "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+            try
+            {
+                // Path for Registry Editor in the system directory (64-bit version)
+                string regeditPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "regedit.exe");
 
+                // For the LastKey, use the direct path without WOW6432Node
+                var registryLocation = @"HKCU\SOFTWARE\CDN\CDNXL\MSSQL\Bazy";
+                var registryLastKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit";
+
+                // Set LastKey value
+                Registry.SetValue(registryLastKey, "LastKey", registryLocation);
+
+                // Start the 64-bit Registry Editor
+                Process.Start(regeditPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+        
         /// <summary>
         /// Opens registry with computer databases configuration
         /// </summary>
         private static void OpenComputerDatabasesRegistry()
         {
-            // Placeholder - will be implemented later
-            MessageBox.Show("Funkcja otwierania rejestru baz komputera zostanie zaimplementowana w przyszłości.",
-                "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                // Path for Registry Editor in the system directory (64-bit version)
+                string regeditPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "regedit.exe");
+
+                // For the LastKey, use the direct path without WOW6432Node
+                var registryLocation = @"HKLM\SOFTWARE\WOW6432Node\CDN\CDNXL\MSSQL\Bazy";
+                var registryLastKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit";
+
+                // Set LastKey value
+                Registry.SetValue(registryLastKey, "LastKey", registryLocation);
+
+                // Start the 64-bit Registry Editor
+                Process.Start(regeditPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         /// <summary>
@@ -346,29 +574,18 @@ namespace XLPilot.Services
         {
             try
             {
-                // Registry key to open
-                string registryPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Google";
+                string regeditPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "regedit.exe");
 
-                // This technique works by setting a "last key" value that regedit will open to
-                // when it starts. Registry Editor reads this value when it launches.
-                using (Microsoft.Win32.Registry.CurrentUser.CreateSubKey(
-                    @"Software\Microsoft\Windows\CurrentVersion\Applets\Regedit"))
-                {
-                    // Set the last opened key
-                    using (var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
-                        @"Software\Microsoft\Windows\CurrentVersion\Applets\Regedit", true))
-                    {
-                        key.SetValue("LastKey", registryPath);
-                    }
-                }
+                var registryLocation = @"HKLM\SOFTWARE\WOW6432Node\Comarch ERP XL Synchro\Settings";
+                var registryLastKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit";
 
-                // Now launch regedit, which will open to the location we just set
-                Process.Start("regedit.exe");
+                Registry.SetValue(registryLastKey, "LastKey", registryLocation);
+
+                Process.Start(regeditPath);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Błąd podczas otwierania rejestru: {ex.Message}",
-                               "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Error");
             }
         }
 
@@ -435,5 +652,34 @@ namespace XLPilot.Services
                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        /// <summary>
+        /// Opens the Windows temporary folder (%temp%)
+        /// </summary>
+        private static void OpenTempFolder()
+        {
+            try
+            {
+                // Get the path to the temp folder
+                string tempFolderPath = Path.GetTempPath();
+
+                // Check if the folder exists
+                if (Directory.Exists(tempFolderPath))
+                {
+                    // Open the folder in Windows Explorer
+                    Process.Start("explorer.exe", tempFolderPath);
+                }
+                else
+                {
+                    MessageBox.Show($"Folder tymczasowy nie istnieje: {tempFolderPath}",
+                        "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas otwierania folderu temp: {ex.Message}",
+                    "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 }

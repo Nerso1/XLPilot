@@ -58,6 +58,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CreateIconWindow.xaml.cs">
+      <DependentUpon>CreateIconWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Containers\DimensionsContainer.cs" />
     <Compile Include="Models\Containers\FlagsContainer.cs" />
     <Compile Include="Models\Containers\OtherIconsContainer.cs" />
@@ -81,6 +84,10 @@
     <Compile Include="XmlUtilities\SerializationService.cs" />
     <Compile Include="XmlUtilities\XmlSerializer.cs" />
     <Compile Include="XmlUtilities\XmlValidator.cs" />
+    <Page Include="CreateIconWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

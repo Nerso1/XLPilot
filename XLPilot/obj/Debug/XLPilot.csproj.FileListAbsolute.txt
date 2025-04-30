@@ -54,3 +54,5 @@ C:\Users\Dominik.Ciaston\source\repos\XLPilot\XLPilot\obj\Debug\XLPilot.csproj.G
 C:\Users\Dominik.Ciaston\source\repos\XLPilot\XLPilot\obj\Debug\XLPilot.csproj.CoreCompileInputs.cache
 C:\Users\Dominik.Ciaston\source\repos\XLPilot\XLPilot\obj\Debug\XLPilot.exe
 C:\Users\Dominik.Ciaston\source\repos\XLPilot\XLPilot\obj\Debug\XLPilot.pdb
+C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\CreateIconWindow.g.cs
+C:\Users\domin\source\repos\XLPilot\XLPilot\obj\Debug\CreateIconWindow.baml

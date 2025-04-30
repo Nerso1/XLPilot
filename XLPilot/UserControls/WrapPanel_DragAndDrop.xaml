@@ -18,6 +18,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <!-- Button at bottom row -->
             </Grid.RowDefinitions>
 
             <!-- Project Section -->
@@ -143,6 +145,14 @@
                     </ListView>
                 </Grid>
             </Border>
+
+            <!-- Add New Icon Button - Now at the bottom -->
+            <Button Grid.Row="4" x:Name="btnAddNewIcon" 
+                    Content="➕ Stwórz nowy przycisk" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,10,0,5"
+                    Padding="10,5"
+                    Click="BtnAddNewIcon_Click"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

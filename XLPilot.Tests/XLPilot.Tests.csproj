@@ -118,6 +118,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\PilotButtonTypeTests.cs" />
     <Compile Include="Models\PilotButtonDataTests.cs" />
     <Compile Include="Models\PilotButtonsContainerTests.cs" />
     <Compile Include="Models\SerializationDataTests.cs" />
@@ -125,12 +126,18 @@
     <Compile Include="Models\XLPathsContainerTests.cs" />
     <Compile Include="Models\XLPathsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ButtonActionManagerTests.cs" />
+    <Compile Include="Services\ButtonActionSpecialTests.cs" />
+    <Compile Include="Services\EnvironmentVariableTests.cs" />
+    <Compile Include="Services\RegistryActionTests.cs" />
+    <Compile Include="TabControls\TemplateButtonsTests.cs" />
     <Compile Include="UserControls\PilotButtonMovableTests.cs" />
     <Compile Include="UserControls\PilotButtonTests.cs" />
     <Compile Include="UserControls\StringEmptyConverterTests.cs" />
     <Compile Include="UserControls\IsDefaultEmptyEntryConverterTests.cs" />
     <Compile Include="UserControls\WrapPanel_DragAndDropBasicTests.cs" />
     <Compile Include="XmlUtilities\SerializationManagerTests.cs" />
+    <Compile Include="XmlUtilities\SerializationWithTypesTests.cs" />
     <Compile Include="XmlUtilities\XmlUtilitiesIntegrationTests.cs" />
     <Compile Include="XmlUtilities\XmlValidatorTests.cs" />
     <Compile Include="XmlUtilities\XmlSerializerTests.cs" />
@@ -149,10 +156,7 @@
     <Analyzer Include="..\packages\MSTest.Analyzers.3.8.3\analyzers\dotnet\cs\MSTest.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\MSTest.Analyzers.3.8.3\analyzers\dotnet\cs\MSTest.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="TabControls\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

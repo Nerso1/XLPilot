@@ -9,6 +9,13 @@
       <Name>Comarch ERP XL 2025.0.2 api</Name>
       <Path>C:\Comarch ERP XL\Comarch ERP XL 2025.0.2 api</Path>
     </XLPaths>
+    <XLPaths>
+      <Name>Comarch ERP XL 2025.0</Name>
+      <Path>C:\Users\domin\Downloads\XL-e\Comarch ERP XL 2025.0</Path>
+      <Database />
+      <LicenseServer />
+      <LicenseKey />
+    </XLPaths>
   </XLPathsList>
   <XLPilotButtons>
     <PilotButtonData>
@@ -57,7 +64,7 @@
     </PilotButtonData>
     <PilotButtonData>
       <ButtonText>Folder XL</ButtonText>
-      <FileName />
+      <FileName>Test\Test2</FileName>
       <ImageSource>/XLPilot;component/Resources/Images/folder.png</ImageSource>
       <RunAsAdmin>false</RunAsAdmin>
       <Arguments />
@@ -122,6 +129,17 @@
       <Directory>C:\Users\domin\Downloads\XL-e\Comarch ERP XL 2024.1.3 api</Directory>
       <ButtonType>SystemSpecial</ButtonType>
       <ActionIdentifier>TempFolder</ActionIdentifier>
+    </PilotButtonData>
+    <PilotButtonData>
+      <ButtonText>Przycisk</ButtonText>
+      <FileName>XLPilot_icon.png</FileName>
+      <ImageSource>C:\Users\domin\Downloads\XLPilot_icon.png</ImageSource>
+      <RunAsAdmin>false</RunAsAdmin>
+      <Arguments />
+      <ToolTipText />
+      <Directory>C:\Users\domin\Downloads</Directory>
+      <ButtonType>UserStandard</ButtonType>
+      <ActionIdentifier />
     </PilotButtonData>
   </OtherPilotButtons>
 </SerializationData>

@@ -7,6 +7,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using XLPilot.Models;
+using XLPilot.Models.Enums;
 
 namespace XLPilot.UserControls
 {
@@ -51,6 +52,9 @@ namespace XLPilot.UserControls
         // Track whether we've made changes
         private bool hasChanges = false;
 
+        // Flag to determine if this is an XL icon panel or Other icon panel
+        private bool _isXLIconPanel = true;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -60,6 +64,56 @@ namespace XLPilot.UserControls
 
             // Set DataContext to this instance so bindings work properly
             this.DataContext = this;
+
+            // Set default state for XL icon panel
+            _isXLIconPanel = true;
+
+            // Load control
+            this.Loaded += WrapPanel_DragAndDrop_Loaded;
+        }
+
+        /// <summary>
+        /// Handle control loaded event
+        /// </summary>
+        private void WrapPanel_DragAndDrop_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Determine if this is XL or Other panel based on parent
+            DetermineIconPanelType();
+        }
+
+        /// <summary>
+        /// Determines if this panel is for XL icons or Other icons
+        /// based on its container
+        /// </summary>
+        private void DetermineIconPanelType()
+        {
+            try
+            {
+                // Check parent controls to determine if this is XL or Other tab
+                FrameworkElement parent = this.Parent as FrameworkElement;
+                while (parent != null)
+                {
+                    // Check if parent is a tab control
+                    if (parent is XLPilot.TabControls.XLConfigTab2)
+                    {
+                        _isXLIconPanel = true;
+                        return;
+                    }
+                    else if (parent is XLPilot.TabControls.OtherConfigTab3)
+                    {
+                        _isXLIconPanel = false;
+                        return;
+                    }
+
+                    // Move up to next parent
+                    parent = parent.Parent as FrameworkElement;
+                }
+            }
+            catch (Exception)
+            {
+                // Default to XL Icons if we can't determine
+                _isXLIconPanel = true;
+            }
         }
 
         /// <summary>
@@ -405,6 +459,49 @@ namespace XLPilot.UserControls
             {
                 ItemsDropped?.Invoke(this, e);
                 hasChanges = false;
+            }
+        }
+
+        /// <summary>
+        /// Handle the "Add New Icon" button click
+        /// </summary>
+        private void BtnAddNewIcon_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Create the window for adding a new icon
+                var createIconWindow = new XLPilot.CreateIconWindow(_isXLIconPanel);
+
+                // Show the window as a dialog
+                bool? result = createIconWindow.ShowDialog();
+
+                // If the user clicked OK, add the new icon
+                if (result == true)
+                {
+                    // Get the created icon
+                    PilotButtonData newIcon = createIconWindow.ButtonData;
+
+                    // Add it to the user's icons (ProjectItems)
+                    if (newIcon != null)
+                    {
+                        // Add to the end of the collection
+                        ProjectItems.Add(newIcon);
+
+                        // Notify that changes were made
+                        hasChanges = true;
+
+                        // Just call the event handler directly without creating DragEventArgs
+                        // Since we're just notifying about changes, not a real drag operation
+                        ItemsDropped?.Invoke(this, null);
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas tworzenia nowej ikony: {ex.Message}",
+                    "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -75,16 +75,6 @@ XLPilot stores its configuration in a `config.xml` file in the same directory as
 - XLPilot requires administrator rights for some operations, such as modifying system PATH variables
 - When running ERP XL applications, ensure compatible versions are used
 
-## Contributing
-
-Contributions are welcome! If you'd like to contribute, please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## Acknowledgments
 
 - Icon resources from [icons8](https://icons8.com/)

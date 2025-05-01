@@ -201,10 +201,19 @@ namespace XLPilot.TabControls
                 {
                     mainStackPanel.Children.Clear();
 
-                    // Create UI elements for each XL path
-                    foreach (var xlPath in pathsContainer.Items)
+                    // Check if there are any XL paths
+                    if (pathsContainer.Items.Count == 0)
                     {
-                        CreateXLPathSection(mainStackPanel, xlPath, xlIcons);
+                        // No XL paths - add welcome message
+                        CreateWelcomePanel(mainStackPanel);
+                    }
+                    else
+                    {
+                        // Create UI elements for each XL path
+                        foreach (var xlPath in pathsContainer.Items)
+                        {
+                            CreateXLPathSection(mainStackPanel, xlPath, xlIcons);
+                        }
                     }
                 }
             }
@@ -213,6 +222,123 @@ namespace XLPilot.TabControls
                 MessageBox.Show($"Błąd podczas wczytywania ścieżek i ikon XL: {ex.Message}",
                                 "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        /// <summary>
+        /// Creates a welcome panel with instructions when no XL paths are available
+        /// </summary>
+        private void CreateWelcomePanel(StackPanel parentPanel)
+        {
+            // Create a border to contain all welcome content
+            var welcomeBorder = new Border
+            {
+                BorderBrush = Brushes.LightGray,
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(8),
+                Margin = new Thickness(20),
+                Padding = new Thickness(15),
+                Background = new SolidColorBrush(Color.FromRgb(245, 245, 250))
+            };
+
+            // Stack panel for the welcome content
+            var welcomePanel = new StackPanel
+            {
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+
+            // Welcome title
+            var welcomeTitle = new TextBlock
+            {
+                Text = "Witaj w XL Pilot!",
+                FontSize = 24,
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 0, 0, 15),
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+            welcomePanel.Children.Add(welcomeTitle);
+
+            // Welcome message
+            var welcomeMessage = new TextBlock
+            {
+                Text = "Nie znaleziono żadnych zainstalowanych wersji Comarch ERP XL.",
+                FontSize = 16,
+                Margin = new Thickness(0, 0, 0, 10),
+                TextAlignment = TextAlignment.Center
+            };
+            welcomePanel.Children.Add(welcomeMessage);
+
+            // Instruction message
+            var instructionMessage = new TextBlock
+            {
+                Text = "Aby rozpocząć pracę, przejdź do zakładki \"Konfiguracja XL-e\" i dodaj ścieżki do instalacji programu Comarch ERP XL.",
+                FontSize = 16,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 0, 0, 15),
+                TextAlignment = TextAlignment.Center
+            };
+            welcomePanel.Children.Add(instructionMessage);
+
+            // Create button to go to configuration tab
+            var configButton = new Button
+            {
+                Content = "Przejdź do konfiguracji",
+                Padding = new Thickness(15, 8, 15, 8),
+                Margin = new Thickness(0, 10, 0, 5),
+                FontSize = 16,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+
+            // Add click handler for the button
+            configButton.Click += (sender, e) =>
+            {
+                // Find the TabControl that contains this tab
+                var window = Window.GetWindow(this);
+                if (window != null)
+                {
+                    // Find the TabControl by name
+                    var tabControl = FindParentTabControl();
+                    if (tabControl != null)
+                    {
+                        // Find the XLConfigTab2 - it should be the second tab (index 1)
+                        if (tabControl.Items.Count > 1)
+                        {
+                            tabControl.SelectedIndex = 1; // Switch to the second tab
+                        }
+                    }
+                }
+            };
+            welcomePanel.Children.Add(configButton);
+
+            // Add the welcome panel to the border
+            welcomeBorder.Child = welcomePanel;
+
+            // Add the border to the parent panel
+            parentPanel.Children.Add(welcomeBorder);
+        }
+
+        /// <summary>
+        /// Finds the parent TabControl that contains this tab
+        /// </summary>
+        private TabControl FindParentTabControl()
+        {
+            // Start with this control
+            DependencyObject current = this;
+
+            // Navigate up the visual tree
+            while (current != null)
+            {
+                // Get the parent
+                current = VisualTreeHelper.GetParent(current);
+
+                // Check if the parent is a TabControl
+                if (current is TabControl tabControl)
+                {
+                    return tabControl;
+                }
+            }
+
+            // If no TabControl was found, return null
+            return null;
         }
 
         /// <summary>

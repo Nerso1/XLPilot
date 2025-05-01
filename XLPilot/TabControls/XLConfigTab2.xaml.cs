@@ -975,7 +975,17 @@ namespace XLPilot.TabControls
                 // Get the selected folder (extract folder path from the selected "file")
                 string folderPath = System.IO.Path.GetDirectoryName(dialog.FileName);
                 txtXLPath.Text = folderPath;
+
+                // Extract the folder name from the path and set it to txtXLName if it's empty
+                string folderName = System.IO.Path.GetFileName(folderPath);
+
+                // Check if the name field is empty or we're adding a new entry
+                //if (string.IsNullOrEmpty(txtXLName.Text) || DirectoriesListView.SelectedItem == null ||
+                //    (DirectoriesListView.SelectedItem is XLPaths selectedPath && string.IsNullOrEmpty(selectedPath.Name)))
+                {
+                    txtXLName.Text = folderName;
+                }
             }
         }
-        }
+    }
     }

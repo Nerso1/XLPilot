@@ -124,9 +124,9 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Nazwa" Width="150" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Ścieżka" Width="215" DisplayMemberBinding="{Binding Path}" />
                         <GridViewColumn Header="Baza danych" Width="80" DisplayMemberBinding="{Binding Database}" />
                         <GridViewColumn Header="Klucz" Width="130" DisplayMemberBinding="{Binding FormattedLicenseInfo}" />
-                        <GridViewColumn Header="Ścieżka" Width="215" DisplayMemberBinding="{Binding Path}" />
                     </GridView>
                 </ListView.View>
             </ListView>

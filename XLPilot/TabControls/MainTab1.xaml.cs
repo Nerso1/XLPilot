@@ -55,7 +55,7 @@ namespace XLPilot.TabControls
 
                 // Show/hide the separator and Other icons section based on whether there are icons
                 grdMainGrid.RowDefinitions[1].Height = hasOtherIcons ? new GridLength(2) : new GridLength(0);
-                grdMainGrid.RowDefinitions[2].Height = hasOtherIcons ? new GridLength(155) : new GridLength(0);
+                grdMainGrid.RowDefinitions[2].Height = hasOtherIcons ? new GridLength(160) : new GridLength(0);
 
                 // If there are no icons, we can return early
                 if (!hasOtherIcons)

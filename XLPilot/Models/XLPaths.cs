@@ -67,6 +67,8 @@ namespace XLPilot.Models
                 {
                     licenseServer = value;
                     OnPropertyChanged(nameof(LicenseServer));
+                    // Also notify that FormattedLicenseInfo has changed
+                    OnPropertyChanged(nameof(FormattedLicenseInfo));
                 }
             }
         }
@@ -80,6 +82,8 @@ namespace XLPilot.Models
                 {
                     licenseKey = value;
                     OnPropertyChanged(nameof(LicenseKey));
+                    // Also notify that FormattedLicenseInfo has changed
+                    OnPropertyChanged(nameof(FormattedLicenseInfo));
                 }
             }
         }

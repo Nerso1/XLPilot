@@ -83,7 +83,7 @@ namespace XLPilot.Services
             if (string.IsNullOrEmpty(button.FileName))
             {
                 // Debug message
-                MessageBox.Show($"Otwieranie katalogu: {directory}", "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show($"Otwieranie katalogu: {directory}", "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Open the directory in File Explorer
                 Process.Start("explorer.exe", directory);
@@ -102,13 +102,13 @@ namespace XLPilot.Services
 
                 // If path exists and is a file, run it
                 // Debug message
-                string debugMessage = $"Uruchamianie aplikacji: {filePath} {(button.RunAsAdmin ? "(jako administrator)" : "")}";
-                if (!string.IsNullOrEmpty(arguments))
-                {
-                    debugMessage += $" z argumentami: {arguments}";
-                }
+                //string debugMessage = $"Uruchamianie aplikacji: {filePath} {(button.RunAsAdmin ? "(jako administrator)" : "")}";
+                //if (!string.IsNullOrEmpty(arguments))
+                //{
+                //    debugMessage += $" z argumentami: {arguments}";
+                //}
 
-                MessageBox.Show(debugMessage, "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show(debugMessage, "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 RunExecutable(filePath, directory, button.RunAsAdmin, arguments);
             }
@@ -116,7 +116,7 @@ namespace XLPilot.Services
             {
                 // If path exists and is a directory, open it
                 // Debug message
-                MessageBox.Show($"Otwieranie katalogu: {filePath}", "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show($"Otwieranie katalogu: {filePath}", "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 Process.Start("explorer.exe", filePath);
             }
@@ -132,10 +132,10 @@ namespace XLPilot.Services
         /// </summary>
         private static string DetermineArguments(PilotButtonData button, XLPaths xlPath)
         {
-            MessageBox.Show($"DetermineArguments called with button: {button.ButtonText}\nDirectory: {button.Directory}\nArguments: {button.Arguments} \nxlPath: {xlPath}",
-                   "DEBUG - Method Entry",
-                   MessageBoxButton.OK,
-                   MessageBoxImage.Information);
+            //MessageBox.Show($"DetermineArguments called with button: {button.ButtonText}\nDirectory: {button.Directory}\nArguments: {button.Arguments} \nxlPath: {xlPath}",
+            //       "DEBUG - Method Entry",
+            //       MessageBoxButton.OK,
+            //       MessageBoxImage.Information);
 
             // For XL button (no specific directory set)
             if (xlPath != null)
@@ -143,19 +143,19 @@ namespace XLPilot.Services
                 // If arguments is empty or "include", generate arguments from XL path
                 if (string.IsNullOrEmpty(button.Arguments) || button.Arguments.Trim().ToLower() == "include")
                 {
-                    MessageBox.Show("If arguments is empty or \"include\", generate arguments from XL path");
+                    //MessageBox.Show("If arguments is empty or \"include\", generate arguments from XL path");
                     return GenerateArguments(xlPath);
                 }
                 // If arguments is "skip", return empty string
                 else if (button.Arguments.Trim().ToLower() == "skip")
                 {
-                    MessageBox.Show("If arguments is \"skip\", return empty string");
+                    //MessageBox.Show("If arguments is \"skip\", return empty string");
                     return string.Empty;
                 }
                 // Otherwise use the provided arguments
                 else
                 {
-                    MessageBox.Show("Otherwise use the provided arguments");
+                    //MessageBox.Show("Otherwise use the provided arguments");
                     return button.Arguments;
                 }
             }
@@ -165,13 +165,13 @@ namespace XLPilot.Services
                 // If no arguments, return empty string
                 if (string.IsNullOrEmpty(button.Arguments))
                 {
-                    MessageBox.Show("If no arguments, return empty string");
+                    //MessageBox.Show("If no arguments, return empty string");
                     return string.Empty;
                 }
                 // Otherwise use the provided arguments
                 else
                 {
-                    MessageBox.Show("Otherwise use the provided arguments");
+                    //MessageBox.Show("Otherwise use the provided arguments");
                     return button.Arguments;
                 }
             }
@@ -209,8 +209,8 @@ namespace XLPilot.Services
             {
                 case "ChangeEnvVariable":
                     // Debug message
-                    MessageBox.Show($"Zmiana zmiennej środowiskowej Path dla XL: {(xlPath != null ? xlPath.Name : "brak ścieżki XL")}",
-                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //MessageBox.Show($"Zmiana zmiennej środowiskowej Path dla XL: {(xlPath != null ? xlPath.Name : "brak ścieżki XL")}",
+                    //    "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Placeholder for actual implementation
                     ChangeEnvironmentalVariable(xlPath);
@@ -218,8 +218,8 @@ namespace XLPilot.Services
 
                 case "ComputerConfigRegistry":
                     // Debug message
-                    MessageBox.Show("Otwieranie rejestru z konfiguracją komputera dla XL",
-                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //MessageBox.Show("Otwieranie rejestru z konfiguracją komputera dla XL",
+                    //    "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Placeholder for actual implementation
                     OpenComputerConfigRegistry();
@@ -227,8 +227,8 @@ namespace XLPilot.Services
 
                 case "UserDatabasesRegistry":
                     // Debug message
-                    MessageBox.Show("Otwieranie rejestru z bazami użytkownika (HKCU)",
-                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //MessageBox.Show("Otwieranie rejestru z bazami użytkownika (HKCU)",
+                    //    "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Placeholder for actual implementation
                     OpenUserDatabasesRegistry();
@@ -236,8 +236,8 @@ namespace XLPilot.Services
 
                 case "ComputerDatabasesRegistry":
                     // Debug message
-                    MessageBox.Show("Otwieranie rejestru z bazami komputera (HKLM)",
-                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //MessageBox.Show("Otwieranie rejestru z bazami komputera (HKLM)",
+                    //    "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Placeholder for actual implementation
                     OpenComputerDatabasesRegistry();
@@ -245,8 +245,8 @@ namespace XLPilot.Services
 
                 case "DSServicesRegistry":
                     // Debug message
-                    MessageBox.Show("Otwieranie rejestru z usługami DS",
-                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //MessageBox.Show("Otwieranie rejestru z usługami DS",
+                    //    "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Placeholder for actual implementation
                     OpenDSServicesRegistry();
@@ -254,8 +254,8 @@ namespace XLPilot.Services
 
                 case "RejestrBat":
                     // Debug message
-                    MessageBox.Show("Uruchamiam rejestr.bat ze wskazaniem ścieżki do XL-a",
-                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //MessageBox.Show("Uruchamiam rejestr.bat ze wskazaniem ścieżki do XL-a",
+                    //    "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Placeholder for actual implementation
                     RunRejestrBat(xlPath);
@@ -263,8 +263,8 @@ namespace XLPilot.Services
 
                 case "TempFolder":
                     // Debug message
-                    MessageBox.Show("Uruchamiam foldery %temp% użytkownika",
-                        "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //MessageBox.Show("Uruchamiam foldery %temp% użytkownika",
+                    //    "Informacja Debugowania", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Placeholder for actual implementation
                     OpenTempFolder();
@@ -485,7 +485,7 @@ namespace XLPilot.Services
             catch (Exception ex)
             {
                 // Just log the error without showing message to user
-                System.Diagnostics.Debug.WriteLine($"Error creating PATH backup: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Błąd podczas tworzenia backupu zmiennej PATH: {ex.Message}");
             }
         }
 
@@ -537,7 +537,7 @@ namespace XLPilot.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show(ex.Message, "Błąd");
             }
         }
         
@@ -563,7 +563,7 @@ namespace XLPilot.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show(ex.Message, "Błąd");
             }
         }
 
@@ -585,7 +585,7 @@ namespace XLPilot.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show(ex.Message, "Błąd");
             }
         }
 

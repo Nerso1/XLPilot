@@ -14,20 +14,9 @@
             <RowDefinition Height="150" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-
-                <!--<StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="Comarch ERP XL 5 ikon" HorizontalAlignment="Center" FontSize="15" Margin="0,15,0,0" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <cc:PilotButton Width="100" Height="100" ButtonText="Zmienna PATH" />
-                        <cc:PilotButton Width="100" Height="100" ImageSource="/XLPilot;component/Resources/Images/Google chrome icon.png" ButtonText="Comarch ERP XL" />
-                        <cc:PilotButton Width="100" Height="100" ImageSource="/XLPilot;component/Resources/Images/Google chrome icon.png" ButtonText="rejestr.bat" />
-                        <cc:PilotButton Width="100" Height="100" ImageSource="/XLPilot;component/Resources/Images/Google chrome icon.png" ButtonText="rejestr.bat" />
-                        <cc:PilotButton Width="100" Height="100" ImageSource="/XLPilot;component/Resources/Images/Google chrome icon.png" ButtonText="rejestr.bat" />
-                    </StackPanel>
-                </StackPanel>-->
-
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+            <StackPanel HorizontalAlignment="Stretch">
+                <!-- Content will be added programmatically -->
             </StackPanel>
         </ScrollViewer>
 
@@ -35,14 +24,7 @@
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                
-                <!--<TextBlock Text="Opcje niepowiązane z XL-ami" HorizontalAlignment="Center" FontSize="15" Margin="0,15,0,0" />
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <cc:PilotButton Width="100" Height="100" ImageSource="/XLPilot;component/Resources/Images/Google chrome icon.png" ButtonText="Zmienna PATH" />
-                    <cc:PilotButton Width="100" Height="100" ImageSource="/XLPilot;component/Resources/Images/Google chrome icon.png" ButtonText="Zmienna PATH" />
-                    <cc:PilotButton Width="100" Height="100" ImageSource="/XLPilot;component/Resources/Images/Google chrome icon.png" ButtonText="Zmienna PATH" />
-                </StackPanel>-->
-                
+                <!-- Content will be added programmatically -->
             </StackPanel>
         </ScrollViewer>
     </Grid>

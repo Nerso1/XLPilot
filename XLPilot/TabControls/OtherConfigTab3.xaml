@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
         <!--<Grid Grid.Row="0" Margin="5">
@@ -72,6 +73,6 @@
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Edycja dostępnych opcji niepowiązanych z instalacjami XL" 
            FontSize="16" FontWeight="SemiBold" Margin="5,0,5,5"/>
         <local:WrapPanel_DragAndDrop Grid.Row="2" x:Name="OtherDragDropControl" />
-
+        <TextBlock Grid.Row="3" Text="XLPilot 1.0.0, DC" FontSize="16" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="DarkGray"/>
     </Grid>
 </UserControl>

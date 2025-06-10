@@ -208,42 +208,42 @@ namespace XLPilot.Tests.XmlUtilities
             Assert.AreEqual("Test", data.XLPathsList[0].Name);
         }
 
-        [TestMethod]
-        public void SaveAndLoadOtherPilotButtons_WorksCorrectly()
-        {
-            // Arrange
-            var manager = new SerializationManager(testFilePath);
-            var button = new PilotButtonData("OtherButton", "other.exe");
-            manager.GetData().OtherPilotButtons.Add(button);
+        //[TestMethod]
+        //public void SaveAndLoadOtherPilotButtons_WorksCorrectly()
+        //{
+        //    // Arrange
+        //    var manager = new SerializationManager(testFilePath);
+        //    var button = new PilotButtonData("OtherButton", "other.exe");
+        //    manager.GetData().OtherPilotButtons.Add(button);
 
-            string otherButtonsFile = "test_other_buttons.xml";
+        //    string otherButtonsFile = "test_other_buttons.xml";
 
-            try
-            {
-                // Act - Save
-                manager.SaveOtherPilotButtons(otherButtonsFile);
+        //    try
+        //    {
+        //        // Act - Save
+        //        manager.SaveOtherPilotButtons(otherButtonsFile);
 
-                // Clear data
-                manager.GetData().OtherPilotButtons.Clear();
-                Assert.AreEqual(0, manager.GetData().OtherPilotButtons.Count);
+        //        // Clear data
+        //        manager.GetData().OtherPilotButtons.Clear();
+        //        Assert.AreEqual(0, manager.GetData().OtherPilotButtons.Count);
 
-                // Act - Load
-                manager.LoadOtherPilotButtons(otherButtonsFile);
+        //        // Act - Load
+        //        manager.LoadOtherPilotButtons(otherButtonsFile);
 
-                // Assert
-                Assert.AreEqual(1, manager.GetData().OtherPilotButtons.Count);
-                Assert.AreEqual("OtherButton", manager.GetData().OtherPilotButtons[0].ButtonText);
-                Assert.AreEqual("other.exe", manager.GetData().OtherPilotButtons[0].FileName);
-            }
-            finally
-            {
-                // Clean up
-                if (File.Exists(otherButtonsFile))
-                {
-                    File.Delete(otherButtonsFile);
-                }
-            }
-        }
+        //        // Assert
+        //        Assert.AreEqual(1, manager.GetData().OtherPilotButtons.Count);
+        //        Assert.AreEqual("OtherButton", manager.GetData().OtherPilotButtons[0].ButtonText);
+        //        Assert.AreEqual("other.exe", manager.GetData().OtherPilotButtons[0].FileName);
+        //    }
+        //    finally
+        //    {
+        //        // Clean up
+        //        if (File.Exists(otherButtonsFile))
+        //        {
+        //            File.Delete(otherButtonsFile);
+        //        }
+        //    }
+        //}
 
         [TestMethod]
         public void ImportOtherPilotButtons_AddsToExistingCollection()

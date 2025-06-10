@@ -2,21 +2,24 @@
 <SerializationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <XLPathsList>
     <XLPaths>
-      <Name>Comarch ERP XL 2024.1</Name>
-      <Path>C:\Users\domin\Downloads\XL-e\Comarch ERP XL 2024.1</Path>
-      <LicenseServer />
+      <Name>Comarch ERP XL 2025.0.2 api</Name>
+      <Path>C:\Comarch ERP XL\Comarch ERP XL 2025.0.2 api</Path>
+      <Database>2025.0</Database>
+      <LicenseServer>NBDCIASTON</LicenseServer>
+      <LicenseKey>5000221489</LicenseKey>
+    </XLPaths>
+    <XLPaths>
+      <Name>Comarch ERP XL 2024.1.1 api</Name>
+      <Path>C:\Comarch ERP XL\Comarch ERP XL 2024.1.1 api</Path>
+      <Database>2024.1</Database>
+      <LicenseServer>NBDCIASTON</LicenseServer>
       <LicenseKey />
     </XLPaths>
     <XLPaths>
-      <Name>Comarch ERP XL 2025.0.2 apii</Name>
-      <Path>C:\Users\domin\source\repos</Path>
-      <LicenseServer>NBDCIASTON</LicenseServer>
-      <LicenseKey>600012345</LicenseKey>
-    </XLPaths>
-    <XLPaths>
-      <Name>Comarch ERP XL 2025.0</Name>
-      <Path>C:\Users\domin\Downloads\XL-e\Comarch ERP XL 2025.0</Path>
-      <LicenseServer>NBDCIASTON</LicenseServer>
+      <Name>2025-04-21 2025.1.0.3669_Naprawiona_DEBUG</Name>
+      <Path>C:\Comarch ERP XL\2025-04-21 2025.1.0.3669_Naprawiona_DEBUG</Path>
+      <Database />
+      <LicenseServer />
       <LicenseKey />
     </XLPaths>
   </XLPathsList>

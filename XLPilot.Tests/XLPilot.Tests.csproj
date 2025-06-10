@@ -122,7 +122,6 @@
     <Compile Include="Models\PilotButtonDataTests.cs" />
     <Compile Include="Models\PilotButtonsContainerTests.cs" />
     <Compile Include="Models\SerializationDataTests.cs" />
-    <Compile Include="Models\SimpleContainersTests.cs" />
     <Compile Include="Models\XLPathsContainerTests.cs" />
     <Compile Include="Models\XLPathsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

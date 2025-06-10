@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -61,11 +61,7 @@
     <Compile Include="CreateIconWindow.xaml.cs">
       <DependentUpon>CreateIconWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Containers\DimensionsContainer.cs" />
-    <Compile Include="Models\Containers\FlagsContainer.cs" />
-    <Compile Include="Models\Containers\OtherIconsContainer.cs" />
     <Compile Include="Models\Containers\PilotButtonsContainer.cs" />
-    <Compile Include="Models\Containers\XLIconsContainer.cs" />
     <Compile Include="Models\Containers\XLPathsContainer.cs" />
     <Compile Include="Models\Enums\PilotButtonType.cs" />
     <Compile Include="Models\PilotButtonData.cs" />

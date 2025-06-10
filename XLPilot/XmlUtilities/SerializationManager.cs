@@ -69,108 +69,11 @@ namespace XLPilot.XmlUtilities
 
         #region XLPaths Operations
         /// <summary>
-        /// Saves XL Paths to a separate XML file
-        /// </summary>
-        public void SaveXLPaths(string filePath)
-        {
-            try
-            {
-                // Create a container with the current XL paths
-                var container = new XLPathsContainer { Items = _data.XLPathsList };
-
-                // Remove empty entries
-                container.FilterEmptyEntries();
-
-                // Save to the file
-                XmlSerializer<XLPathsContainer>.Serialize(container, filePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error saving XL paths: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Loads XL Paths from a separate XML file and replaces current paths
-        /// </summary>
-        public void LoadXLPaths(string filePath)
-        {
-            try
-            {
-                // Load the container from the file
-                var container = XmlSerializer<XLPathsContainer>.Deserialize(filePath);
-
-                // Update the paths in our data
-                _data.XLPathsList = container.Items;
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading XL paths: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Imports XL Paths from a separate XML file and merges them with current paths
-        /// </summary>
-        public void ImportXLPaths(string filePath)
-        {
-            try
-            {
-                // Load the container from the file
-                var container = XmlSerializer<XLPathsContainer>.Deserialize(filePath);
-
-                // Add the imported paths to our existing paths
-                _data.XLPathsList.AddRange(container.Items);
-
-                // Remove duplicate entries
-                _data.XLPathsList = _data.XLPathsList.GroupBy(x => x.Name)
-                                                      .Select(g => g.First())
-                                                      .ToList();
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error importing XL paths: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Gets all XL paths as a container
         /// </summary>
         public XLPathsContainer GetXLPathsContainer()
         {
             return new XLPathsContainer { Items = _data.XLPathsList };
-        }
-
-        /// <summary>
-        /// Updates the XLPaths in the main configuration
-        /// </summary>
-        public void UpdateXLPaths(XLPathsContainer container)
-        {
-            try
-            {
-                // Remove empty entries
-                container.FilterEmptyEntries();
-
-                // Update the XL paths in our data
-                _data.XLPathsList = container.Items;
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating XL paths: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
         }
 
         /// <summary>
@@ -252,74 +155,6 @@ namespace XLPilot.XmlUtilities
         #endregion
 
         #region PilotButtons Operations - XL Icons
-        /// <summary>
-        /// Saves XL PilotButtons to a separate XML file
-        /// </summary>
-        public void SaveXLPilotButtons(string filePath)
-        {
-            try
-            {
-                // Create a container with the current XL buttons
-                var container = new PilotButtonsContainer { Items = _data.XLPilotButtons };
-
-                // Save to the file
-                XmlSerializer<PilotButtonsContainer>.Serialize(container, filePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error saving XL icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Loads XL PilotButtons from a separate XML file
-        /// </summary>
-        public void LoadXLPilotButtons(string filePath)
-        {
-            try
-            {
-                // Load the container from the file
-                var container = XmlSerializer<PilotButtonsContainer>.Deserialize(filePath);
-
-                // Update the buttons in our data
-                _data.XLPilotButtons = container.Items;
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading XL icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Imports XL PilotButtons from a separate XML file
-        /// </summary>
-        public void ImportXLPilotButtons(string filePath)
-        {
-            try
-            {
-                // Load the container from the file
-                var importedContainer = XmlSerializer<PilotButtonsContainer>.Deserialize(filePath);
-
-                // Add the imported buttons to our existing buttons
-                _data.XLPilotButtons.AddRange(importedContainer.Items);
-
-                // Remove duplicate buttons
-                _data.XLPilotButtons = _data.XLPilotButtons.Distinct().ToList();
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error importing XL icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
 
         /// <summary>
         /// Gets the XL PilotButtons as a container
@@ -338,26 +173,6 @@ namespace XLPilot.XmlUtilities
             {
                 // Update the buttons in our data
                 _data.XLPilotButtons = container.Items;
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating XL icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Updates the XL PilotButtons from an ObservableCollection
-        /// </summary>
-        public void UpdateXLPilotButtons(ObservableCollection<PilotButtonData> buttons)
-        {
-            try
-            {
-                // Convert the ObservableCollection to a List and update our data
-                _data.XLPilotButtons = new List<PilotButtonData>(buttons);
 
                 // Save the updated data
                 SaveAllData();
@@ -391,28 +206,6 @@ namespace XLPilot.XmlUtilities
             }
         }
 
-        /// <summary>
-        /// Loads Other PilotButtons from a separate XML file
-        /// </summary>
-        public void LoadOtherPilotButtons(string filePath)
-        {
-            try
-            {
-                // Load the container from the file
-                var container = XmlSerializer<PilotButtonsContainer>.Deserialize(filePath);
-
-                // Update the buttons in our data
-                _data.OtherPilotButtons = container.Items;
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading Other icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
 
         /// <summary>
         /// Imports Other PilotButtons from a separate XML file
@@ -439,141 +232,6 @@ namespace XLPilot.XmlUtilities
                 throw;
             }
         }
-
-        /// <summary>
-        /// Gets the Other PilotButtons as a container
-        /// </summary>
-        public PilotButtonsContainer GetOtherPilotButtonsContainer()
-        {
-            return new PilotButtonsContainer { Items = _data.OtherPilotButtons };
-        }
-
-        /// <summary>
-        /// Updates the Other PilotButtons in the main configuration
-        /// </summary>
-        public void UpdateOtherPilotButtons(PilotButtonsContainer container)
-        {
-            try
-            {
-                // Update the buttons in our data
-                _data.OtherPilotButtons = container.Items;
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating Other icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Updates the Other PilotButtons from an ObservableCollection
-        /// </summary>
-        public void UpdateOtherPilotButtons(ObservableCollection<PilotButtonData> buttons)
-        {
-            try
-            {
-                // Convert the ObservableCollection to a List and update our data
-                _data.OtherPilotButtons = new List<PilotButtonData>(buttons);
-
-                // Save the updated data
-                SaveAllData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating Other icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
-        }
         #endregion
-
-        //#region Flags Operations
-        ///// <summary>
-        ///// Saves flags to a separate XML file
-        ///// </summary>
-        //public void SaveFlags(string filePath)
-        //{
-        //    var container = new FlagsContainer { Items = _data.Flags };
-        //    XmlSerializer<FlagsContainer>.Serialize(container, filePath);
-        //}
-
-        ///// <summary>
-        ///// Loads flags from a separate XML file
-        ///// </summary>
-        //public void LoadFlags(string filePath)
-        //{
-        //    // Load the container from the file
-        //    var container = XmlSerializer<FlagsContainer>.Deserialize(filePath);
-
-        //    // Update our flags
-        //    _data.Flags = container.Items;
-
-        //    // Make sure we always have exactly 3 flags
-        //    while (_data.Flags.Count < 3)
-        //        _data.Flags.Add(false);
-
-        //    if (_data.Flags.Count > 3)
-        //        _data.Flags = _data.Flags.Take(3).ToList();
-        //}
-        //#endregion
-
-        //#region Dimensions Operations
-        ///// <summary>
-        ///// Saves window dimensions to a separate XML file
-        ///// </summary>
-        //public void SaveDimensions(string filePath)
-        //{
-        //    var container = new DimensionsContainer { Items = _data.Dimensions };
-        //    XmlSerializer<DimensionsContainer>.Serialize(container, filePath);
-        //}
-
-        ///// <summary>
-        ///// Loads window dimensions from a separate XML file
-        ///// </summary>
-        //public void LoadDimensions(string filePath)
-        //{
-        //    // Load the container from the file
-        //    var container = XmlSerializer<DimensionsContainer>.Deserialize(filePath);
-
-        //    // Update our dimensions
-        //    _data.Dimensions = container.Items;
-
-        //    // Make sure we always have exactly 2 dimensions (width, height)
-        //    while (_data.Dimensions.Count < 2)
-        //        _data.Dimensions.Add(0);
-
-        //    if (_data.Dimensions.Count > 2)
-        //        _data.Dimensions = _data.Dimensions.Take(2).ToList();
-        //}
-
-        ///// <summary>
-        ///// Sets the window dimensions
-        ///// </summary>
-        //public void SetDimensions(int width, int height)
-        //{
-        //    // Make sure we have space for the dimensions
-        //    while (_data.Dimensions.Count < 2)
-        //        _data.Dimensions.Add(0);
-
-        //    // Set the dimensions
-        //    _data.Dimensions[0] = width;
-        //    _data.Dimensions[1] = height;
-        //}
-
-        ///// <summary>
-        ///// Gets the window dimensions
-        ///// </summary>
-        //public (int width, int height) GetDimensions()
-        //{
-        //    // Make sure we have space for the dimensions
-        //    while (_data.Dimensions.Count < 2)
-        //        _data.Dimensions.Add(0);
-
-        //    // Return the dimensions
-        //    return (_data.Dimensions[0], _data.Dimensions[1]);
-        //}
-        //#endregion
     }
 }
